@@ -17,10 +17,12 @@
         </h1>
       </section>
       <nav class="navigation">
+        
         <router-link to="/" exact="true" class="ListItem">首页</router-link>
         <router-link to="/group" class="ListItem">学习小组</router-link>
         <router-link to="/project" class="ListItem">项目交流</router-link>
-        <router-link to="/group" class="LastItem">分享链接</router-link>
+        
+        <router-link to="/share" class="LastItem">分享链接</router-link>
         <a href="javascript:void(0)" @click="isfocused = true">
           <i class="el-icon-search"></i>
         </a>
@@ -135,6 +137,10 @@
     margin: 0 auto;
     display: flex;
     border-bottom: 3px solid #f3f3f3;
+  }
+
+  .navigation .router-link-active {
+    background: #f3f3f3;
   }
   /* @media screen and(min-width: 501px) {
   .menu-wrapper li:nth-child(3) {
@@ -264,6 +270,7 @@
 
   .LastItem {
     margin-left: auto;
+    background: none !important;
   }
 
 /************
@@ -279,7 +286,7 @@
     text-decoration: none;
   }
   .user-action img {
-
+    cursor: pointer;
     border-radius: 50%;
   }
   .el-dropdown-menu a {

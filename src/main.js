@@ -6,6 +6,12 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Gravatar from 'vue-gravatar'
+import moment from 'moment'
+import './style.less'
+
+
+Vue.prototype.moment = moment
+moment.locale('zh-cn')
 
 Vue.config.productionTip = false
 
