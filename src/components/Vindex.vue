@@ -95,7 +95,7 @@
     name: 'HelloWorld',
     data() {
       return {
-        userName: "js",
+        userName: "",
         isvisible: false,
         isfocused: false,
         msg: 'Welcome to Your Vue.js App'
@@ -239,7 +239,7 @@
   .user-login {
     position: absolute;
     right: 3rem;
-    top: 3.1rem;
+    top: 2.6rem;
     display: block;
   }
 

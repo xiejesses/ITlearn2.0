@@ -19,9 +19,13 @@
                 <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
                 <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link>
-                <a href="javascript:void(0)"><span class="separator"> • </span><i class="heart el-icon-fa el-icon-fa-heart-o" aria-hidden="true"></i></a>
+                <span>
+                <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a>
+                </span>
+                 <!-- v-bind:class="{heart-click:isHeartClick}" -->
               </div>
             </section>
+            <!-- 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
             <section class="article-vote" @click="isupmod = true">
               <span class="score" v-bind:class="{scored:isupmod}">{{score}}</span>
               <span class="arrow up" v-bind:class="{upmod:isupmod}" @click="score += 1"></span>
@@ -65,7 +69,8 @@
         userName: 'jesses',
         creatTime: '2017-11-2 16:30:20',
         score:10,
-        isupmod:false
+        isupmod:false,
+        isHeartClick:false
       }
     }
 
@@ -253,6 +258,10 @@ meta信息
     }
   .heart::before{
     font-size: 1.3rem;
+    
+}
+.heartclick {
+  color: #EC681B;
 }
 
   abbr {
