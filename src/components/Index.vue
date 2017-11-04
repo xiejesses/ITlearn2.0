@@ -142,7 +142,7 @@ main区
     flex-wrap: wrap;
   }
   .article-title h2 a:hover {
-    /* color:red; */
+    color:#EC681B;
   }
   /* .article-title h2 a:visited {
     color: #9a9a9a;

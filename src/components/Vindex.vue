@@ -72,7 +72,7 @@
               <a href="#" class="search-link" @click="isfocused = true">搜索</a>
             </li>
             <li @click="isvisible=false">
-              <router-link to="/" class="">登录</router-link>
+              <router-link to="/login" class="">登录</router-link>
             </li>
             <li>
               <router-link to="/group" class="">分享链接</router-link>
@@ -139,6 +139,22 @@
     border-bottom: 3px solid #f3f3f3;
   }
 
+  .mini-header {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 5px 0 0 5px;
+  }
+  @media screen and (min-width:960px) {
+    .mini-header {
+      position: fixed;
+      left: 2rem;
+      top:.5rem;
+    }
+  }
+
   .navigation .router-link-active {
     background: #f3f3f3;
   }
@@ -160,6 +176,7 @@
       margin: 0 auto;
       display: flex;
     }
+   
   }
 
   @media screen and (max-width:1201px) {
@@ -207,6 +224,7 @@
     .navigation {
       display: flex;
       justify-content: center;
+      margin-right: 2.5rem;
     }
     .navigation a:nth-child(3) {
       display: none;
@@ -220,13 +238,14 @@
     }
   }
 
-  .mini-header {
-    position: fixed;
+  /* .mini-header {
+    position: relative;
     left: 10px;
     top: 10px;
     margin: 0;
     padding: 0;
-  }
+  } */
+  
 
   .navigation {
     width: 100%;
@@ -239,9 +258,24 @@
   .user-login {
     position: absolute;
     right: 3rem;
-    top: 2.6rem;
-    display: block;
+    top: 3rem;
+    border: 1px solid #2DBF80;
+    background: #2DBF80;
+    /* display: block; */
+    /* align-self: baseline; */
   }
+  .user-login:hover {
+    background: #9cd5b3;
+    border-color: #9cd5b3;
+  }
+  .user-login a {
+    padding: 5px 13px;
+  }
+  /* @media screen and (min-width:1500px) {
+    .user-login {
+    margin-top: 50px;
+  }
+  } */
 
   .navigation a,
   .user-login a,
@@ -252,7 +286,7 @@
   }
 
   .user-login a {
-    color: #2DBF80;
+    color: white;
   }
 
   .navigation a:nth-child(4) {
@@ -354,7 +388,7 @@
   }
 
   .visible {
-    opacity: 0.88;
+    opacity: 0.98;
     transition-delay: 0ms;
     height: 100%;
     width: 100%;
