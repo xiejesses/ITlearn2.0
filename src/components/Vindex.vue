@@ -67,15 +67,15 @@
       <div class="hamburger" @click="isvisible=true" v-if="!userName"></div>
       <section class="menu" v-bind:class="{visible:isvisible}" @click="isvisible=false">
         <div class="menu-wrapper">
-          <ul v-on:click.stop>
+          <ul v-on:click.stop @click="isvisible=false">
             <li>
               <a href="#" class="search-link" @click="isfocused = true">搜索</a>
             </li>
-            <li @click="isvisible=false">
+            <li >
               <router-link to="/login" class="">登录</router-link>
             </li>
-            <li>
-              <router-link to="/group" class="">分享链接</router-link>
+            <li >
+              <router-link to="/share" class="">分享链接</router-link>
             </li>
             <li>
               <router-link to="/group" class="">项目交流</router-link>
