@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
+// import Index from '@/components/Index'
 import Login from '@/components/Login'
 import Share from '@/components/Share'
+import User from '@/components/User'
+import Article from '@/components/Article'
+import Group from '@/components/Group'
 
 Vue.use(Router)
 
@@ -12,8 +15,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
-      component: Index
+      name: '',
+      component: Article
+    },
+    {
+      path: '/group',
+      name: '',
+      component: Group
     },
     {
       path:'/login',
@@ -24,6 +32,23 @@ export default new Router({
       path:'/share',
       name:'share',
       component:Share
+    },
+    {
+      path:'/user/:uName',
+      name:'user',
+      component:User,
+      children:[
+        {
+          path:'',
+          name:'article',
+          component:Article
+        },
+        {
+          path:'mygroup',
+          name:'group',
+          component:Group
+        }
+      ]
     }
   ]
 })

@@ -1,6 +1,10 @@
 <template>
   <div class="index">
     <main>
+      <div class="sort">
+          <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
+          <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
+        </div>
       <section class="articles">
         <ul class="articles-list">
           <!-- <li v-for="article in articles" v-bind:key="article.id"> -->
@@ -63,7 +67,7 @@
 
 <script>
   export default {
-    name: 'Index',
+    name: 'article',
     data() {
       return {
         userName: 'jesses',
@@ -88,6 +92,18 @@
     list-style: none;
     /* text-decoration: none; */
   }
+
+  .sort {
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px 0 0 0;
+  }
+  .sort i {
+    margin: 5px 5px;
+    color:#54595f;
+    cursor: pointer;
+  }
+
   /**********
 main区
 **********/
@@ -190,20 +206,20 @@ domain区
 **********/
 
   .domain {
-    font-size: 1.4rem;
+    font-size: 14px;
     color: #bfbfbf;
   }
 
   @media screen and (min-width:500px) {
     .domain {
-      font-size: 1.6rem;
+      font-size: 16px;
     }
   }
 
   @media screen and (min-width:768px) {
     .domain {
       margin: 0 0 4px 0;
-      font-size: 1.8rem;
+      font-size: 18px;
     }
   }
   /**********
@@ -211,27 +227,27 @@ domain区
 **********/
 
   .articles h2 a {
-    font-size: 1.8rem;
+    font-size: 18px;
     color: #54595f;
     text-decoration: none;
   }
 
   @media screen and (min-width:500px) {
     .articles h2 a {
-      font-size: 2rem;
+      font-size: 20px;
     }
   }
 
   @media screen and (min-width:660px) {
     .articles h2 a {
-      font-size: 2.1rem;
-      line-height: 2.8rem;
+      font-size: 21px;
+      line-height: 28px;
     }
   }
 
   @media screen and (min-width:1200px) {
     .articles h2 a {
-      font-size: 2.2rem;
+      font-size: 22px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -242,8 +258,8 @@ meta信息
 
   .meta {
     color: #8f8f8f;
-    font-size: 1.2rem;
-    line-height: 1.8rem;
+    font-size: 12px;
+    line-height: 18px;
     position: relative;
   }
 
@@ -257,7 +273,7 @@ meta信息
       border: 0 !important;
     }
   .heart::before{
-    font-size: 1.3rem;
+    font-size: 13px;
     
 }
 .heartclick {
@@ -265,32 +281,32 @@ meta信息
 }
 
   abbr {
-    font-size: 1.1rem;
+    font-size: 11px;
   }
 
   @media screen and (min-width:500px) {
     .meta {
-      font-size: 1.4rem;
+      font-size: 14px;
       margin: 3px 0 4px 0;
     }
     abbr {
-      font-size: 1.3rem;
+      font-size: 13px;
     }
     .heart::before{
-    font-size: 1.4rem;
+    font-size: 14px;
 }
   }
 
   @media screen and (min-width:768px) {
     .meta {
-      font-size: 1.5rem;
-      line-height: 2.4rem;
+      font-size: 15px;
+      line-height: 24px;
     }
     /* .meta a:last-child {
       border: 0 !important;
     } */
     .heart::before{
-    font-size: 1.5rem;
+    font-size: 15px;
 }
   }
   .separator {
@@ -403,17 +419,17 @@ meta信息
 }
 
 .score {
-  font-size: 1.4rem;
+  font-size: 14px;
   color: #8f8f8f;
   margin: 0 4px 0 0;
   position: relative;
   display: inline-block;
   transition:transform 0.3s, -webkit-transform 0.3s;
-  line-height: 2.4rem;
+  line-height: 24px;
 }
 @media screen and (min-width:500px){
   .score {
-    font-size: 1.7rem;
+    font-size: 17px;
   }
 }
 

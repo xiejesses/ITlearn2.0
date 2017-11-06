@@ -34,7 +34,7 @@
             <v-gravatar email="835614574@qq.com" size='40' />
           </span>
           <el-dropdown-menu slot="dropdown">
-            <router-link :to="{ name: 'like', params: { uName: userName }}">
+            <router-link :to="{ name: 'article', params: { uName: userName }}">
               <el-dropdown-item>我的主页</el-dropdown-item>
             </router-link>
             <router-link to="/">
@@ -95,7 +95,7 @@
     name: 'HelloWorld',
     data() {
       return {
-        userName: "",
+        userName: "js",
         isvisible: false,
         isfocused: false,
         msg: 'Welcome to Your Vue.js App'
@@ -127,8 +127,8 @@
   }
 
   i {
-    margin-left: 2rem;
-    font-size: 1.6rem;
+    margin-left: 20px;
+    font-size: 16px;
   }
 
   .header {
@@ -150,8 +150,8 @@
   @media screen and (min-width:960px) {
     .mini-header {
       position: fixed;
-      left: 2rem;
-      top:.5rem;
+      left: 20px;
+      top:5px;
     }
   }
 
@@ -224,7 +224,7 @@
     .navigation {
       display: flex;
       justify-content: center;
-      margin-right: 2.5rem;
+      margin-right: 25px;
     }
     .navigation a:nth-child(3) {
       display: none;
@@ -249,16 +249,16 @@
 
   .navigation {
     width: 100%;
-    font-size: 1rem;
-    min-height: 2.75rem;
+    font-size: 10px;
+    min-height: 27.5px;
     display: flex;
     align-items: center;
   }
 
   .user-login {
     position: absolute;
-    right: 3rem;
-    top: 3rem;
+    right: 30px;
+    top: 30px;
     border: 1px solid #2DBF80;
     background: #2DBF80;
     /* display: block; */
@@ -280,7 +280,7 @@
   .navigation a,
   .user-login a,
   .menu-wrapper a {
-    font-size: 1.6rem;
+    font-size: 16px;
     color: #54595f;
     text-decoration: none;
   }
@@ -294,7 +294,7 @@
   }
 
   .ListItem {
-    padding: .6rem 1.7rem;
+    padding: 6px 17px;
     border: 2px solid #f3f3f3;
   }
 
@@ -310,23 +310,41 @@
 /************
   用户控制中心
 **************/
+.user-action a {
+    text-decoration: none;
+}
   .user-action {
     position: absolute;
-    right: 3rem;
-    top: 2.2rem;
+    right: 20px;
+    top: 24px;
     display: block;
-  }
-  .user-action a {
-    text-decoration: none;
   }
   .user-action img {
     cursor: pointer;
     border-radius: 50%;
+    height: 30px;
+    width: 30px;
   }
+
+  @media screen and (min-width:960px) {
+    .user-action {
+    position: absolute;
+    right: 30px;
+    top: 25px;
+    display: block;
+  }
+  .user-action img {
+    cursor: pointer;
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+  }
+  }
+
+
   .el-dropdown-menu a {
     text-decoration: none;
     /* color: #818181; */
-    /* font-size: 3rem; */
 }
 
   /***********
@@ -358,30 +376,30 @@
   }
 
   .menu-wrapper a {
-    font-size: 2rem;
+    font-size: 20px;
   }
 
   @media screen and (min-width:500px) {
     .menu-wrapper a {
-      font-size: 2.5rem;
+      font-size: 25px;
     }
   }
 
   @media screen and (min-width:960px) {
     .menu-wrapper a {
-      font-size: 3rem;
+      font-size: 30px;
     }
   }
 
   .menu-wrapper li {
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
   }
 
   .menu-close {
     border: 0;
     top: 11px;
     right: 11px;
-    font-size: 3.2rem;
+    font-size: 32px;
     color: #bfbfbf;
     position: absolute;
     cursor: pointer;
@@ -424,7 +442,7 @@
   }
 
   .search-form {
-    padding: 4rem 0 0 0;
+    padding: 40px 0 0 0;
     position: relative;
     margin: 0 auto;
     width: 80%;
@@ -436,8 +454,8 @@
     background: transparent;
     border: none;
     outline: none;
-    font-size: 2.2rem;
-    line-height: 2.2rem;
+    font-size: 22px;
+    line-height: 22px;
     color: #37414c;
     left: 0;
     right: 0;
@@ -446,18 +464,18 @@
 
   @media screen and (min-width:500px) {
     .search-input {
-      font-size: 3rem;
+      font-size: 30px;
       line-height: normal;
     }
   }
 
   @media screen and (min-width:960px) {
     .search-input {
-      width: 72rem;
+      width: 720px;
       position: absolute;
       margin: auto;
       height: auto;
-      font-size: 4.8rem;
+      font-size: 48px;
     }
   }
 
@@ -465,7 +483,7 @@
     border: 0;
     top: 11px;
     right: 11px;
-    font-size: 3.2rem;
+    font-size: 32px;
     color: #bfbfbf;
     position: absolute;
     cursor: pointer;

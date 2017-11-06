@@ -1,15 +1,15 @@
 <template>
-  <div class="user">
+  <div class="group">
     <p>{{msg}}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'user',
+  name: 'group',
   data () {
     return {
-      msg: '个人中心'
+      msg: '学习小组'
     }
   }
 }

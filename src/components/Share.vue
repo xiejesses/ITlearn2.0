@@ -63,7 +63,7 @@ h3 {
   color:#54595f;
 }
 p {
-  font-size: 1.1rem;
+  font-size: 11px;
   color:#bfbfbf;
 }
 p:hover {
@@ -146,7 +146,7 @@ p:hover {
     outline: none;
     box-sizing: border-box;
     -webkit-appearance: none;
-    font-size: 1.6rem;
+    font-size: 16px;
     text-indent: 15px;
     font-weight: 400;
     vertical-align: bottom;
@@ -162,8 +162,8 @@ p:hover {
     border: none;
     border-radius: 2px;
     outline: none;
-    font-size: 1.7rem;
-    line-height: 3.3rem;
+    font-size: 17px;
+    line-height: 33px;
     color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;

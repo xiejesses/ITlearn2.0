@@ -104,7 +104,7 @@
         /* position: relative; */
         text-align: center;
         color:#676c72;
-        font-size: 2.4rem;
+        font-size: 24px;
         padding: 20px 0 0 0;
         /* margin-top: 20px; */
     }
@@ -161,7 +161,7 @@ input[type="password"] {
     outline: none;
     box-sizing: border-box;
     -webkit-appearance: none;
-    font-size: 1.6rem;
+    font-size: 16px;
     text-indent: 10px;
     font-weight: 400;
     vertical-align: bottom;
@@ -176,8 +176,8 @@ input[type="submit"] {
     border: none;
     border-radius: 2px;
     outline: none;
-    font-size: 1.7rem;
-    line-height: 3.3rem;
+    font-size: 17px;
+    line-height: 33px;
     color:#fff;
     -webkit-appearance: none;
     margin-top: 10px;
