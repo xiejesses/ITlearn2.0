@@ -5,6 +5,7 @@ import Login from '@/components/Login'
 import Share from '@/components/Share'
 import User from '@/components/User'
 import Article from '@/components/Article'
+import GroupIndex from '@/components/GroupIndex'
 import Group from '@/components/Group'
 
 Vue.use(Router)
@@ -19,9 +20,16 @@ export default new Router({
       component: Article
     },
     {
-      path: '/group',
+      path: '/groupindex',
       name: '',
-      component: Group
+      component: GroupIndex,
+      children:[
+        {
+          path:'',
+          name:'',
+          component:Group
+        }
+      ]
     },
     {
       path:'/login',

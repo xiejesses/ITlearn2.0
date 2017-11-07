@@ -19,7 +19,7 @@
       <nav class="navigation">
         
         <router-link to="/" exact="true" class="ListItem">首页</router-link>
-        <router-link to="/group" class="ListItem">学习小组</router-link>
+        <router-link to="/groupindex" class="ListItem">学习小组</router-link>
         <router-link to="/project" class="ListItem">项目交流</router-link>
         
         <router-link to="/share" class="LastItem">分享链接</router-link>
