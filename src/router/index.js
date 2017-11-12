@@ -7,6 +7,7 @@ import User from '@/components/User'
 import Article from '@/components/Article'
 import GroupIndex from '@/components/GroupIndex'
 import Group from '@/components/Group'
+import GroupDetail from '@/components/GroupDetail'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
           component:Group
         }
       ]
+    },
+    {
+      path:'/groupdetail',
+      name:'groupdetail',
+      component:GroupDetail
     },
     {
       path:'/login',

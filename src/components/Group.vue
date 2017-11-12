@@ -9,7 +9,7 @@
             </section>
             <section class="groups-meta">
               <div class="groups-name">
-                  <h2><router-link :to="{ name: 'like', params: { uName: userName }}">打开Vue的大门</router-link></h2>
+                  <h2><router-link :to="{ name: 'groupdetail', params: { gName: groupName }}">{{groupName}}</router-link></h2>
                   </div>
               <div class="groups-intro">
                   一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑
@@ -38,6 +38,7 @@
     data() {
       return {
         userName: 'jesses',
+        groupName:'打开Vue的大门',
         creatTime: '2017-11-2 16:30:20',
         msg: '我的小组'
       }

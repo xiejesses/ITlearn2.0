@@ -49,17 +49,10 @@
         </div>
       </section>
       <section>
-        <!-- <p>{{msg}}</p> -->
         <div class="tab">
           <router-link :to="{ name: 'article'}" exact="true" class="ListItem">收藏</router-link>
           <span class="separator"> / </span>
           <router-link :to="{ name: 'group'}" class="ListItem">小组</router-link>
-          <!-- <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-          </el-breadcrumb> -->
         </div>
         <router-view></router-view>
       </section>
@@ -77,6 +70,7 @@
         isEdit: false,
         isSave: false,
         msg: 'Design & front end development. Also a back end engineer'
+        // msg: '一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑'
       }
     },
     methods: {
