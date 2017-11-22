@@ -26,7 +26,6 @@
         <div class="build-button" v-else>
           <button @click="isbuilding = true">创建小组</button>
         </div>
-
         <!-- <div contenteditable>edit</div> -->
       </section>
 

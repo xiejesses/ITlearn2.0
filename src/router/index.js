@@ -8,6 +8,8 @@ import Article from '@/components/Article'
 import GroupIndex from '@/components/GroupIndex'
 import Group from '@/components/Group'
 import GroupDetail from '@/components/GroupDetail'
+import MarkdownEditor from '@/components/MarkdownEditor'
+import test from '@/components/test'
 
 Vue.use(Router)
 
@@ -19,6 +21,17 @@ export default new Router({
       path: '/',
       name: '',
       component: Article
+    },
+    //测试用
+    {
+      path: '/test',
+      name: '',
+      component: test
+    },
+    {
+      path: '/MarkdownEditor',
+      name: '',
+      component: MarkdownEditor
     },
     {
       path: '/groupindex',

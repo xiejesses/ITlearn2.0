@@ -31,7 +31,7 @@
           </el-dropdown>
         </div>
         <div class="publish-topic">
-          <router-link to="/share" class="LastItem">发表话题</router-link>
+          <router-link to="/MarkdownEditor" class="LastItem">发表话题</router-link>
         </div>
         <div>
           <el-dropdown>

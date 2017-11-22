@@ -10,7 +10,7 @@
           <!-- <li v-for="article in articles" v-bind:key="article.id"> -->
           <li>
             <section class="user-avatar">
-              <v-gravatar email="835614574@qq.com" size='40' />
+              <v-gravatar email="8356145741@qq.com" size='40' />
             </section>
             <section class="article-title">
               <div class="domain">webkit.org</div>
