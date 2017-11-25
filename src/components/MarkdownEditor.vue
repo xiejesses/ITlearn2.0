@@ -7,13 +7,14 @@
         </p>
       </div>
       <div class="mavon-editor">
-        <mavon-editor v-on:save="getContent" v-bind:code_style="code-github" style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
+        <mavon-editor v-on:save="getContent"  style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
       </div>
 
       <div class="actions">
         <div class="buttons">
           <p class="submit">
             <input type="submit" name="user-submit" id="user-submit" value="发布"  >
+            <!-- <router-link :to="{ name:'topicdetail', params:{tName:value}}" class="article-link">发布</router-link> -->
           </p>
           <!-- <p class="cancel">取消</p> -->
         </div>
@@ -38,7 +39,7 @@
   } from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
   import 'mavon-editor/src/lib/font/css/fontello.css'
-  import 'mavon-editor/src/lib/css/markdown.css'
+  import '../../static/css/markdown.css'
   // import 'katex/dist/katex.min.css'
   export default {
     name: 'editor',
@@ -52,6 +53,7 @@
 
     data() {
       return {
+        Name:'test',
         value:'',
         isclick:false,
         // content:'',
@@ -116,7 +118,8 @@
 
   .mavon-editor {
       /* height: 500px; */
-      height: 350px;
+      /* height: 350px; */
+      /* min-height: 400px; */
   }
   .actions {
     display: flex;

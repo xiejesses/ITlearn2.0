@@ -56,7 +56,8 @@
             </section>
             <section class="article-title">
               <h2>
-                <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a>
+                <router-link :to="{ name:'topicdetail', params:{tName:topicName}}" class="article-link">{{topicName}}</router-link>
+                <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'like', params: { uName: userName }}">jesses</router-link>
@@ -101,7 +102,8 @@
       return {
         //   gName:'',
         msg: '小组首页',
-        creatTime: '2017-11-2 16:30:20'
+        creatTime: '2017-11-2 16:30:20',
+        topicName:'Release Notes for Safari Technology Preview 43'
       }
     },
   }

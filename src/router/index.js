@@ -9,6 +9,7 @@ import GroupIndex from '@/components/GroupIndex'
 import Group from '@/components/Group'
 import GroupDetail from '@/components/GroupDetail'
 import MarkdownEditor from '@/components/MarkdownEditor'
+import TopicDetail from '@/components/TopicDetail'
 import test from '@/components/test'
 
 Vue.use(Router)
@@ -49,6 +50,11 @@ export default new Router({
       path:'/groupdetail',
       name:'groupdetail',
       component:GroupDetail
+    },
+    {
+      path:'/topicdetail',
+      name:'topicdetail',
+      component:TopicDetail
     },
     {
       path:'/login',
