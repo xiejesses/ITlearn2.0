@@ -15,12 +15,6 @@
             </svg> -->
 
 
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="width:43;height:48;position:absolute;overflow:hidden;">
-            <defs>
-          <symbol viewBox="0 0 100 100" aria-labelledby="cdsi-flat-loop-title" id="si-flat-loop"><title id="cdsi-flat-loop-title">icon loop</title><circle cx="50" cy="50" r="50" fill="#E74C3C"></circle><path fill="none" stroke="#F0C419" stroke-width="8" stroke-miterlimit="10" stroke-dashoffset="43" d="M12.5 50.5c0 10 7 17 17 17 17 0 26-34 43-34 10 0 18 7 18 17s-8 17-18 17c-17 0-26-34-43-34-10 0-17 7-17 17z" stroke-linecap="square" stroke-dasharray="216,9.999999974752427e-7"/><path d="M45.938 50.5l5.047 6.516s-2.141 2.797-3.5 4.25c0 0-3.621-3.552-5.746-5.583 1.308-1.402 4.199-5.183 4.199-5.183z" opacity=".15"/></symbol>
-            </defs>
-          </svg> -->
-
           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" class="logo"><path d="M50.07,0.212c-27.614,0-50,22.384-50,49.999c0,9.157,2.474,17.731,6.77,25.111L2.044,98.237l22.917-4.796
           c7.381,4.297,15.954,6.768,25.109,6.768c27.614,0,50-22.385,50-49.999C100.07,22.596,77.684,0.212,50.07,0.212z" class="bubble"/><path d="M30.991,65.689c-0.594,0-1.188-0.227-1.642-0.681L16.192,51.852c-0.436-0.436-0.679-1.024-0.679-1.642
           c0-0.616,0.245-1.206,0.679-1.642l13.158-13.157c0.906-0.906,2.376-0.906,3.282,0s0.906,2.376,0,3.282L21.116,50.21l11.517,11.518

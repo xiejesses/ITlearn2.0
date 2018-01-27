@@ -1,64 +1,59 @@
 <template>
   <div class="index">
-    <main>
+    <main class="loading" v-if="loading">
+      <div class="load-wrapp">
+            <div class="load-5">
+                <!-- <p>Loading</p> -->
+                <div class="ring-2">
+                    <div class="ball-holder">
+                        <div class="ball"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <main v-else>
       <div class="sort">
           <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
           <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
         </div>
       <section class="articles">
         <ul class="articles-list">
-          <!-- <li v-for="article in articles" v-bind:key="article.id"> -->
-          <li>
+          <li v-for="(article,index) in articles" v-bind:key="article.id">
+          <!-- <li> -->
             <section class="user-avatar">
-              <v-gravatar email="8356145741@qq.com" size='40' />
+              <!-- <v-gravatar email="8356145741@qq.com" size='40' /> -->
+              <v-gravatar v-bind:email="article.email" size='40' />
             </section>
             <section class="article-title">
-              <div class="domain">webkit.org</div>
+              <!-- <div class="domain">webkit.org</div> -->
+              <div class="domain">{{ article.domain }}</div>
               <h2>
-                <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a>
+                <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
+                <a href="http://localhost:8080/" class="article-link">{{article.articleTitle}}</a>
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'like', params: { uName: userName }}">{{userName}}</router-link>
+                <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">{{userName}}</router-link> -->
+                <router-link :to="{ name: 'like', params: { uName: userName }}">{{article.userName}}</router-link>
                 <span class="separator"> • </span>
-                <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <!-- <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr> -->
+                <abbr class="timeago" :title="article.creatTime">{{moment(article.creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
-                <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link>
+                <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
+                <router-link :to="{ name: 'like', params: { uName: userName }}">{{article.tag}}</router-link>
                 <span>
-                <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a>
+                <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
+                <a href="javascript:void(0)" class="heartvisited" @click="changeHeart(article.id, index)"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:article.heartActive == true}" aria-hidden="true"></i></a>
                 </span>
                  <!-- v-bind:class="{heart-click:isHeartClick}" -->
               </div>
             </section>
-            <!-- 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
-            <section class="article-vote" @click="isupmod = true">
-              <span class="score" v-bind:class="{scored:isupmod}">{{score}}</span>
-              <span class="arrow up" v-bind:class="{upmod:isupmod}" @click="score += 1"></span>
+            <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
+            <section class="article-vote" @click="article.vote++">
+              <span class="score" v-bind:class="{scored:article.voteActive == true}">{{article.vote}}</span>
+              <span class="arrow up" v-bind:class="{upmod:article.voteActive == true}" @click="changeVote(article.id, index)"></span>
             </section>
           </li>
-          <li>
-            <section class="user-avatar">
-              <v-gravatar email="835614@qq.com" size='40' />
-            </section>
-            <section class="article-title">
-              <div class="domain">juejin.im</div>
-              <h2>
-                <a href="#" class="article-link">面向未来的前端数据流框架 - dob</a>
-              </h2>
-              <div class="meta">
-                <router-link :to="{ name: 'like', params: { uName: userName }}">小道消息</router-link>
-                <span class="separator"> • </span>
-                <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
-                <span class="separator"> • </span>
-                <router-link :to="{ name: 'like', params: { uName: userName }}">前端</router-link>
-                <a href="javascript:void(0)"><span class="separator"> • </span><i class="heart el-icon-fa el-icon-fa-heart-o" aria-hidden="true"></i></a>
-              </div>
-            </section>
-            <section class="article-vote">
-              <span class="score">8</span>
-              <span class="arrow up"></span>
-            </section>
-          </li>
-         
         </ul>
       </section>
     </main>
@@ -66,16 +61,60 @@
 </template>
 
 <script>
+ import axios from 'axios'
   export default {
     name: 'article',
     data() {
       return {
+        loading:false,
         userName: 'jesses',
         creatTime: '2017-11-2 16:30:20',
         score:10,
         isupmod:false,
-        isHeartClick:false
+        isHeartClick:false,
+        articles:[],
+        currentVote:''
       }
+    },
+    created () {
+      this.fetchArticle()
+      // console.log(this.articles)
+    },
+    watch: {
+      '$route':'fetchArticle'
+    },
+    methods: {
+      changeVote (id,index) {
+        this.articles[index].voteActive = true;
+        // axios(id)
+      },
+      changeHeart (id,index) {
+        // axios(id)
+        if(this.articles[index].heartActive == true) {
+          this.articles[index].heartActive = false;
+          this.$message.error('取消收藏');
+        } else {
+          this.articles[index].heartActive = true;
+          this.$message({
+          message: '已加入收藏',
+          type: 'success'
+          });
+        }
+        
+      },
+      fetchArticle () {
+        this.loading = true;
+        axios.get("/shareLink",).then( (res) => {
+          // {params:{limit:20}}
+        // axios.get("../../static/mock/articles.json").then(function (res) {
+          // var  = res.data;
+          // console.log(res.data.result.join(","));
+          this.loading = false;
+          this.articles = res.data.result.list;
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
     }
 
   }
@@ -103,6 +142,55 @@
     color:#54595f;
     cursor: pointer;
   }
+
+  /************
+  loading
+  *************/
+  .load-wrapp {
+    /* float: left; */
+    width: 80px;
+    height: 80px;
+    /* margin: 0 10px 10px 0; */
+    margin: 0 auto;
+    padding: 20px 20px 20px;
+    border-radius: 5px;
+    text-align: center;
+    /* background-color: #d8d8d8; */
+}
+
+.load-5 .ball-holder {animation: loadingE 1.3s linear infinite;}
+
+.ring-2 {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    margin: 0 auto;
+    border: 4px solid #4b9cdb;
+    border-radius: 100%;
+}
+
+.ball-holder {
+    position: absolute;
+    width: 12px;
+    height: 45px;
+    left: 17px;
+    top: 0px;
+}
+
+.ball {
+    position: absolute;
+    top: -11px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background: #4282B3;
+}
+
+@keyframes loadingE {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
 
   /**********
 main区
@@ -166,9 +254,17 @@ main区
   
   @media screen and (min-width:1200px) {
     .article-title {
-      white-space: nowrap;
+      /* white-space: nowrap;
       text-overflow: ellipsis;
-      display: inline-block;
+      display: inline-block; */
+      /* padding: 15px 0;
+      -webkit-box-flex: 1;
+      flex: 1;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      flex-wrap: wrap; */
     }
   }
   /**********
@@ -279,7 +375,9 @@ meta信息
 .heartclick {
   color: #EC681B;
 }
-
+.heartvisited {
+  outline: none;
+}
   abbr {
     font-size: 11px;
   }
@@ -393,6 +491,12 @@ meta信息
   margin: 15px 10px 0 0;
   overflow: hidden;
 }
+/* .article-vote a {
+  text-decoration: none;
+}
+.article-vote a:visited {
+  color: #e0e0e0;
+} */
 @media screen and (min-width:500px){
   .article-vote {
     width:60px;

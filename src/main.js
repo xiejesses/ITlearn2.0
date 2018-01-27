@@ -9,7 +9,11 @@ import Gravatar from 'vue-gravatar'
 import moment, { locale } from 'moment'
 import './style.less'
 
+// import VueScroller from 'vue-scroller'
+// Vue.use(VueScroller)
+// import axios from 'axios'
 
+// Vue.use(axios)
 // import Editor from 'vue-simple-markdown-editor';
 
 // import VueSimplemde from 'vue-simplemde'

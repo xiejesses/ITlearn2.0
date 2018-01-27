@@ -72,16 +72,36 @@
         score:10,
         isupmod:false,
         isHeartClick:false,
-        articles:[],
-        currentVote:''
+        // articles:[],
+        currentVote:'',
+
+        bottom: false,
+        temp_article:[],
+        articles:[]
+        // beers:[]
       }
     },
     created () {
-      this.fetchArticle()
+      // this.fetchArticle()
       // console.log(this.articles)
+
+      // this.addBeer();
+      // this.bottom = true;
+      window.addEventListener('scroll', () => {
+      this.bottom = this.bottomVisible()
+    })
+      this.addBeer()
+
     },
     watch: {
-      '$route':'fetchArticle'
+      // '$route':'fetchArticle'
+      // '$route':'addBeer',
+
+      bottom(bottom) {
+      if (bottom) {
+        this.addBeer()
+      }
+    }
     },
     methods: {
       changeVote (id,index) {
@@ -102,19 +122,58 @@
         }
         
       },
-      fetchArticle () {
-        this.loading = true;
-        axios.get("https://easy-mock.com/mock/59be7e2ae0dc663341ad2db3/ITlearn/share",
-          {params:{limit:20}}
-        ).then( (res) => {
-        // axios.get("../../static/mock/articles.json").then(function (res) {
-          // var  = res.data;
-          this.loading = false;
-          this.articles = res.data.result;
+      // fetchArticle () {
+      //   this.loading = true;
+      //   axios.get("https://easy-mock.com/mock/59be7e2ae0dc663341ad2db3/ITlearn/share",
+      //     {params:{limit:20}}
+      //   ).then( (res) => {
+      //   // axios.get("../../static/mock/articles.json").then(function (res) {
+      //     // var  = res.data;
+      //     this.loading = false;
+      //     this.articles = res.data.result;
+      //   }).catch(function (error) {
+      //     console.log(error)
+      //   })
+      // },
+
+      bottomVisible() {
+      const scrollY = window.scrollY;
+      const visible = document.documentElement.clientHeight;
+      const pageHeight = document.documentElement.scrollHeight;
+      const bottomOfPage = visible + scrollY >= pageHeight;
+      return bottomOfPage || pageHeight < visible;
+    },
+      addBeer () {
+        axios.get("https://easy-mock.com/mock/59be7e2ae0dc663341ad2db3/ITlearn/share",)
+        .then( (res) => {
+          // this.loading = false;
+          // this.articles = res.data.result;
+          this.temp_article = res.data.result[0];
+
+          // let apiInfo = {
+          //   userName: temp_article.userName,
+          //   email: temp_article.email,
+          //   domain: temp_article.domain,
+          //   articleTitle: temp_article.articleTitle,
+          //   articleLink: temp_article.articleLink,
+          //   creatTime: temp_article.creatTime,
+          //   tag: temp_article.tag,
+          //   vote: temp_article.vote,
+          //   voteActive: temp_article.voteActive,
+          //   heartActive: temp_article.heartActive
+          // }
+
+          this.articles.push(this.temp_article);
+          console.log(this.articles);
+          console.log(res.data.result);
+         if (this.bottomVisible()) {
+            this.addBeer()
+          }
+
         }).catch(function (error) {
           console.log(error)
         })
-      },
+      }
     }
 
   }
