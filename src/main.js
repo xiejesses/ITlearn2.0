@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Gravatar from 'vue-gravatar'
 import moment, { locale } from 'moment'
 import './style.less'
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
 
 // import VueScroller from 'vue-scroller'
 // Vue.use(VueScroller)

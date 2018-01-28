@@ -1,9 +1,8 @@
 <template>
   <div class="index">
-    <main class="loading" v-if="loading">
+    <!-- <main class="loading" v-if="loading">
       <div class="load-wrapp">
             <div class="load-5">
-                <!-- <p>Loading</p> -->
                 <div class="ring-2">
                     <div class="ball-holder">
                         <div class="ball"></div>
@@ -11,13 +10,14 @@
                 </div>
             </div>
         </div>
-    </main>
-    <main v-else>
+    </main> -->
+    <!-- <main v-else> -->
+      <main>
       <div class="sort">
           <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
           <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
         </div>
-      <section class="articles">
+        <section class="articles">
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article.id">
           <!-- <li> -->
@@ -55,6 +55,12 @@
             </section>
           </li>
         </ul>
+        <!-- 滚动加载组件 -->
+          <div class="view-more-normal"
+                   v-infinite-scroll="loadMore"
+                   infinite-scroll-disabled="busy"
+                   infinite-scroll-distance="20">
+              </div>
       </section>
     </main>
   </div>
@@ -62,6 +68,7 @@
 
 <script>
  import axios from 'axios'
+
   export default {
     name: 'article',
     data() {
@@ -73,12 +80,19 @@
         isupmod:false,
         isHeartClick:false,
         articles:[],
-        currentVote:''
+        currentVote:'',
+
+        busy:true,
+        page:1,
+        pageSize:5
       }
     },
-    created () {
-      this.fetchArticle()
-      // console.log(this.articles)
+    // created () {
+    //   this.fetchArticle()
+    //   // console.log(this.articles)
+    // },
+    mounted() {
+       this.fetchArticle();
     },
     watch: {
       '$route':'fetchArticle'
@@ -102,18 +116,73 @@
         }
         
       },
-      fetchArticle () {
+      fetchArticle (flag) {
         this.loading = true;
-        axios.get("/shareLink",).then( (res) => {
-          // {params:{limit:20}}
-        // axios.get("../../static/mock/articles.json").then(function (res) {
-          // var  = res.data;
-          // console.log(res.data.result.join(","));
-          this.loading = false;
-          this.articles = res.data.result.list;
+        let param = {
+          page:this.page,
+          pageSize:this.pageSize
+        };
+        axios.get("/shareLink",
+          {params:param}
+        ).then( (response) => {
+         
+          // this.loading = false;
+          // this.articles = res.data.result.list;
+
+
+          var res = response.data;
+                this.loading = false;
+                // status == 0 数据读取成功
+                if(res.status=="0"){
+                  // 不是第一次，需要拼接数据
+                  if(flag){
+                      this.articles = this.articles.concat(res.result.list);
+                        //如果没有数据，停止滚动加载
+                      if(res.result.count==0){
+                          this.busy = true;
+                      }else{
+                          this.busy = false;
+                      }
+                  }else{
+                      this.articles = res.result.list;
+                      this.busy = false;
+                  }
+                }else{
+                  this.articles = [];
+                }
+
+        //  console.log("res: " + res);
+          // status == 0 数据读取成功
+          // if(res.status == "0") {
+          //   // 不是第一次，需要拼接数据
+          //   if(flag) {
+          //      this.articles = this.articles.concat(res.data.result.list);
+          //     //如果没有数据，停止滚动加载
+          //      if(res.result.count == 0) {
+          //        this.busy = true;
+          //      } else {
+          //        this.busy = false;
+          //      }
+          //   } else {
+          //     this.articles = res.data.result.list;
+          //     this.busy = false;
+
+          //     console.log(this.articles);
+          //   }
+          // } else {
+          //   this.articles = [];
+          // }
         }).catch(function (error) {
           console.log(error)
         })
+      },
+
+      loadMore(){
+          this.busy = true;
+          setTimeout(() => {
+            this.page++;
+            this.fetchArticle(true);
+          }, 500);
       },
     }
 
