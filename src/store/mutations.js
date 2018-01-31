@@ -12,9 +12,9 @@ export const mutations = {
     // 将token和username储存在本地
     localStorage.setItem('token', data.token)
     state.token = data.token;
-    localStorage.setItem('userName', data.userName)
+    localStorage.setItem('userName', data.user.userName)
     state.userName = data.userName;
-    localStorage.setItem('userEmail', data.userEmail)
+    localStorage.setItem('userEmail', data.user.userEmail)
     state.userEmail = data.userEmail;
       // vuex的本质作用是管理组件之间复杂的状态的（如购物车逻辑等等...）
       // 所以当刷新浏览器时，这些状态也会一并被清空

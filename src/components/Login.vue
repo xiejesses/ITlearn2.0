@@ -25,21 +25,21 @@
                     </div>  
                 </div>
             </form>
-            <form name="registerform" id="registerform" action="#" method="post" v-else>
+            <form name="registerform" :v-model="formRegister" id="registerform" action="#" method="post" v-else>
                 <h2>注册</h2>
                 <h4 class="errMessage"></h4>
                 <p>
-                    <input type="text" name="reg" id="user_reg" class="input" placeholder="username" value="">
+                    <input type="text" v-model="formRegister.userName" name="reg" id="user_reg" class="input" placeholder="username" value="">
                 </p>
                 <p>
-                    <input type="text" name="email_reg" id="user_email_reg" class="input" placeholder="email" value="">
+                    <input type="text" v-model="formRegister.userEmail" name="email_reg" id="user_email_reg" class="input" placeholder="email" value="">
                 </p>
                 <p>
-                    <input type="password" name="pwd_reg" id="user_pass_reg" class="input" placeholder="password" value="">
+                    <input type="password" v-model="formRegister.userPwd" name="pwd_reg" id="user_pass_reg" class="input" placeholder="password" value="">
                 </p>
                 <div class="actions">
                     <div class="buttons">
-                        <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p>
+                        <p class="submit"><a href="javascript:;" @click="register">注册</a></p>
                         <!-- <p class="cancel">取消</p> -->
                     </div>
                     <div class="toRegister">
@@ -65,6 +65,11 @@ import {mapActions} from 'vuex'
         formLogin:{
             userEmail:'',
             userPwd:'',
+        },
+        formRegister:{
+            userName:'',
+            userEmail:'',
+            userPwd:''
         }
       }
     },
@@ -75,7 +80,7 @@ import {mapActions} from 'vuex'
             let user = this.formLogin;
             let formData = {
                 userEmail: user.userEmail,
-                userPwd: user.userPwd
+                userPwd:   user.userPwd
             };
             this.$http.post('/users/login',{
             // axios.post("/users/login",{
@@ -97,6 +102,37 @@ import {mapActions} from 'vuex'
             })
             .catch(err => {
                 this.$message.error(`ai${err.message}`,'ERROR!');
+            })
+        },
+
+
+        register() {
+            let user = this.formRegister;
+            let formData = {
+                userName:  user.userName,
+                userEmail: user.userEmail,
+                userPwd:   user.userPwd
+            };
+            this.$http.post('/users/register',{
+                userName:formData.userName,
+                userEmail:formData.userEmail,
+                userPwd:formData.userPwd
+            })
+            .then(response => {
+                let res = response.data;
+                if(res.status == "1") {
+                    this.userLogin(res);
+                    this.$message.success(`${res.message}`)
+                    //登录成功，跳转到首页
+                    //this.$router.push({name:'Home'})
+                    this.$router.push('/')
+                } else {
+                    this.$message.error(`${res.message}`);
+                    return false;
+                }
+            })
+            .catch(err => {
+                this.$message.error(`${err.message}`,'ERROR!');
             })
         }
 
