@@ -5,18 +5,19 @@
         
         <section class="traditional-auth">
             
-            <form name="loginform" id="loginform" action="#" method="post" v-if="isloginfrom">
+            <form name="loginform" :v-model="formLogin" id="loginform" action="#" method="post" v-if="isloginfrom">
                 <h2>登录</h2>
                 <h4 class="errMessage"></h4>
                 <p>
-                    <input type="text" name="log" id="user_login" class="input" placeholder="Email" value="" autofocus>
+                    <input type="text" v-model="formLogin.userEmail" name="userEmail" id="user_login" class="input" placeholder="Email" value="" autofocus>
                 </p>
                 <p>
-                    <input type="password" name="pwd" id="user_pass" class="input" placeholder="Password" value="">
+                    <input type="password" v-model="formLogin.userPwd" name="userPwd" id="user_pass" class="input" placeholder="Password" value="">
                 </p>
                 <div class="actions">
                     <div class="buttons">
-                        <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p>
+                        <!-- <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p> -->
+                        <p class="submit"><a href="javascript:;" @click="login">登录</a></p>
                         <!-- <p class="cancel">取消</p> -->
                     </div>
                     <div class="toRegister">
@@ -54,13 +55,77 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+// import axios from 'axios'
   export default {
     name: 'login',
     data() {
       return {
         isloginfrom:true,
-        msg: '登录'
+        formLogin:{
+            userEmail:'',
+            userPwd:'',
+        }
       }
+    },
+    methods:{
+        ...mapActions(['userLogin']),
+
+        login() {
+            let user = this.formLogin;
+            let formData = {
+                userEmail: user.userEmail,
+                userPwd: user.userPwd
+            };
+            this.$http.post('/users/login',{
+            // axios.post("/users/login",{
+                userEmail:formData.userEmail,
+                userPwd:formData.userPwd
+            })
+            .then(response => {
+                let res = response.data;
+                if(res.status == "1") {
+                    this.userLogin(res);
+                    this.$message.success(`haha${res.message}`)
+                    //登录成功，跳转到首页
+                    //this.$router.push({name:'Home'})
+                    this.$router.push('/')
+                } else {
+                    this.$message.error(`emmm${res.message}`);
+                    return false;
+                }
+            })
+            .catch(err => {
+                this.$message.error(`ai${err.message}`,'ERROR!');
+            })
+        }
+
+
+        // login(){
+        //          let user = this.formLogin;
+        //             let formData = {
+        //                 userEmail: user.userEmail,
+        //                 userPwd: user.userPwd
+        //             };
+        //         axios.post("/users/login",{
+        //              userEmail:formData.userEmail,
+        //         userPwd:formData.userPwd
+        //         },{headers:{'Content-Type':'application/x-www-form-urlencoded'}}).then((response)=>{
+        //             let res = response.data;
+        //             if(res.status=="1"){
+        //             //   this.errorTip = false;
+        //             //   this.loginModalFlag = false;
+        //             //   this.$store.commit("updateUserInfo",res.result.userName);
+        //             //   this.getCartCount();
+        //             alert(res.message)
+        //             }else{
+        //             //   this.errorTip = true;
+        //             alert(res.message)
+        //             }
+        //         }).catch(err => {
+        //             this.$message.error(`ai${err.message}`,'ERROR!');
+        //     })
+        //     },
     }
   }
 

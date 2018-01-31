@@ -101,24 +101,47 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
   export default {
     name: 'HelloWorld',
     data() {
       return {
-        userName: "js",
+        userName:'',
         isvisible: false,
         isfocused: false,
         msg: 'Welcome to Your Vue.js App'
       }
     },
+    // beforeCreate() {
+    //   name = localStorage.getItem('userName')
+    //   this.userName = name;
+    // },
     methods: {
       closeModal() {
         this.isvisible = false;
         this.isfocused = false;
       }
     },
+    watch: {
+      
+    },
     mounted() {
-      this.$refs['input'].focus()
+       this.userName = localStorage.getItem('userName');
+      //  this.userEmail = this.$store.state.userEmail;
+      // this.userName = 'js';
+      // this.$refs['input'].focus()
+      // console.log("store" + store.state)
+        // this.userName = this.$store.getters.getUserName;
+      
+    },
+   
+    created() {
+      //  this.userName = localStorage.getItem('userName');      
+    },
+    computed:{
+      // userName() {
+      //   return localStorage.getItem('userName');
+      // }
     }
   }
 

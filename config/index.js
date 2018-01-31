@@ -35,6 +35,12 @@ module.exports = {
     proxyTable: {
       '/shareLink':{
         target:'http://localhost:3000',
+      },
+      '/users/login':{
+        target:'http://localhost:3000'
+      },
+      '/users/*':{
+        target:'http://localhost:3000'
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

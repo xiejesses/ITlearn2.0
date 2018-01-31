@@ -74,7 +74,6 @@
     data() {
       return {
         loading:false,
-        userName: 'jesses',
         creatTime: '2017-11-2 16:30:20',
         score:10,
         isupmod:false,
@@ -93,7 +92,9 @@
     // },
     mounted() {
        this.fetchArticle();
+      
     },
+    
     watch: {
       '$route':'fetchArticle'
     },

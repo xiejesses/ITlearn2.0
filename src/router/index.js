@@ -11,10 +11,11 @@ import GroupDetail from '@/components/GroupDetail'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import TopicDetail from '@/components/TopicDetail'
 import test from '@/components/test'
+import Vindex from '@/components/Vindex'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history', //去掉 #
   history: true,   //去掉 #
   routes: [
@@ -64,6 +65,10 @@ export default new Router({
     {
       path:'/share',
       name:'share',
+      //添加路由元信息
+      meta: {
+        requireAuth:true //表示进入该路由需要登录
+      },
       component:Share
     },
     {
@@ -85,3 +90,33 @@ export default new Router({
     }
   ]
 })
+
+
+// 设置路由拦截
+// 在vue-router的全局钩子中设置拦截 
+// 每个路由皆会的钩子函数
+// to 进入 from 离开 next 传递
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('token');
+  if(to.meta.requireAuth) {
+    if(token) {
+      next();
+    } else {
+      next({
+        path:'/login',
+        query: {
+          redirect:to.fullPath
+        }
+      })
+    } 
+  } else {
+    next()
+  }
+})
+
+
+export default router;
+
+// export default new Router({
+  
+// })

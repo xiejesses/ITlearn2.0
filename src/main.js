@@ -9,6 +9,11 @@ import Gravatar from 'vue-gravatar'
 import moment, { locale } from 'moment'
 import './style.less'
 import infiniteScroll from 'vue-infinite-scroll'
+// import axios from 'axios'
+import axios from './util/interceptor.js'
+import store from './store/index.js'
+Vue.prototype.$http = axios;
+
 Vue.use(infiniteScroll)
 
 // import VueScroller from 'vue-scroller'
@@ -44,6 +49,7 @@ Vue.component('v-gravatar', Gravatar);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App }
