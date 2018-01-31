@@ -80,7 +80,7 @@ import {mapActions} from 'vuex'
             let user = this.formLogin;
             let formData = {
                 userEmail: user.userEmail,
-                userPwd:   user.userPwd
+                userPwd: user.userPwd
             };
             this.$http.post('/users/login',{
             // axios.post("/users/login",{
