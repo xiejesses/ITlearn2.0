@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <vindex></vindex>
+    <!-- <vindex></vindex> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import vindex from './components/Vindex'
+// import vindex from './components/Vindex'
 export default {
   name: 'app',
-  components:{vindex}
+  // components:{vindex}
 }
 </script>
 

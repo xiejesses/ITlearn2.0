@@ -112,10 +112,9 @@ import { mapGetters } from 'vuex'
         msg: 'Welcome to Your Vue.js App'
       }
     },
-    // beforeCreate() {
-    //   name = localStorage.getItem('userName')
-    //   this.userName = name;
-    // },
+    beforeCreate() {
+      // this.userName = localStorage.getItem('userName');
+    },
     methods: {
       closeModal() {
         this.isvisible = false;

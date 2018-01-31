@@ -22,72 +22,80 @@ const router = new Router({
     {
       path: '/',
       name: '',
-      component: Article
-    },
-    //测试用
-    {
-      path: '/test',
-      name: '',
-      component: test
-    },
-    {
-      path: '/MarkdownEditor',
-      name: '',
-      component: MarkdownEditor
-    },
-    {
-      path: '/groupindex',
-      name: '',
-      component: GroupIndex,
+      component: Vindex,
       children:[
         {
           path:'',
           name:'',
-          component:Group
+          component:Article
+        },
+        {
+          path:'/share',
+          name:'share',
+          //添加路由元信息
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
+          component:Share
+        },
+        {
+          path: '/MarkdownEditor',
+          name: '',
+          component: MarkdownEditor
+        },
+        {
+          path: '/groupindex',
+          name: '',
+          component: GroupIndex,
+          children:[
+            {
+              path:'',
+              name:'',
+              component:Group
+            }
+          ]
+        },
+        {
+          path:'/groupdetail',
+          name:'groupdetail',
+          component:GroupDetail
+        },
+        {
+          path:'/topicdetail',
+          name:'topicdetail',
+          component:TopicDetail
+        },
+        {
+          path:'/user/:uName',
+          name:'user',
+          component:User,
+          children:[
+            {
+              path:'',
+              name:'article',
+              component:Article
+            },
+            {
+              path:'mygroup',
+              name:'group',
+              component:Group
+            }
+          ]
         }
       ]
-    },
-    {
-      path:'/groupdetail',
-      name:'groupdetail',
-      component:GroupDetail
-    },
-    {
-      path:'/topicdetail',
-      name:'topicdetail',
-      component:TopicDetail
     },
     {
       path:'/login',
       name:'login',
       component:Login
     },
+    
+    //测试用
     {
-      path:'/share',
-      name:'share',
-      //添加路由元信息
-      meta: {
-        requireAuth:true //表示进入该路由需要登录
-      },
-      component:Share
+      path: '/test',
+      name: '',
+      component: test
     },
-    {
-      path:'/user/:uName',
-      name:'user',
-      component:User,
-      children:[
-        {
-          path:'',
-          name:'article',
-          component:Article
-        },
-        {
-          path:'mygroup',
-          name:'group',
-          component:Group
-        }
-      ]
-    }
   ]
 })
 
