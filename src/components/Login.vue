@@ -2,51 +2,85 @@
   <div class="login">
     <div class="main">
       <section class="log-in">
-        
+
         <section class="traditional-auth">
+
+          <form name="loginform" :v-model="formLogin" id="loginform" action="#" method="post" v-if="isloginfrom">
+            <h2>登录</h2>
+            <h4 class="errMessage"></h4>
+            <p :class="{ 'control': true }">
+              <input v-validate="'required|email'" v-model="formLogin.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
+                name="userEmail" type="text" placeholder="Email">
+              <span v-show="errors.has('userEmail')" class="help is-danger">{{ errors.first('userEmail') }}</span>
+            </p>
+            <!-- <p>
+              <input type="text" v-model="formLogin.userEmail" name="userEmail" id="user_login" class="input" placeholder="Email" value=""
+                autofocus>
+            </p> -->
+            <p :class="{ 'control': true }">
+              <input v-validate="'required|Pwd'" v-model="formLogin.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
+                name="userPwd" type="password" placeholder="Password">
+              <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
+            </p>
+            <!-- <p>
+              <input type="password" v-model="formLogin.userPwd" name="userPwd" id="user_pass" class="input" placeholder="Password" value="">
+            </p> -->
+            <div class="actions">
+              <div class="buttons">
+                <!-- <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p> -->
+                <p class="submit">
+                  <a href="javascript:;" @click="login">登录</a>
+                </p>
+                <!-- <p class="cancel">取消</p> -->
+              </div>
+              <div class="toRegister">
+                <h3 class="message">还没有帐户？
+                  <a href="javascript:void(0)" @click="isloginfrom=false">立即注册</a>
+                </h3>
+              </div>
+            </div>
+          </form>
+          <form name="registerform" :v-model="formRegister" id="registerform" action="#" method="post" v-else>
+            <h2>注册</h2>
+            <h4 class="errMessage"></h4>
+            <!-- <p :class="{ 'control': true }">
+              <input v-validate="'required|Name'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
+                name="userName" type="text" placeholder="用户名">
+              <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
+            </p> -->
+            <p>
+                 <input  v-model="formLogin.userName" name="userName" type="text" placeholder="用户名">
+            </p>
+            <!-- <p :class="{ 'control': true }">
+              <input v-validate="'required|userName'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
+                name="userName" type="text" placeholder="用户名">
+              <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
+            </p> -->
+            <p :class="{ 'control': true }">
+              <input v-validate="'required|email'" v-model="formLogin.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
+                name="userEmail" type="text" placeholder="邮箱">
+              <span v-show="errors.has('userEmail')" :v-model="emailError = errors.has('userEmail')" class="help is-danger">{{ errors.first('userEmail') }}</span>
+            </p>
+            <p :class="{ 'control': true }">
+              <input v-validate="'required|Pwd'" v-model="formLogin.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
+                name="userPwd" type="password" placeholder="密码">
+              <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
+            </p>
             
-            <form name="loginform" :v-model="formLogin" id="loginform" action="#" method="post" v-if="isloginfrom">
-                <h2>登录</h2>
-                <h4 class="errMessage"></h4>
-                <p>
-                    <input type="text" v-model="formLogin.userEmail" name="userEmail" id="user_login" class="input" placeholder="Email" value="" autofocus>
+            <div class="actions">
+              <div class="buttons">
+                <p class="submit">
+                  <a href="javascript:;" @click="register">注册</a>
                 </p>
-                <p>
-                    <input type="password" v-model="formLogin.userPwd" name="userPwd" id="user_pass" class="input" placeholder="Password" value="">
-                </p>
-                <div class="actions">
-                    <div class="buttons">
-                        <!-- <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p> -->
-                        <p class="submit"><a href="javascript:;" @click="login">登录</a></p>
-                        <!-- <p class="cancel">取消</p> -->
-                    </div>
-                    <div class="toRegister">
-                        <h3 class="message">还没有帐户？<a href="javascript:void(0)" @click="isloginfrom=false">立即注册</a></h3>
-                    </div>  
-                </div>
-            </form>
-            <form name="registerform" :v-model="formRegister" id="registerform" action="#" method="post" v-else>
-                <h2>注册</h2>
-                <h4 class="errMessage"></h4>
-                <p>
-                    <input type="text" v-model="formRegister.userName" name="reg" id="user_reg" class="input" placeholder="username" value="">
-                </p>
-                <p>
-                    <input type="text" v-model="formRegister.userEmail" name="email_reg" id="user_email_reg" class="input" placeholder="email" value="">
-                </p>
-                <p>
-                    <input type="password" v-model="formRegister.userPwd" name="pwd_reg" id="user_pass_reg" class="input" placeholder="password" value="">
-                </p>
-                <div class="actions">
-                    <div class="buttons">
-                        <p class="submit"><a href="javascript:;" @click="register">注册</a></p>
-                        <!-- <p class="cancel">取消</p> -->
-                    </div>
-                    <div class="toRegister">
-                        <h3 class="message">已有帐户？<a href="javascript:void(0)" @click="isloginfrom=true">点击登录</a></h3>
-                    </div>  
-                </div>
-            </form>
+                <!-- <p class="cancel">取消</p> -->
+              </div>
+              <div class="toRegister">
+                <h3 class="message">已有帐户？
+                  <a href="javascript:void(0)" @click="isloginfrom=true">点击登录</a>
+                </h3>
+              </div>
+            </div>
+          </form>
         </section>
       </section>
     </div>
@@ -55,113 +89,141 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-// import axios from 'axios'
+  import {
+    mapActions
+  } from 'vuex'
+  // import axios from 'axios'
   export default {
     name: 'login',
     data() {
       return {
-        isloginfrom:true,
-        formLogin:{
-            userEmail:'',
-            userPwd:'',
+        isloginfrom: true,
+        emailError: '',
+        formLogin: {
+          userEmail: '',
+          userPwd: '',
         },
-        formRegister:{
-            userName:'',
-            userEmail:'',
-            userPwd:''
+        formRegister: {
+          userName: '',
+          userEmail: '',
+          userPwd: ''
         }
       }
     },
-    methods:{
-        ...mapActions(['userLogin']),
+    methods: {
+      ...mapActions(['userLogin']),
 
-        login() {
-            let user = this.formLogin;
-            let formData = {
-                userEmail: user.userEmail,
-                userPwd: user.userPwd
-            };
-            this.$http.post('/users/login',{
-            // axios.post("/users/login",{
-                userEmail:formData.userEmail,
-                userPwd:formData.userPwd
+      login() {
+        let user = this.formLogin;
+        let formData = {
+          userEmail: user.userEmail,
+          userPwd: user.userPwd
+        };
+        // console.log(this.$errors.has('userEmail'))
+        // console.log('11111')
+        this.$validator.validateAll().then((result) => {
+          if (result) { // eslint-disable-next-line
+            this.$http.post('/users/login', {
+              // axios.post("/users/login",{
+              userEmail: formData.userEmail,
+              userPwd: formData.userPwd
             })
             .then(response => {
-                let res = response.data;
-                if(res.status == "1") {
-                    this.userLogin(res);
-                    this.$message.success(`haha${res.message}`)
-                    //登录成功，跳转到首页
-                    //this.$router.push({name:'Home'})
-                    this.$router.push('/')
-                } else {
-                    this.$message.error(`emmm${res.message}`);
-                    return false;
-                }
+              let res = response.data;
+              if (res.status == "1") {
+                this.userLogin(res);
+                this.$message.success(`${res.message}`)
+                //登录成功，跳转到首页
+                //this.$router.push({name:'Home'})
+                this.$router.push('/')
+              } else {
+                this.$message.error(`${res.message}`);
+                return false;
+              }
             })
             .catch(err => {
-                this.$message.error(`ai${err.message}`,'ERROR!');
+              this.$message.error(`${err.message}`, 'ERROR!');
             })
-        },
+          } else {
+              this.$message.error(`邮箱或密码有误，请重新填写！`);
+              return false;
+          }
+          
+        });
 
 
-        register() {
-            let user = this.formRegister;
-            let formData = {
-                userName:  user.userName,
-                userEmail: user.userEmail,
-                userPwd:   user.userPwd
-            };
-            this.$http.post('/users/register',{
-                userName:formData.userName,
-                userEmail:formData.userEmail,
-                userPwd:formData.userPwd
-            })
-            .then(response => {
-                let res = response.data;
-                if(res.status == "1") {
-                    this.userLogin(res);
-                    this.$message.success(`${res.message}`)
-                    //登录成功，跳转到首页
-                    //this.$router.push({name:'Home'})
-                    this.$router.push('/')
-                } else {
-                    this.$message.error(`${res.message}`);
-                    return false;
-                }
-            })
-            .catch(err => {
-                this.$message.error(`${err.message}`,'ERROR!');
-            })
-        }
+          
+
+      },
 
 
-        // login(){
-        //          let user = this.formLogin;
-        //             let formData = {
-        //                 userEmail: user.userEmail,
-        //                 userPwd: user.userPwd
-        //             };
-        //         axios.post("/users/login",{
-        //              userEmail:formData.userEmail,
-        //         userPwd:formData.userPwd
-        //         },{headers:{'Content-Type':'application/x-www-form-urlencoded'}}).then((response)=>{
-        //             let res = response.data;
-        //             if(res.status=="1"){
-        //             //   this.errorTip = false;
-        //             //   this.loginModalFlag = false;
-        //             //   this.$store.commit("updateUserInfo",res.result.userName);
-        //             //   this.getCartCount();
-        //             alert(res.message)
-        //             }else{
-        //             //   this.errorTip = true;
-        //             alert(res.message)
-        //             }
-        //         }).catch(err => {
-        //             this.$message.error(`ai${err.message}`,'ERROR!');
-        //     })
-        //     },
+      register() {
+        let user = this.formRegister;
+        let formData = {
+          userName: user.userName,
+          userEmail: user.userEmail,
+          userPwd: user.userPwd
+        };
+        
+        this.$validator.validateAll().then((result) => {
+          if (result) { // eslint-disable-next-line
+            this.$http.post('/users/register', {
+            userName: formData.userName,
+            userEmail: formData.userEmail,
+            userPwd: formData.userPwd
+          })
+          .then(response => {
+            let res = response.data;
+            if (res.status == "1") {
+              this.userLogin(res);
+              this.$message.success(`${res.message}`)
+              //登录成功，跳转到首页
+              //this.$router.push({name:'Home'})
+              this.$router.push('/')
+            } else {
+              this.$message.error(`${res.message}`);
+              return false;
+            }
+          })
+          .catch(err => {
+            this.$message.error(`${err.message}`, 'ERROR!');
+          })
+          } else {
+              this.$message.error(`邮箱或密码有误，请重新填写！`);
+              return false;
+          }
+          
+        });
+        
+        
+      }
+
+
+      // login(){
+      //          let user = this.formLogin;
+      //             let formData = {
+      //                 userEmail: user.userEmail,
+      //                 userPwd: user.userPwd
+      //             };
+      //         axios.post("/users/login",{
+      //              userEmail:formData.userEmail,
+      //         userPwd:formData.userPwd
+      //         },{headers:{'Content-Type':'application/x-www-form-urlencoded'}}).then((response)=>{
+      //             let res = response.data;
+      //             if(res.status=="1"){
+      //             //   this.errorTip = false;
+      //             //   this.loginModalFlag = false;
+      //             //   this.$store.commit("updateUserInfo",res.result.userName);
+      //             //   this.getCartCount();
+      //             alert(res.message)
+      //             }else{
+      //             //   this.errorTip = true;
+      //             alert(res.message)
+      //             }
+      //         }).catch(err => {
+      //             this.$message.error(`ai${err.message}`,'ERROR!');
+      //     })
+      //     },
     }
   }
 
@@ -169,26 +231,29 @@ import {mapActions} from 'vuex'
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
   .login {
     /* background-color: #F8F8F8; */
     /* height: 800px; */
   }
-.log-in h2 {
-    color: #676c72;
-}
 
-.toRegister h3 {
-    color:#54595f;
-}
-.toRegister a {
+  .log-in h2 {
+    color: #676c72;
+  }
+
+  .toRegister h3 {
+    color: #54595f;
+  }
+
+  .toRegister a {
     text-decoration: none;
     color: #2DBF80;
-}
-.toRegister a:hover {
+  }
+
+  .toRegister a:hover {
     color: #f28964;
-}
-.main {
+  }
+
+  .main {
     margin: 40px 0 0 0;
 
 
@@ -201,16 +266,16 @@ import {mapActions} from 'vuex'
       margin: 0 auto;
     }
     .log-in h2 {
-        display: block;
-        /* position: relative; */
-        text-align: center;
-        color:#676c72;
-        font-size: 24px;
-        padding: 20px 0 0 0;
-        /* margin-top: 20px; */
+      display: block;
+      /* position: relative; */
+      text-align: center;
+      color: #676c72;
+      font-size: 24px;
+      padding: 20px 0 0 0;
+      /* margin-top: 20px; */
     }
     input[type="submit"] {
-        width: 100%;
+      width: 100%;
     }
   }
 
@@ -243,18 +308,19 @@ import {mapActions} from 'vuex'
       padding: 0 82px 40px 82px;
       border-radius: 2px;
       margin-top: 50px;
-      box-shadow:0px 0px 5px 0px #6b5858;
+      box-shadow: 0px 0px 5px 0px #6b5858;
     }
   }
 
   /**********
     登录表单
     **********/
-input[type="text"],
-input[type="password"] {
+
+  input[type="text"],
+  input[type="password"] {
     display: block;
     height: 40px;
-    width:100%;
+    width: 100%;
     padding: 0;
     margin-top: 20px;
     border: 2px solid #f3f3f3;
@@ -267,8 +333,9 @@ input[type="password"] {
     font-weight: 400;
     vertical-align: bottom;
     position: relative;
-}
-input[type="submit"] {
+  }
+
+  input[type="submit"] {
     display: inline-block;
     background: #f28964;
     height: 36px;
@@ -279,10 +346,11 @@ input[type="submit"] {
     outline: none;
     font-size: 17px;
     line-height: 33px;
-    color:#fff;
+    color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;
     vertical-align: bottom;
     cursor: pointer;
-}
+  }
+
 </style>

@@ -12,9 +12,50 @@ import infiniteScroll from 'vue-infinite-scroll'
 // import axios from 'axios'
 import axios from './util/interceptor.js'
 import store from './store/index.js'
+import './util/validate'
+
+
+
+// import VeeValidate from 'vee-validate'
+// import zh_CN from 'vee-validate/dist/locale/zh_CN'
+// import { Validator } from 'vee-validate'
+
+// const config = {
+//   locale: 'zh_CN',
+//   events:'blur',
+//   dictionary: {
+//     zh_CN: {
+//       zh_CN,
+//       messages:{
+//         email:() => '邮箱格式不对',
+//         required:() => '邮箱不能为空',
+//       }
+//     } 
+//   }
+// }
+
+// Vue.use(VeeValidate, config);
+
+// const dictionary = {
+//   zh_CN: {
+//     messages: {
+//       email: () => '邮箱格式不正确哦'
+//     }
+//   }
+// };
+// Validator.updateDictionary(dictionary);
+
+// import zh_CN from 'vee-validate/dist/locale/zh_CN'
+// import { Validator } from 'vee-validate';
+// Validator.addLocale(zh_CN)
+// Vue.use(VeeValidate, {
+//   locale: 'zh_CN',
+//  })
+
 Vue.prototype.$http = axios;
 
 Vue.use(infiniteScroll)
+
 
 // import VueScroller from 'vue-scroller'
 // Vue.use(VueScroller)
