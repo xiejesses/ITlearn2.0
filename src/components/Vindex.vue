@@ -36,12 +36,13 @@
         <a href="javascript:void(0)" @click="isfocused = true">
           <i class="el-icon-search"></i>
         </a>
+        
       </nav>
       <!-- 用户控制中心下拉菜单 -->
       <div class="user-action" v-if="userName">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar email="835614574@qq.com" size='40' />
+            <v-gravatar :email="userEmail" size='40' />
           </span>
           <el-dropdown-menu slot="dropdown">
             <router-link :to="{ name: 'article', params: { uName: userName }}">
@@ -56,9 +57,10 @@
             <router-link to="/">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
-            <router-link to="/">
-              <el-dropdown-item divided>退出</el-dropdown-item>
-            </router-link>
+            <!-- <router-link to="/"> -->
+            <a href="javascript:;" @click="loginOut">退出</a>
+              <!-- <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item> -->
+            <!-- </router-link> -->
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -102,11 +104,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import {mapActions} from 'vuex'
   export default {
     name: 'HelloWorld',
     data() {
       return {
         userName:'',
+        userEmail:'',
         isvisible: false,
         isfocused: false,
         msg: 'Welcome to Your Vue.js App'
@@ -116,16 +120,32 @@ import { mapGetters } from 'vuex'
       // this.userName = localStorage.getItem('userName');
     },
     methods: {
+      ...mapActions(['userLoginOut']),
+      // 登出loginOut
+      loginOut(){
+        this.userLoginOut();
+        if (!localStorage.getItem('token')) {
+            // this.$router.push('/') //不带刷新
+            this.$router.go('/') //带刷新
+            this.$message.success('登出成功');
+        } else {
+            this.$message.success('登出失败');
+        }
+        
+      },
       closeModal() {
         this.isvisible = false;
         this.isfocused = false;
-      }
+      },
+      
+
     },
     watch: {
       
     },
     mounted() {
        this.userName = localStorage.getItem('userName');
+       this.userEmail = localStorage.getItem('userEmail');
       //  this.userEmail = this.$store.state.userEmail;
       // this.userName = 'js';
       // this.$refs['input'].focus()

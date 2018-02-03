@@ -47,9 +47,8 @@
                 </span>
                 <span>
                 <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
-                <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)"><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a>
+                <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)"><i class="heart el-icon-fa el-icon-fa-heart-o"   v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a>
                 </span>
-                 <!-- v-bind:class="{heart-click:isHeartClick}" -->
               </div>
             </section>
             <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
@@ -80,7 +79,7 @@
         loading:false,
         score:10,
         isupmod:false,
-        isHeartClick:false,
+        isHeartClick:'',
         articles:[],
         currentVote:'',
 
@@ -96,6 +95,9 @@
     mounted() {
        this.fetchArticle();
       
+    },
+    computed:{
+
     },
     
     watch: {
