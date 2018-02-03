@@ -1,9 +1,12 @@
 <template>
   <div class="index">
-    <main class="loading" v-if="loading">
+<el-select v-model="tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择文章标签">
+              <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+    <!-- <main class="loading" v-if="loading">
       <div class="load-wrapp">
             <div class="load-5">
-                <!-- <p>Loading</p> -->
                 <div class="ring-2">
                     <div class="ball-holder">
                         <div class="ball"></div>
@@ -11,8 +14,8 @@
                 </div>
             </div>
         </div>
-    </main>
-    <main v-else>
+    </main> -->
+    <main >
       <div class="sort">
           <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
           <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
@@ -73,7 +76,19 @@
         isupmod:false,
         isHeartClick:false,
         articles:[],
-        currentVote:''
+        currentVote:'',
+
+        options5: [{
+          value: 'HTML',
+          label: 'HTML'
+        }, {
+          value: 'CSS',
+          label: 'CSS'
+        }, {
+          value: 'JavaScript',
+          label: 'JavaScript'
+        }],
+        tags: []
       }
     },
     created () {

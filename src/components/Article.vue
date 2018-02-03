@@ -19,39 +19,43 @@
         </div>
         <section class="articles">
         <ul class="articles-list">
-          <li v-for="(article,index) in articles" v-bind:key="article.id">
+          <li v-for="(article,index) in articles" v-bind:key="article._id">
           <!-- <li> -->
             <section class="user-avatar">
               <!-- <v-gravatar email="8356145741@qq.com" size='40' /> -->
-              <v-gravatar v-bind:email="article.email" size='40' />
+              <v-gravatar v-bind:email="article.author.userEmail" size='40' />
             </section>
             <section class="article-title">
               <!-- <div class="domain">webkit.org</div> -->
-              <div class="domain">{{ article.domain }}</div>
+              <div class="domain">{{ article.url }}</div>
               <h2>
                 <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
-                <a href="http://localhost:8080/" class="article-link">{{article.articleTitle}}</a>
+                <a href="http://localhost:8080/" class="article-link">{{article.title}}</a>
               </h2>
               <div class="meta">
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">{{userName}}</router-link> -->
-                <router-link :to="{ name: 'like', params: { uName: userName }}">{{article.userName}}</router-link>
+                <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{article.author.userName}}</router-link>
                 <span class="separator"> • </span>
                 <!-- <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr> -->
-                <abbr class="timeago" :title="article.creatTime">{{moment(article.creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <abbr class="timeago" :title="article.createTime">{{moment(article.createTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
-                <router-link :to="{ name: 'like', params: { uName: userName }}">{{article.tag}}</router-link>
+                <!-- <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{article.tags}}</router-link> -->
+                <span v-for="(tag,tagindex) in article.tags" v-bind:key="tagindex">
+                <router-link :to="{ name: 'like', params: { uName: article.author.userName }}" >{{tag}}</router-link>
+                 <span class="separator"> • </span>
+                </span>
                 <span>
                 <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
-                <a href="javascript:void(0)" class="heartvisited" @click="changeHeart(article.id, index)"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:article.heartActive == true}" aria-hidden="true"></i></a>
+                <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)"><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a>
                 </span>
                  <!-- v-bind:class="{heart-click:isHeartClick}" -->
               </div>
             </section>
             <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
-            <section class="article-vote" @click="article.vote++">
-              <span class="score" v-bind:class="{scored:article.voteActive == true}">{{article.vote}}</span>
-              <span class="arrow up" v-bind:class="{upmod:article.voteActive == true}" @click="changeVote(article.id, index)"></span>
+            <section class="article-vote" @click="article.voteNumber++">
+              <span class="score" v-bind:class="{scored:article.voteActive == true}">{{article.voteNumber}}</span>
+              <span class="arrow up" v-bind:class="{upmod:article.voteActive == true}" @click="changeVote(article._id, index)"></span>
             </section>
           </li>
         </ul>
@@ -74,7 +78,6 @@
     data() {
       return {
         loading:false,
-        creatTime: '2017-11-2 16:30:20',
         score:10,
         isupmod:false,
         isHeartClick:false,
@@ -103,18 +106,42 @@
         this.articles[index].voteActive = true;
         // axios(id)
       },
-      changeHeart (id,index) {
-        // axios(id)
-        if(this.articles[index].heartActive == true) {
-          this.articles[index].heartActive = false;
-          this.$message.error('取消收藏');
+      addlovelink (sharelink_id,index) {
+        if(!localStorage.getItem('userName')) {
+          this.$message.error(`请先登录！`);
+          return false;
         } else {
-          this.articles[index].heartActive = true;
-          this.$message({
-          message: '已加入收藏',
-          type: 'success'
-          });
+          this.$http.post('/sharelink/addlovelink',{
+            _id:sharelink_id,
+            userName:localStorage.getItem('userName')
+        }).then(response => {
+          let res = response.data
+          if(res.status == "1"){
+            this.isHeartClick = true;
+            this.$message.success('成功收藏');
+          } else if(res.status == "2") {
+            this.isHeartClick = false;
+            this.$message.error('取消收藏');
+          } else {
+            this.$message.error('发生错误');
+          }
+        })
         }
+        
+        // console.log(`_id:${_id}`)
+        // console.log(`index:${index}`)
+        // axios(id)
+        
+        // if(this.articles[index].heartActive == true) {
+        //   this.articles[index].heartActive = false;
+        //   this.$message.error('取消收藏');
+        // } else {
+        //   this.articles[index].heartActive = true;
+        //   this.$message({
+        //   message: '已加入收藏',
+        //   type: 'success'
+        //   });
+        // }
         
       },
       fetchArticle (flag) {
@@ -123,7 +150,7 @@
           page:this.page,
           pageSize:this.pageSize
         };
-        axios.get("/shareLink",
+        axios.get("/sharelink",
           {params:param}
         ).then( (response) => {
          
@@ -134,7 +161,7 @@
           var res = response.data;
                 this.loading = false;
                 // status == 0 数据读取成功
-                if(res.status=="0"){
+                if(res.status=="1"){
                   // 不是第一次，需要拼接数据
                   if(flag){
                       this.articles = this.articles.concat(res.result.list);
@@ -152,27 +179,6 @@
                   this.articles = [];
                 }
 
-        //  console.log("res: " + res);
-          // status == 0 数据读取成功
-          // if(res.status == "0") {
-          //   // 不是第一次，需要拼接数据
-          //   if(flag) {
-          //      this.articles = this.articles.concat(res.data.result.list);
-          //     //如果没有数据，停止滚动加载
-          //      if(res.result.count == 0) {
-          //        this.busy = true;
-          //      } else {
-          //        this.busy = false;
-          //      }
-          //   } else {
-          //     this.articles = res.data.result.list;
-          //     this.busy = false;
-
-          //     console.log(this.articles);
-          //   }
-          // } else {
-          //   this.articles = [];
-          // }
         }).catch(function (error) {
           console.log(error)
         })
@@ -432,6 +438,7 @@ meta信息
   .meta a {
     color: #8f8f8f;
     padding: 3px 0 0 0;
+    font-size: 14px;
     text-decoration: none;
     border-bottom: 2px solid #f3f3f3;
   }

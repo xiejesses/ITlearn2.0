@@ -49,7 +49,7 @@
               <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
             </p> -->
             <p>
-                 <input  v-model="formLogin.userName" name="userName" type="text" placeholder="用户名">
+                 <input  v-model="formRegister.userName" name="userName" type="text" placeholder="用户名">
             </p>
             <!-- <p :class="{ 'control': true }">
               <input v-validate="'required|userName'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
@@ -57,12 +57,12 @@
               <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
             </p> -->
             <p :class="{ 'control': true }">
-              <input v-validate="'required|email'" v-model="formLogin.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
+              <input v-validate="'required|email'" v-model="formRegister.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
                 name="userEmail" type="text" placeholder="邮箱">
               <span v-show="errors.has('userEmail')" :v-model="emailError = errors.has('userEmail')" class="help is-danger">{{ errors.first('userEmail') }}</span>
             </p>
             <p :class="{ 'control': true }">
-              <input v-validate="'required|Pwd'" v-model="formLogin.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
+              <input v-validate="'required|Pwd'" v-model="formRegister.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
                 name="userPwd" type="password" placeholder="密码">
               <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
             </p>

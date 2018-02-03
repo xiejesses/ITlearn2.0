@@ -33,13 +33,22 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/shareLink':{
+      '/sharelink':{
+        target:'http://localhost:3000',
+      },
+      '/sharelink/submit':{
+        target:'http://localhost:3000',
+      },
+      '/sharelink/addlovelink':{
         target:'http://localhost:3000',
       },
       '/users/login':{
         target:'http://localhost:3000'
       },
       '/users/*':{
+        target:'http://localhost:3000'
+      },
+      '/tags':{
         target:'http://localhost:3000'
       }
     },

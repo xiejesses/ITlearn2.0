@@ -12,14 +12,15 @@ axios.interceptors.request.use(
         // 判断localStorage是否存在token，如果存在的话，则每个http header都加上token
         if(localStorage.getItem('token')) {
             config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`.replace(/(^\")|(\"$)/g, '');
-        } else {
-            router.replace({
-                path:'login',
-                query: {
-                    redirect: router.currentRoute.fullPath
-                }
-            })
-        }
+        } 
+        // else {
+        //     router.replace({
+        //         path:'login',
+        //         query: {
+        //             redirect: router.currentRoute.fullPath
+        //         }
+        //     })
+        // }
         return config
     },
     err => {
