@@ -4,20 +4,21 @@
       <section class="build-group">
         <p>发现和创建小组，共同学习与分享知识</p>
         <div class="build-form" v-if="isbuilding">
-          <form name="buildform" id="buildform" action="#" method="post">
+          <form name="buildform" :v-model="formGroup" id="buildform" action="#" method="post">
             <!-- <h1>分享链接</h1> -->
             <h4 class="errMessage"></h4>
             <p>
-              <el-input  class="inputstyle" v-model="input" placeholder="小组名"></el-input>
+              <el-input  class="inputstyle" v-model="formGroup.groupName" placeholder="小组名"></el-input>
             </p>
             <p>
-              <el-input class="inputstyle" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" v-model="textarea3">
+              <el-input class="inputstyle" v-model="formGroup.groupIntro" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" >
               </el-input>
             </p>
            
             <div class="actions">
               <div class="buttons">
-                <input type="submit" name="user-submit" id="user-submit" value="创建">
+                <a href="javascript:;" @click="createGroup">创建</a>
+                <!-- <input type="submit" @click="createGroup" name="user-submit" id="user-submit" value="创建"> -->
                 <p class="cancel" @click="isbuilding = false">取消</p>
               </div>
             </div>
@@ -42,8 +43,38 @@
     name: 'groupindex',
     data() {
       return {
+        formGroup:{
+          groupName:'',
+          groupIntro:''
+        },
         isbuilding:false,
         msg: '学习小组'
+      }
+    },
+    methods:{
+      createGroup() {
+        // this.isbuilding = true;
+        
+        this.$http.post('/group/creategroup',{
+          groupName:this.formGroup.groupName,
+          groupIntro:this.formGroup.groupIntro,
+          userName:localStorage.getItem('userName')
+        }).then(response => {
+          let res = response.data;
+          if(res.status == "1") {
+            this.$router.push('/groupindex')
+            // this.$message.success(`创建成功！`);
+            this.$message.success('创建成功');
+            this.isbuilding = false;
+            this.formGroup.groupName = '';
+            this.formGroup.groupIntro = '';
+          } else {
+            this.$message.error('创建失败！请重试');
+            
+          }
+        }).catch(err => {
+              this.$message.error(`${err.message}`, 'ERROR!');
+            })
       }
     }
   }
