@@ -53,6 +53,9 @@ module.exports = {
       },
       '/group/*':{
         target:'http://localhost:3000'
+      },
+      '/topic/*':{
+        target:'http://localhost:3000'
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

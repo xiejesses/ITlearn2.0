@@ -1,30 +1,34 @@
 <template>
   <div id="editor">
     <main>
-      <div class="title-input">
-        <p>
-          <input type="text" name="shareTitle" class="input" placeholder="请输入标题" value="">
-        </p>
-      </div>
-      <div class="mavon-editor">
-        <mavon-editor v-on:save="getContent"  style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
-      </div>
-
-      <div class="actions">
-        <div class="buttons">
-          <p class="submit">
-            <input type="submit" name="user-submit" id="user-submit" value="发布"  >
-            <!-- <router-link :to="{ name:'topicdetail', params:{tName:value}}" class="article-link">发布</router-link> -->
+      <form name="markdownform" :v-model="formMarkdown"  action="#" method="post">
+        <div class="title-input">
+          <p>
+            <input type="text" v-model="formMarkdown.topicTitle" name="shareTitle" class="input" placeholder="请输入标题" value="">
           </p>
-          <!-- <p class="cancel">取消</p> -->
         </div>
-      </div>
+        <div class="mavon-editor">
+          <mavon-editor v-on:save="getContent" v-model="formMarkdown.topicContent"  style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
+        </div>
+
+        <div class="actions">
+          <div class="buttons">
+            <p class="submit">
+              <a href="javascript:;" @click="cretetopic">发布</a>
+              <!-- <input type="submit" name="user-submit" id="user-submit" value="发布"  > -->
+              <!-- <router-link :to="{ name:'topicdetail', params:{tName:value}}" class="article-link">发布</router-link> -->
+            </p>
+            <!-- <p class="cancel">取消</p> -->
+            <a href="javascript:;">取消</a>
+          </div>
+        </div>
+      </form>
       <!-- 测试 -->
-      <div v-html="value" class="markdown-body">
+      <div v-html="formMarkdown.topicContent" class="markdown-body">
 
       </div>
       <div>
-          {{value}}
+          {{formMarkdown.topicContent}}
       </div>
       <!-- 测试-end -->
 
@@ -42,7 +46,7 @@
   import '../../static/css/markdown.css'
   // import 'katex/dist/katex.min.css'
   export default {
-    name: 'editor',
+    name: 'markdowneditor',
     components: {
       mavonEditor
       // or 'mavon-editor': mavonEditor
@@ -54,6 +58,11 @@
     data() {
       return {
         Name:'test',
+        gid:'',
+        formMarkdown:{
+          topicTitle:'',
+          topicContent:'',
+        },
         value:'',
         isclick:false,
         // content:'',
@@ -96,12 +105,38 @@
     },
     methods: {
       getContent(val, render) {
-        this.value = render;
+        this.formMarkdown.topicContent = render;
+      },
+      cretetopic() {
+        // console.log(this.formMarkdown.topicTitle)
+        // console.log(this.formMarkdown.topicContent)
+        // console.log(this.gid)
+
+        this.$http.post('/topic/createtopic',{
+          _id:this.gid,
+          topicTitle:this.formMarkdown.topicTitle,
+          topicContent:this.formMarkdown.topicContent,
+          userName:localStorage.getItem('userName')
+        }).then(response => {
+          let res = response.data;
+          if(res.status == "1") {
+            // this.$router.push('/groupindex')
+            //成功返回上一级
+            window.history.go(-1)
+            // this.$message.success(`创建成功！`);
+            this.$message.success('发表成功');
+            // console.log(res)
+          }else {
+            this.$message.error('发生错误，请重试！');
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }
+    },
+    mounted() {
+     this.gid = this.$route.params.g_id;
     }
-    // mounted() {
-    //  content = this.$refs.editor.vShowContent;
-    // }
   }
 
 </script>

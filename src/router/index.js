@@ -40,7 +40,7 @@ const router = new Router({
         },
         {
           path: '/MarkdownEditor',
-          name: '',
+          name: 'markdowneditor',
           component: MarkdownEditor
         },
         {
@@ -56,12 +56,12 @@ const router = new Router({
           ]
         },
         {
-          path:'/groupdetail',
+          path:'/g/:g_id',
           name:'groupdetail',
           component:GroupDetail
         },
         {
-          path:'/topicdetail',
+          path:'/t/:t_id',
           name:'topicdetail',
           component:TopicDetail
         },

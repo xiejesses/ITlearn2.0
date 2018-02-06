@@ -9,7 +9,8 @@
             </section>
             <section class="groups-meta">
               <div class="groups-name">
-                  <h2><router-link :to="{ name: 'groupdetail', params: { gName: group.groupName }}">{{group.groupName}}</router-link></h2>
+                  <!-- <h2><router-link :to="{ name: 'groupdetail', params: { gName: group.groupName }}">{{group.groupName}}</router-link></h2> -->
+                  <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.groupName}}</router-link></h2>
                   </div>
               <div class="groups-intro">
                   <!-- 一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑

@@ -14,7 +14,7 @@
           <!-- <h2 class="group-name">打开Vue的大门</h2> -->
           <p class="author">by. {{this.groupdetail.author.userName}}</p>
           <p class="description">{{this.groupdetail.groupIntro}}</p>
-          <p class="">成员：{{this.groupdetail.member}}</p>
+          <p class="">{{this.groupdetail.member}}</p>
         </div>
       </section>
 
@@ -32,8 +32,7 @@
           </el-dropdown>
         </div>
         <div class="publish-topic">
-          <!-- <router-link to="/MarkdownEditor" class="LastItem">发表话题</router-link> -->
-          <router-link :to="{name: 'markdowneditor', params:{g_id:this.gid}}" class="LastItem">发表话题</router-link>
+          <router-link to="/MarkdownEditor" class="LastItem">发表话题</router-link>
         </div>
         <div>
           <el-dropdown>
@@ -52,39 +51,52 @@
       <section class="articles">
         <ul class="articles-list">
           <!-- <li v-for="article in articles" v-bind:key="article.id"> -->
-          <li v-for="topic in topics" v-bind:key="topic._id">
-            <div class="user-avatar">
-              <v-gravatar v-bind:email="topic.author.userEmail" size='40' />
-            </div>
-            <div class="article-title">
+          <li>
+            <section class="user-avatar">
+              <v-gravatar email="835614574@qq.com" size='40' />
+            </section>
+            <section class="article-title">
               <h2>
-                <router-link :to="{ name:'topicdetail', params:{t_id:topic._id}}" class="article-link">{{topic.title}}</router-link>
+                <router-link :to="{ name:'topicdetail', params:{tName:topicName}}" class="article-link">{{topicName}}</router-link>
                 <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'like', params: { uName: topic.author.userName }}">{{topic.author.userName}}</router-link>
+                <router-link :to="{ name: 'like', params: { uName: userName }}">jesses</router-link>
                 <span class="separator"> • </span>
-                <abbr class="timeago" :title="topic.createTime">{{moment(topic.createTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
               </div>
-            </div>
-            <div class="comment-num" >
+            </section>
+            <section class="comment-num" >
               <span class="number">3</span>
               <i class="comment el-icon-fa el-icon-fa-comments-o" aria-hidden="true"></i>
-            </div>
+            </section>
+          </li>
+          <li>
+            <section class="user-avatar">
+              <v-gravatar email="834414574@qq.com" size='40' />
+            </section>
+            <section class="article-title">
+              <h2>
+                <a href="http://localhost:8080/" class="article-link">面向未来的前端数据流框架 - dob</a>
+              </h2>
+              <div class="meta">
+                <router-link :to="{ name: 'like', params: { uName: userName }}">jesses</router-link>
+                <span class="separator"> • </span>
+                <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
+              </div>
+            </section>
+           <section class="comment-num" >
+              <span class="number">6</span>
+              <i class="comment el-icon-fa el-icon-fa-comments-o" aria-hidden="true"></i>
+            </section>
           </li>
         </ul>
-        <div class="view-more-normal"
-                   v-infinite-scroll="loadMore"
-                   infinite-scroll-disabled="busy"
-                   infinite-scroll-distance="20">
-              </div>
-      </section>      
+      </section>
     </main>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
   export default {
     name: 'groupdetail',
     data() {
@@ -92,11 +104,7 @@ import axios from 'axios'
         //   gName:'',
         gid:'',
         groupdetail:[],
-        topics:[],
-        busy:true,
-        page:1,
-        pageSize:5,
-
+        msg: '小组首页',
         creatTime: '2017-11-2 16:30:20',
         topicName:'Release Notes for Safari Technology Preview 43'
       }
@@ -104,18 +112,14 @@ import axios from 'axios'
     mounted() {
       this.gid = this.$route.params.g_id;
       
-      this.fetchGroupDetail();
-      this.fetchTopic();
+      this.fetchGroupDetail()
     },
     methods:{
       fetchGroupDetail() {
-        // console.log(this.gid)
-        let param = {
-          g_id:this.gid,
-        };
-        axios.get('/group/fetchgroupdetail',
-           {params:param}
-        ).then(response => {
+        // console.log(this.g_id)
+        this.$http.get('/group/fetchgroupdetail',{
+          g_id:this.gid
+        }).then(response => {
           let res = response.data;
           if(res.status == "1") {
             this.groupdetail = res.result
@@ -125,54 +129,7 @@ import axios from 'axios'
         }).catch(error => {
           console.log(error)
         })
-      },
-      fetchTopic (flag) {
-        let param = {
-          page:this.page,
-          pageSize:this.pageSize,
-          g_id:this.gid
-        };
-        axios.get("/topic/fetchtopic",
-          {params:param}
-        ).then( (response) => {
-         
-          // this.loading = false;
-          // this.articles = res.data.result.list;
-
-
-          var res = response.data;
-                // this.loading = false;
-                // status == 0 数据读取成功
-                if(res.status=="1"){
-                  // 不是第一次，需要拼接数据
-                  if(flag){
-                      this.topics = this.topics.concat(res.result.list.groupTopic);
-                        //如果没有数据，停止滚动加载
-                      if(res.result.count==0){
-                          this.busy = true;
-                      }else{
-                          this.busy = false;
-                      }
-                  }else{
-                      this.topics = res.result.list.groupTopic;
-                      this.busy = false;
-                  }
-                }else{
-                  this.topics = [];
-                }
-
-        }).catch(function (error) {
-          console.log(error)
-        })
-      },
-
-      loadMore(){
-          this.busy = true;
-          setTimeout(() => {
-            this.page++;
-            this.fetchGroup(true);
-          }, 500);
-      },
+      }
     }
   }
 
