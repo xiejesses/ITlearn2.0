@@ -8,7 +8,8 @@
           </p>
         </div>
         <div class="mavon-editor">
-          <mavon-editor v-on:save="getContent" v-model="formMarkdown.topicContent"  style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
+          <!-- <mavon-editor v-on:save="getContent" v-model="formMarkdown.topicContent"  style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor> -->
+          <mavon-editor v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
         </div>
 
         <div class="actions">
@@ -111,7 +112,7 @@
         // console.log(this.formMarkdown.topicTitle)
         // console.log(this.formMarkdown.topicContent)
         // console.log(this.gid)
-
+        // this.getContent();
         this.$http.post('/topic/createtopic',{
           _id:this.gid,
           topicTitle:this.formMarkdown.topicTitle,

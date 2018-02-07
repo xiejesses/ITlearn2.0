@@ -4,10 +4,10 @@
       <section class="topic-content">
         <div class="user-info">
           <div class="user-avatar">
-            <v-gravatar v-bind:email="topicdetail.author.userEmail" size='40' />
+            <!-- <v-gravatar v-bind:email="topicdetail.author.userEmail" size='40' /> -->
           </div>
           <div class="meta" style="margin-left:10px">
-            <router-link :to="{ name: 'like', params: { uName: topicdetail.author.userName }}">{{topicdetail.author.userName}}</router-link>
+            <!-- <router-link :to="{ name: 'like', params: { uName: topicdetail.author.userName }}">{{topicdetail.author.userName}}</router-link> -->
             <span class="separator">• </span>
             <abbr class="timeago" :title="topicdetail.createTime"> {{ moment(topicdetail.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
           </div>
@@ -16,7 +16,6 @@
         <p class="topic-name">{{topicdetail.title}}</p>
         <!-- <div v-html="$route.params.tName" class="markdown-body"></div> -->
         <div v-html="topicdetail.content" class="markdown-body"></div>
-        <!-- <div v-html="value" class="markdown-body"></div> -->
       </section>
 
       <section class="comment">
@@ -39,26 +38,25 @@
         </div>
         <div class="comment-input">
           <div class="user-avatar">
-            <v-gravatar v-bind:email="currentUserEmail" size='40' />
+            <v-gravatar email="835614574@qq.com" size='40' />
           </div>
           <div class="mavon-editor">
-            <mavon-editor v-on:change="getCommentContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
-              v-bind:default_open="edit"></mavon-editor>
+            <mavon-editor v-on:save="getContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars" v-bind:default_open="edit"></mavon-editor>
           </div>
         </div>
         <div class="actions">
-          <!-- <input type="submit" name="user-submit" id="user-submit" value="评论"> -->
-          <a href="javascript:;" @click="createComment">评论</a>
+          <input type="submit" name="user-submit" id="user-submit" value="评论">
         </div>
 
         <section class="user-comment">
           <ul class="comment-list">
-            <li v-for="comment in comments" v-bind:key="comment._id">
+            <li>
+
               <el-row :gutter="10">
                 <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
                   <div class="grid-content">
                     <div class="user-avatar">
-                      <v-gravatar v-bind:email="comment.author.userEmail" size='40' align="right" />
+                      <v-gravatar email="835614594@qq.com" size='40' align="right" />
                     </div>
                   </div>
                 </el-col>
@@ -67,11 +65,11 @@
                     <section class="comment-content">
                       <div class="user-comment-right">
                         <div class="meta">
-                          <router-link :to="{ name: 'like', params: { uName: comment.author.userName }}"> {{comment.author.userName}}</router-link>
+                          <router-link :to="{ name: 'like', params: { uName: userName }}"> jesses</router-link>
                           <span class="separator">• </span>
-                          <abbr class="timeago" :title="comment.createTime"> {{ moment(comment.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                          <abbr class="timeago" :title="creatTime"> {{ moment(creatTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
                         </div>
-                        <div v-html="comment.content" class="custom markdown-body"></div>
+                        <div v-html="value2" class="custom markdown-body"></div>
                         <div class="reply">
                           <a href="javascript:void(0)" v-on:click="showReplyLayout=!showReplyLayout">Reply</a>
                         </div>
@@ -80,26 +78,22 @@
                       <div v-show="showReplyLayout">
                         <div class="comment-input">
                           <div class="user-avatar">
-                            <v-gravatar v-bind:email="currentUserEmail" size='40' />
+                            <v-gravatar email="835614574@qq.com" size='40' />
                           </div>
                           <div class="mavon-editor">
-                            <mavon-editor v-on:change="getReplyContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
-                              v-bind:default_open="edit"></mavon-editor>
+                            <mavon-editor v-on:save="getContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars" v-bind:default_open="edit"></mavon-editor>
                           </div>
                         </div>
                         <div class="actions">
-                          <!-- <input type="submit" name="user-submit" id="user-submit" value="回复"> -->
-                          <a href="javascript:;" @click="createReply(comment._id)">回复</a>
+                          <input type="submit" name="user-submit" id="user-submit" value="回复">
                         </div>
                       </div>
                       <!-- 回复评论显示 -->
-                      <ul class="user-reply">
-                          <li v-for="reply in comment.replys" v-bind:key="reply._id">
-                              <el-row :gutter="10" class="replyTo">
+                      <el-row :gutter="10" class="replyTo">
                         <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
                           <div class="grid-content bg-purple">
                             <div class="user-avatar">
-                              <v-gravatar v-bind:email="reply.author.userEmail" size='40' align="right" />
+                              <v-gravatar email="8356145945@qq.com" size='40' align="right" />
                             </div>
                           </div>
                         </el-col>
@@ -107,18 +101,15 @@
                           <div class="grid-content bg-purple">
                             <div>
                               <div class="meta">
-                                <router-link :to="{ name: 'like', params: { uName: reply.author.userName }}"> {{reply.author.userName}}</router-link>
+                                <router-link :to="{ name: 'like', params: { uName: userName }}"> jesses</router-link>
                                 <span class="separator">• </span>
-                                <abbr class="timeago" :title="reply.createTime"> {{ moment(reply.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                                <abbr class="timeago" :title="creatTime"> {{ moment(creatTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
                               </div>
-                              <div v-html="reply.content" class="custom markdown-body"></div>
+                              <div v-html="value2" class="custom markdown-body"></div>
                             </div>
                           </div>
                         </el-col>
                       </el-row>
-                          </li>
-                      </ul>
-                      
                       <!-- <div class="replyTo">
                             
                             
@@ -129,8 +120,6 @@
               </el-row>
             </li>
           </ul>
-          <div class="view-more-normal" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
-          </div>
         </section>
       </section>
     </main>
@@ -138,7 +127,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
   import {
     mavonEditor
   } from 'mavon-editor'
@@ -154,15 +143,6 @@
       return {
         tid: '',
         topicdetail: [],
-        currentUserEmail: '',
-        commentContent: '',
-        replyContent: '',
-        comments: [],
-        busy: true,
-        page: 1,
-        pageSize: 5,
-
-        // userName:'test',
 
         showReplyLayout: false,
         value: '<p>组件实例的作用域是孤立的。这意味着不能 (也不应该) 在子组件的模板内直接引用父组件的数据。父组件的数据需要通过 prop 才能下发到子组件中</p> <p>子组件要显式地用 <code>props</code> 选项声明它预期的数据：</p> <pre class="hljs"><code class="">Vue.component(\'child\', {<br> // 声明 props<br> props: [\'message\'],<br> // 就像 data 一样，prop 也可以在模板中使用<br> // 同样也可以在 vm 实例中通过 this.message 来使用<br> template: \'&lt;span&gt;{{ message }}&lt;/span&gt;\'template: \'&lt;span&gt;{{ message }}&lt;/span&gt;\'template: \'&lt;span&gt;{{ message }}&lt;/span&gt;\'<br> }) </code></pre> <p>然后我们可以这样向它传入一个普通字符串：</p> <pre class="hljs"><code class="">&lt;child message=&quot;hello!&quot;&gt;&lt;/child&gt; </code></pre> <p>结果：</p> <pre class="hljs"><code class="">hello! </code></pre>',
@@ -182,19 +162,10 @@
     },
     mounted() {
       this.tid = this.$route.params.t_id;
-      this.currentUserName = localStorage.getItem('userName');
-      this.currentUserEmail = localStorage.getItem('userEmail');
 
-      this.fetchTopicDetail();
-      this.fetchComment();
+      this.fetchTopicDetail()
     },
-    methods: {
-      getCommentContent(val, render) {
-        this.commentContent = render;
-      },
-      getReplyContent(val, render) {
-        this.replyContent = render;
-      },
+    methods:{
       fetchTopicDetail() {
         // console.log(this.gid)
         let param = {
@@ -213,95 +184,7 @@
           console.log(error)
         })
       },
-      createComment() {
-        // this.isbuilding = true;
-
-        this.$http.post('/comment/createcomment', {
-          content: this.commentContent,
-          userName: this.currentUserName,
-          t_id: this.tid,
-        }).then(response => {
-          let res = response.data;
-          if (res.status == "1") {
-            // this.$router.push('/groupindex')
-            // this.$message.success(`创建成功！`);
-            this.$message.success('评论成功');
-            // this.formGroup.groupIntro = '';
-          } else {
-            this.$message.error('评论失败！请重试');
-
-          }
-        }).catch(err => {
-          this.$message.error(`${err.message}`, 'ERROR!');
-        })
-      },
-      fetchComment(flag) {
-        let param = {
-          page: this.page,
-          pageSize: this.pageSize,
-          t_id: this.tid
-        };
-        axios.get("/comment/fetchcomment", {
-          params: param
-        }).then((response) => {
-
-          var res = response.data;
-          // this.loading = false;
-          // status == 0 数据读取成功
-          if (res.status == "1") {
-            // 不是第一次，需要拼接数据
-            if (flag) {
-              this.comments = this.comments.concat(res.result.list.comments);
-              //如果没有数据，停止滚动加载
-              if (res.result.count == 0) {
-                this.busy = true;
-              } else {
-                this.busy = false;
-              }
-            } else {
-              this.comments = res.result.list.comments;
-              this.busy = false;
-            }
-          } else {
-            this.comments = [];
-          }
-
-        }).catch(function (error) {
-          console.log(error)
-        })
-      },
-      createReply(id) {
-        //   console.log(id);
-        this.$http.post('/comment/createreply', {
-          content: this.replyContent,
-          userName: this.currentUserName,
-          c_id: id,
-        }).then(response => {
-          let res = response.data;
-          if (res.status == "1") {
-            // this.$router.push('/groupindex')
-            // this.$message.success(`创建成功！`);
-            this.$message.success('回复成功');
-            // this.formGroup.groupIntro = '';
-          } else {
-            this.$message.error('回复失败！请重试');
-
-          }
-        }).catch(err => {
-          this.$message.error(`${err.message}`, 'ERROR!');
-        })
-      },
-
-      loadMore() {
-        this.busy = true;
-        setTimeout(() => {
-          this.page++;
-          this.fetchGroup(true);
-        }, 500);
-      },
-
     }
-
 
   }
 
@@ -431,17 +314,8 @@
   }
 
   .user-comment li {
-      margin-top: 10px;
-      /* margin-bottom: 5px; */
     border-bottom: 1px solid #f3f3f3;
     list-style: none;
-  }
-  .user-comment li:last-child {
-    border-bottom: none;
-    list-style: none;
-  }
-  .user-reply li {
-    margin-bottom: 5px;
   }
 
 
@@ -454,7 +328,6 @@
   }
 
   .reply {
-    /* float: right; */
     margin-top: 20px;
   }
 
