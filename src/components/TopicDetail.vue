@@ -22,9 +22,9 @@
       <section class="comment">
         <div class="comment-head">
           <div class="comment-count">评论
-            <span>( 10 )</span>
+            <span>( {{commentNum}} )</span>
           </div>
-          <div class="user-avatar-list">
+          <!-- <div class="user-avatar-list">
             <v-gravatar email="8356145749@qq.com" size='25' />
             <v-gravatar email="83614574@qq.com" size='25' />
             <v-gravatar email="83564574@qq.com" size='25' />
@@ -35,7 +35,7 @@
             <v-gravatar email="835615742@qq.com" size='25' />
             <v-gravatar email="835615743@qq.com" size='25' />
             <v-gravatar email="835615744@qq.com" size='25' />
-          </div>
+          </div> -->
         </div>
         <div class="comment-input">
           <div class="user-avatar">
@@ -53,7 +53,7 @@
 
         <section class="user-comment">
           <ul class="comment-list">
-            <li v-for="comment in comments" v-bind:key="comment._id">
+            <li v-for="(comment,index) in comments" v-bind:key="comment._id">
               <el-row :gutter="10">
                 <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
                   <div class="grid-content">
@@ -73,11 +73,12 @@
                         </div>
                         <div v-html="comment.content" class="custom markdown-body"></div>
                         <div class="reply">
-                          <a href="javascript:void(0)" v-on:click="showReplyLayout=!showReplyLayout">Reply</a>
+                          <!-- <a href="javascript:void(0)" v-on:click="showReplyLayout=!showReplyLayout">Reply</a> -->
+                          <a href="javascript:void(0)" @click="showReplyLayout(index)">Reply</a>
                         </div>
                       </div>
                       <!-- 回复评论输入框 -->
-                      <div v-show="showReplyLayout">
+                      <div v-show="index == i">
                         <div class="comment-input">
                           <div class="user-avatar">
                             <v-gravatar v-bind:email="currentUserEmail" size='40' />
@@ -90,6 +91,7 @@
                         <div class="actions">
                           <!-- <input type="submit" name="user-submit" id="user-submit" value="回复"> -->
                           <a href="javascript:;" @click="createReply(comment._id)">回复</a>
+                          <a href="javascript:;" @click="cancelReply">取消</a>
                         </div>
                       </div>
                       <!-- 回复评论显示 -->
@@ -152,19 +154,21 @@
     name: 'topicdetail',
     data() {
       return {
+        i:-1,
         tid: '',
         topicdetail: [],
         currentUserEmail: '',
         commentContent: '',
         replyContent: '',
         comments: [],
+        commentNum:0,
         busy: true,
         page: 1,
         pageSize: 5,
 
         // userName:'test',
 
-        showReplyLayout: false,
+        // showReplyLayout: false,
         value: '<p>组件实例的作用域是孤立的。这意味着不能 (也不应该) 在子组件的模板内直接引用父组件的数据。父组件的数据需要通过 prop 才能下发到子组件中</p> <p>子组件要显式地用 <code>props</code> 选项声明它预期的数据：</p> <pre class="hljs"><code class="">Vue.component(\'child\', {<br> // 声明 props<br> props: [\'message\'],<br> // 就像 data 一样，prop 也可以在模板中使用<br> // 同样也可以在 vm 实例中通过 this.message 来使用<br> template: \'&lt;span&gt;{{ message }}&lt;/span&gt;\'template: \'&lt;span&gt;{{ message }}&lt;/span&gt;\'template: \'&lt;span&gt;{{ message }}&lt;/span&gt;\'<br> }) </code></pre> <p>然后我们可以这样向它传入一个普通字符串：</p> <pre class="hljs"><code class="">&lt;child message=&quot;hello!&quot;&gt;&lt;/child&gt; </code></pre> <p>结果：</p> <pre class="hljs"><code class="">hello! </code></pre>',
         value2: '<h4>动态 Prop</h4> <p>与绑定到任何普通的 HTML 特性相类似，我们可以用 v-bind 来动态地将 prop 绑定到父组件的数据。每当父组件的数据变化时，该变化也会传导给子组件：</p> <pre class="hljs"><code class="">&lt;div&gt;<br> &lt;input v-model=&quot;parenMsg&quot;&gt;<br> &lt;child v-bind:my-message=&quot;parenMsg&quot;&gt;&lt;/child&gt;&lt;child v-bind:my-message=&quot;parenMsg&quot;&gt;&lt;/child&gt;&lt;child v-bind:my-message=&quot;parenMsg&quot;&gt;&lt;/child&gt;<br>&lt;/div&gt; </code></pre>',
         //   value2:'<h4>动态 Prop</h4> <p>与绑定到任何普通的 HTML 特性相类似，我们可以用 v-bind 来动态地将 prop 绑定到父组件的数据。每当父组件的数据变化时，该变化也会传导给子组件：</p> ',
@@ -194,6 +198,16 @@
       },
       getReplyContent(val, render) {
         this.replyContent = render;
+      },
+      showReplyLayout(index) {
+        console.log(`before==>i:${this.i}`)
+        console.log(`before==>index:${index}`)
+        this.i = index;
+        console.log(`after==>i:${this.i}`)
+        console.log(`after==>index:${index}`)
+      },
+      cancelReply(){
+        this.i = -1
       },
       fetchTopicDetail() {
         // console.log(this.gid)
@@ -249,6 +263,7 @@
           // this.loading = false;
           // status == 0 数据读取成功
           if (res.status == "1") {
+            this.commentNum = res.result.count;
             // 不是第一次，需要拼接数据
             if (flag) {
               this.comments = this.comments.concat(res.result.list.comments);
@@ -281,6 +296,7 @@
           if (res.status == "1") {
             // this.$router.push('/groupindex')
             // this.$message.success(`创建成功！`);
+            this.$router.go()
             this.$message.success('回复成功');
             // this.formGroup.groupIntro = '';
           } else {

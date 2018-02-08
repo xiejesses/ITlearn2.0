@@ -47,7 +47,10 @@
                 </span>
                 <span>
                 <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
-                <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)"><i class="heart el-icon-fa el-icon-fa-heart-o"   v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a>
+                <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)">
+                  <!-- <i class="heart el-icon-fa el-icon-fa-heart-o"   v-bind:class="{heartclick:i == 1}" aria-hidden="true"></i> -->
+                  <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:lovelinkid.indexOf(article._id) >= 0}"  aria-hidden="true"></i>
+                  </a>
                 </span>
               </div>
             </section>
@@ -76,6 +79,7 @@
     name: 'article',
     data() {
       return {
+        i:-1,
         loading:false,
         score:10,
         isupmod:false,
@@ -85,7 +89,10 @@
 
         busy:true,
         page:1,
-        pageSize:5
+        pageSize:5,
+
+        lovelinkid:[],
+
       }
     },
     // created () {
@@ -94,10 +101,12 @@
     // },
     mounted() {
        this.fetchArticle();
-      
+      this.fetchLovelink();
     },
     computed:{
-
+      
+        
+      
     },
     
     watch: {
@@ -107,6 +116,30 @@
       changeVote (id,index) {
         this.articles[index].voteActive = true;
         // axios(id)
+      },
+      clickheart() {
+        this.clickheart = !this.clickheart
+      },
+      fetchLovelink() {
+        if(localStorage.getItem('userName')) {
+          let param = {
+            userName:localStorage.getItem('userName')
+          }
+          this.$http.get('/users/getlovelink',{params:param})
+          .then(response => {
+            let res = response.data;
+            if(res.status == '1') {
+              this.lovelinkid = res.doc.lovelink;
+              console.log(`this.lovelinkid:${this.lovelinkid}`)
+              console.log('lovelink-成功')
+            } else {
+              console.log('lovelink-失败')
+            }
+          })
+        } 
+        // else {
+        //   return false;
+        // }
       },
       addlovelink (sharelink_id,index) {
         if(!localStorage.getItem('userName')) {
@@ -119,11 +152,17 @@
         }).then(response => {
           let res = response.data
           if(res.status == "1"){
-            this.isHeartClick = true;
+            // this.isHeartClick = true;
+            // this.i = index;
+            this.lovelinkid = res.lovelink;
             this.$message.success('成功收藏');
+            // return true;
           } else if(res.status == "2") {
-            this.isHeartClick = false;
+            // this.isHeartClick = false;
+            // this.i = -1;
+            this.lovelinkid = res.lovelink;
             this.$message.error('取消收藏');
+            // return false;
           } else {
             this.$message.error('发生错误');
           }

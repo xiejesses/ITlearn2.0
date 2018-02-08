@@ -68,7 +68,7 @@
               </div>
             </div>
             <div class="comment-num" >
-              <span class="number">3</span>
+              <span class="number">{{topic.comments.length}}</span>
               <i class="comment el-icon-fa el-icon-fa-comments-o" aria-hidden="true"></i>
             </div>
           </li>
@@ -118,6 +118,7 @@ import axios from 'axios'
         ).then(response => {
           let res = response.data;
           if(res.status == "1") {
+            // this.commentNum = res.result.groupTopic.comments.length
             this.groupdetail = res.result
           } else {
             this.groupdetail = []
