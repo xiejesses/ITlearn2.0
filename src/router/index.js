@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // import Index from '@/components/Index'
 import Login from '@/components/Login'
+import Register from '@/components/Register'
 import Share from '@/components/Share'
 import User from '@/components/User'
 import Article from '@/components/Article'
@@ -10,7 +11,7 @@ import Group from '@/components/Group'
 import GroupDetail from '@/components/GroupDetail'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import TopicDetail from '@/components/TopicDetail'
-import test from '@/components/test'
+// import test from '@/components/test'
 import Vindex from '@/components/Vindex'
 
 Vue.use(Router)
@@ -89,13 +90,18 @@ const router = new Router({
       name:'login',
       component:Login
     },
+    {
+      path:'/register',
+      name:'register',
+      component:Register
+    },
     
     //测试用
-    {
-      path: '/test',
-      name: '',
-      component: test
-    },
+    // {
+    //   path: '/test',
+    //   name: '',
+    //   component: test
+    // },
   ]
 })
 

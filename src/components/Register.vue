@@ -1,43 +1,51 @@
 <template>
-  <div class="login">
+  <div class="register">
     <div class="main">
-      <section class="log-in">
+      <section class="register-in">
 
         <section class="traditional-auth">
 
-          <form name="loginform" :v-model="formLogin" id="loginform" action="#" method="post" v-if="isloginfrom">
-            <h2>登录</h2>
+          <form name="registerform" :v-model="formRegister" id="registerform" action="#" method="post">
+            <h2>注册</h2>
             <h4 class="errMessage"></h4>
-            <p :class="{ 'control': true }">
-              <input v-validate="'required|email'" v-model="formLogin.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
-                name="userEmail" type="text" placeholder="Email">
-              <span v-show="errors.has('userEmail')" class="help is-danger">{{ errors.first('userEmail') }}</span>
+            <p>
+                 <input  v-model="formRegister.userName" name="userName" type="text" placeholder="用户名">
             </p>
             <!-- <p>
-              <input type="text" v-model="formLogin.userEmail" name="userEmail" id="user_login" class="input" placeholder="Email" value=""
-                autofocus>
+                 <input  v-model="formRegister.userEmail" name="userEmail" type="text" placeholder="邮箱">
+            </p>
+            <p>
+                 <input  v-model="formRegister.userPwd" name="userPwd" type="text" placeholder="密码">
+            </p> -->
+
+            <!-- <p :class="{ 'control': true }">
+              <input v-validate="'required|userName'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
+                name="userName" type="text" placeholder="用户名">
+              <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
             </p> -->
             <p :class="{ 'control': true }">
-              <input v-validate="'required|Pwd'" v-model="formLogin.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
-                name="userPwd" type="password" placeholder="Password">
+              <input v-validate="'required|email'" v-model="formRegister.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
+                name="userEmail" type="text" placeholder="邮箱">
+              <span v-show="errors.has('userEmail')" :v-model="emailError = errors.has('userEmail')" class="help is-danger">{{ errors.first('userEmail') }}</span>
+            </p>
+            <p :class="{ 'control': true }">
+              <input v-validate="'required|Pwd'" v-model="formRegister.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
+                name="userPwd" type="password" placeholder="密码">
               <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
             </p>
-            <!-- <p>
-              <input type="password" v-model="formLogin.userPwd" name="userPwd" id="user_pass" class="input" placeholder="Password" value="">
-            </p> -->
+            
             <div class="actions">
               <div class="buttons">
-                <!-- <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p> -->
                 <p class="submit">
-                  <a href="javascript:;" @click="login">登录</a>
+                  <a href="javascript:;" @click="register">注册</a>
                 </p>
                 <!-- <p class="cancel">取消</p> -->
               </div>
               <div class="toRegister">
-                <h3 class="message">还没有帐户？
-                  <!-- <a href="javascript:void(0)" @click="isloginfrom=false">立即注册</a> -->
-                  <!-- <router-link to="/register " class="">点击注册</router-link> -->
-                  <router-link :to="{ name: 'register'}" >点击注册</router-link>
+                <h3 class="message">已有帐户？
+                  <!-- <a href="javascript:void(0)" @click="isloginfrom=true">点击登录</a> -->
+                  <!-- <router-link to="/login " class="">点击登录</router-link> -->
+                  <router-link :to="{ name: 'login'}" >点击登录</router-link>
                 </h3>
               </div>
             </div>
@@ -55,15 +63,10 @@
   } from 'vuex'
   // import axios from 'axios'
   export default {
-    name: 'login',
+    name: 'register',
     data() {
       return {
-        isloginfrom: true,
         emailError: '',
-        formLogin: {
-          userEmail: '',
-          userPwd: '',
-        },
         formRegister: {
           userName: '',
           userEmail: '',
@@ -74,48 +77,6 @@
     methods: {
       ...mapActions(['userLogin']),
 
-      login() {
-        let user = this.formLogin;
-        let formData = {
-          userEmail: user.userEmail,
-          userPwd: user.userPwd
-        };
-        // console.log(this.$errors.has('userEmail'))
-        // console.log('11111')
-        this.$validator.validateAll().then((result) => {
-          if (result) { // eslint-disable-next-line
-            this.$http.post('/users/login', {
-              // axios.post("/users/login",{
-              userEmail: formData.userEmail,
-              userPwd: formData.userPwd
-            })
-            .then(response => {
-              let res = response.data;
-              if (res.status == "1") {
-                this.userLogin(res);
-                this.$message.success(`${res.message}`)
-                //登录成功，跳转到首页
-                //this.$router.push({name:'Home'})
-                this.$router.push('/')
-              } else {
-                this.$message.error(`${res.message}`);
-                return false;
-              }
-            })
-            .catch(err => {
-              this.$message.error(`${err.message}`, 'ERROR!');
-            })
-          } else {
-              this.$message.error(`邮箱或密码有误，请重新填写！`);
-              return false;
-          }
-          
-        });
-
-
-          
-
-      },
 
       //关闭注册验证
       register() {
@@ -189,32 +150,6 @@
       //     })
       // }
       // //没有注册验证
-
-      // login(){
-      //          let user = this.formLogin;
-      //             let formData = {
-      //                 userEmail: user.userEmail,
-      //                 userPwd: user.userPwd
-      //             };
-      //         axios.post("/users/login",{
-      //              userEmail:formData.userEmail,
-      //         userPwd:formData.userPwd
-      //         },{headers:{'Content-Type':'application/x-www-form-urlencoded'}}).then((response)=>{
-      //             let res = response.data;
-      //             if(res.status=="1"){
-      //             //   this.errorTip = false;
-      //             //   this.loginModalFlag = false;
-      //             //   this.$store.commit("updateUserInfo",res.result.userName);
-      //             //   this.getCartCount();
-      //             alert(res.message)
-      //             }else{
-      //             //   this.errorTip = true;
-      //             alert(res.message)
-      //             }
-      //         }).catch(err => {
-      //             this.$message.error(`ai${err.message}`,'ERROR!');
-      //     })
-      //     },
     }
   }
 
@@ -227,7 +162,7 @@
     /* height: 800px; */
   }
 
-  .log-in h2 {
+  .register-in h2 {
     color: #676c72;
   }
 
@@ -256,7 +191,7 @@
       width: 720px;
       margin: 0 auto;
     }
-    .log-in h2 {
+    .register-in h2 {
       display: block;
       /* position: relative; */
       text-align: center;
@@ -270,7 +205,7 @@
     }
   }
 
-  .log-in {
+  .register-in {
     width: 80%;
     margin: 0 auto;
 
@@ -278,21 +213,21 @@
   }
 
   @media screen and (min-width:500px) {
-    .log-in {
+    .register-in {
       width: 75%;
       margin: 0 auto;
     }
   }
 
   @media screen and (min-width:768px) {
-    .log-in {
+    .register-in {
       width: 60%;
       margin: 0 auto;
     }
   }
 
   @media screen and (min-width:960px) {
-    .log-in {
+    .register-in {
       width: 376px;
       margin: 0 auto;
       background: #ffffff;
