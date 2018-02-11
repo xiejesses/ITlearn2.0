@@ -43,20 +43,21 @@
           <form name="registerform" :v-model="formRegister" id="registerform" action="#" method="post" v-else>
             <h2>注册</h2>
             <h4 class="errMessage"></h4>
-            <!-- <p :class="{ 'control': true }">
-              <input v-validate="'required|Name'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
-                name="userName" type="text" placeholder="用户名">
-              <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
-            </p> -->
             <p>
                  <input  v-model="formRegister.userName" name="userName" type="text" placeholder="用户名">
+            </p>
+            <p>
+                 <input  v-model="formRegister.userEmail" name="userEmail" type="text" placeholder="邮箱">
+            </p>
+            <p>
+                 <input  v-model="formRegister.userPwd" name="userPwd" type="text" placeholder="密码">
             </p>
             <!-- <p :class="{ 'control': true }">
               <input v-validate="'required|userName'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
                 name="userName" type="text" placeholder="用户名">
               <span v-show="errors.has('userName')" class="help is-danger">{{ errors.first('userName') }}</span>
             </p> -->
-            <p :class="{ 'control': true }">
+            <!-- <p :class="{ 'control': true }">
               <input v-validate="'required|email'" v-model="formRegister.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
                 name="userEmail" type="text" placeholder="邮箱">
               <span v-show="errors.has('userEmail')" :v-model="emailError = errors.has('userEmail')" class="help is-danger">{{ errors.first('userEmail') }}</span>
@@ -65,7 +66,7 @@
               <input v-validate="'required|Pwd'" v-model="formRegister.userPwd" :class="{'input': true, 'is-danger': errors.has('userPwd') }"
                 name="userPwd" type="password" placeholder="密码">
               <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
-            </p>
+            </p> -->
             
             <div class="actions">
               <div class="buttons">
@@ -156,6 +157,47 @@
 
       },
 
+      ////关闭注册验证
+      // register() {
+      //   let user = this.formRegister;
+      //   let formData = {
+      //     userName: user.userName,
+      //     userEmail: user.userEmail,
+      //     userPwd: user.userPwd
+      //   };
+        
+      //   this.$validator.validateAll().then((result) => {
+      //     if (result) { // eslint-disable-next-line
+      //       this.$http.post('/users/register', {
+      //       userName: formData.userName,
+      //       userEmail: formData.userEmail,
+      //       userPwd: formData.userPwd
+      //     })
+      //     .then(response => {
+      //       let res = response.data;
+      //       if (res.status == "1") {
+      //         this.userLogin(res);
+      //         this.$message.success(`${res.message}`)
+      //         //登录成功，跳转到首页
+      //         //this.$router.push({name:'Home'})
+      //         this.$router.push('/')
+      //       } else {
+      //         this.$message.error(`${res.message}`);
+      //         return false;
+      //       }
+      //     })
+      //     .catch(err => {
+      //       this.$message.error(`${err.message}`, 'ERROR!');
+      //     })
+      //     } else {
+      //         this.$message.error(`邮箱或密码有误，请重新填写！`);
+      //         return false;
+      //     }
+          
+      //   });
+      // }
+      ////关闭注册验证
+
 
       register() {
         let user = this.formRegister;
@@ -165,8 +207,8 @@
           userPwd: user.userPwd
         };
         
-        this.$validator.validateAll().then((result) => {
-          if (result) { // eslint-disable-next-line
+        // this.$validator.validateAll().then((result) => {
+          // if (result) { // eslint-disable-next-line
             this.$http.post('/users/register', {
             userName: formData.userName,
             userEmail: formData.userEmail,
@@ -188,16 +230,13 @@
           .catch(err => {
             this.$message.error(`${err.message}`, 'ERROR!');
           })
-          } else {
-              this.$message.error(`邮箱或密码有误，请重新填写！`);
-              return false;
-          }
+          // } else {
+          //     this.$message.error(`邮箱或密码有误，请重新填写！`);
+          //     return false;
+          // }
           
-        });
-        
-        
+        // });
       }
-
 
       // login(){
       //          let user = this.formLogin;
