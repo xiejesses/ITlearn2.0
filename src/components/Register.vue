@@ -37,7 +37,7 @@
             <div class="actions">
               <div class="buttons">
                 <p class="submit">
-                  <a href="javascript:;" @click="register">注册</a>
+                  <a href="javascript:;" class="user-register" @click="register">注册</a>
                 </p>
                 <!-- <p class="cancel">取消</p> -->
               </div>
@@ -261,17 +261,19 @@
     position: relative;
   }
 
-  input[type="submit"] {
+  .user-register {
     display: inline-block;
     background: #f28964;
     height: 36px;
-    min-width: 100px;
+    min-width: 80px;
     padding: 0 10px 2px 10px;
     border: none;
     border-radius: 2px;
     outline: none;
     font-size: 17px;
-    line-height: 33px;
+    line-height: 36px;
+    text-decoration: none;
+    text-align: center;
     color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;

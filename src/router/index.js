@@ -42,6 +42,9 @@ const router = new Router({
         {
           path: '/MarkdownEditor',
           name: 'markdowneditor',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: MarkdownEditor
         },
         {
@@ -59,26 +62,41 @@ const router = new Router({
         {
           path:'/g/:g_id',
           name:'groupdetail',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component:GroupDetail
         },
         {
           path:'/t/:t_id',
           name:'topicdetail',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component:TopicDetail
         },
         {
           path:'/user/:uName',
           name:'user',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component:User,
           children:[
             {
               path:'',
               name:'article',
+              meta: {
+                requireAuth:true //表示进入该路由需要登录
+              },
               component:Article
             },
             {
               path:'mygroup',
               name:'group',
+              meta: {
+                requireAuth:true //表示进入该路由需要登录
+              },
               component:Group
             }
           ]

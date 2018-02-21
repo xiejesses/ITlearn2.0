@@ -29,7 +29,7 @@
               <div class="buttons">
                 <!-- <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p> -->
                 <p class="submit">
-                  <a href="javascript:;" @click="login">登录</a>
+                  <a href="javascript:;" class="user-login" @click="login">登录</a>
                 </p>
                 <!-- <p class="cancel">取消</p> -->
               </div>
@@ -94,9 +94,13 @@
               if (res.status == "1") {
                 this.userLogin(res);
                 this.$message.success(`${res.message}`)
-                //登录成功，跳转到首页
-                //this.$router.push({name:'Home'})
-                this.$router.push('/')
+                //登录成功，跳转到要到的页面
+                var redirect = decodeURIComponent(this.$route.query.redirect || '/')
+                this.$router.push({
+                  //  你需要接受路由的参数再跳转
+                  path: redirect
+                })
+                // this.$router.push('/')
               } else {
                 this.$message.error(`${res.message}`);
                 return false;
@@ -138,9 +142,14 @@
             if (res.status == "1") {
               this.userLogin(res);
               this.$message.success(`${res.message}`)
-              //登录成功，跳转到首页
+              //注册成功，跳转到之前页面
               //this.$router.push({name:'Home'})
-              this.$router.push('/')
+              var redirect = decodeURIComponent(this.$route.query.redirect || '/')
+                this.$router.push({
+                  //  你需要接受路由的参数再跳转
+                  path: redirect
+                })
+              // this.$router.push('/')
             } else {
               this.$message.error(`${res.message}`);
               return false;
@@ -326,17 +335,19 @@
     position: relative;
   }
 
-  input[type="submit"] {
+  .user-login {
     display: inline-block;
     background: #f28964;
     height: 36px;
-    min-width: 100px;
+    min-width: 80px;
     padding: 0 10px 2px 10px;
     border: none;
     border-radius: 2px;
     outline: none;
     font-size: 17px;
-    line-height: 33px;
+    line-height: 36px;
+    text-decoration: none;
+    text-align: center;
     color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;

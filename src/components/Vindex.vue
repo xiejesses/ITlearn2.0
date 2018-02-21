@@ -15,29 +15,37 @@
             </svg> -->
 
 
-          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" class="logo"><path d="M50.07,0.212c-27.614,0-50,22.384-50,49.999c0,9.157,2.474,17.731,6.77,25.111L2.044,98.237l22.917-4.796
-          c7.381,4.297,15.954,6.768,25.109,6.768c27.614,0,50-22.385,50-49.999C100.07,22.596,77.684,0.212,50.07,0.212z" class="bubble"/><path d="M30.991,65.689c-0.594,0-1.188-0.227-1.642-0.681L16.192,51.852c-0.436-0.436-0.679-1.024-0.679-1.642
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="100px"
+              height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" class="logo">
+              <path d="M50.07,0.212c-27.614,0-50,22.384-50,49.999c0,9.157,2.474,17.731,6.77,25.111L2.044,98.237l22.917-4.796
+          c7.381,4.297,15.954,6.768,25.109,6.768c27.614,0,50-22.385,50-49.999C100.07,22.596,77.684,0.212,50.07,0.212z" class="bubble"
+              />
+              <path d="M30.991,65.689c-0.594,0-1.188-0.227-1.642-0.681L16.192,51.852c-0.436-0.436-0.679-1.024-0.679-1.642
           c0-0.616,0.245-1.206,0.679-1.642l13.158-13.157c0.906-0.906,2.376-0.906,3.282,0s0.906,2.376,0,3.282L21.116,50.21l11.517,11.518
-          c0.906,0.905,0.906,2.376,0,3.281C32.18,65.463,31.585,65.689,30.991,65.689z" class="icon"/><path d="M69.15,65.689c-0.594,0-1.188-0.227-1.641-0.679c-0.905-0.907-0.905-2.375,0-3.283L79.024,50.21
+          c0.906,0.905,0.906,2.376,0,3.281C32.18,65.463,31.585,65.689,30.991,65.689z" class="icon" />
+              <path d="M69.15,65.689c-0.594,0-1.188-0.227-1.641-0.679c-0.905-0.907-0.905-2.375,0-3.283L79.024,50.21
           L67.51,38.694c-0.905-0.906-0.905-2.375,0-3.282c0.907-0.907,2.376-0.905,3.283,0l13.155,13.157c0.906,0.906,0.906,2.376,0,3.282
-          L70.793,65.009C70.337,65.463,69.744,65.689,69.15,65.689z" class="icon"/><path d="M40.201,65.689c-0.485,0-0.973-0.15-1.391-0.464c-1.025-0.769-1.233-2.225-0.464-3.249l19.737-26.315
-          c0.768-1.026,2.223-1.234,3.25-0.465c1.025,0.77,1.232,2.225,0.463,3.25L42.06,64.761C41.603,65.369,40.906,65.689,40.201,65.689z" class="icon"/></svg>
+          L70.793,65.009C70.337,65.463,69.744,65.689,69.15,65.689z" class="icon" />
+              <path d="M40.201,65.689c-0.485,0-0.973-0.15-1.391-0.464c-1.025-0.769-1.233-2.225-0.464-3.249l19.737-26.315
+          c0.768-1.026,2.223-1.234,3.25-0.465c1.025,0.77,1.232,2.225,0.463,3.25L42.06,64.761C41.603,65.369,40.906,65.689,40.201,65.689z"
+                class="icon" />
+            </svg>
 
           </router-link>
         </h1>
       </section>
       <nav class="navigation">
-        
+
         <router-link to="/" exact="true" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
         <router-link to="/share" class="LastItem">分享链接</router-link>
         <a href="javascript:void(0)" @click="isfocused = true">
           <i class="el-icon-search"></i>
         </a>
-        
+
       </nav>
       <!-- 用户控制中心下拉菜单 -->
-      <div class="user-action" v-if="userName">
+      <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <v-gravatar :email="userEmail" size='40' />
@@ -52,7 +60,7 @@
             <router-link to="/">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
-              <el-dropdown-item divided @click.native="loginOut">退出</el-dropdown-item>
+            <el-dropdown-item divided @click.native="loginOut">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -75,10 +83,10 @@
             <li>
               <a href="#" class="search-link" @click="isfocused = true">搜索</a>
             </li>
-            <li >
+            <li>
               <router-link to="/login" class="">登录</router-link>
             </li>
-            <li >
+            <li>
               <router-link to="/share" class="">分享链接</router-link>
             </li>
             <li>
@@ -90,19 +98,24 @@
       </section>
     </header>
 
+    <!-- <router-view :key="key"></router-view> -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import {mapActions} from 'vuex'
+  import {
+    mapGetters
+  } from 'vuex'
+  import {
+    mapActions
+  } from 'vuex'
   export default {
     name: 'vindex',
     data() {
       return {
-        userName:'',
-        userEmail:'',
+        userName: '',
+        userEmail: '',
         isvisible: false,
         isfocused: false,
         msg: 'Welcome to Your Vue.js App'
@@ -114,44 +127,67 @@ import {mapActions} from 'vuex'
     methods: {
       ...mapActions(['userLoginOut']),
       // 登出loginOut
-      loginOut(){
+      loginOut() {
         this.userLoginOut();
         if (!localStorage.getItem('token')) {
-            // this.$router.push('/') //不带刷新
-            this.$router.go('/') //带刷新
-            this.$message.success('登出成功');
+
+          this.userName = '';
+          this.userEmail = '';
+          this.$router.push({
+            path: '/'
+          }) //不带刷新
+          this.$message.success('登出成功');
+          // this.$router.go(0)
+          // this.$router.go('/'); //带刷新
         } else {
-            this.$message.success('登出失败');
+          this.$message.success('登出失败');
         }
-        
+
       },
       closeModal() {
         this.isvisible = false;
         this.isfocused = false;
       },
-      
+      userInfo() {
+        this.userName = localStorage.getItem('userName');
+        this.userEmail = localStorage.getItem('userEmail');
+      }
+
 
     },
     watch: {
-      
+      '$route': 'userInfo',
+
+      //   userName:function (val, oldVal) {
+      //   console.log('new: %s, old: %s', val, oldVal)
+      // },
     },
     mounted() {
-       this.userName = localStorage.getItem('userName');
-       this.userEmail = localStorage.getItem('userEmail');
+      this.userName = localStorage.getItem('userName');
+      this.userEmail = localStorage.getItem('userEmail');
       //  this.userEmail = this.$store.state.userEmail;
       // this.userName = 'js';
       // this.$refs['input'].focus()
       // console.log("store" + store.state)
-        // this.userName = this.$store.getters.getUserName;
-      
+      // this.userName = this.$store.getters.getUserName;
+
     },
-   
+
+    //   updated: function () {
+    //   this.$nextTick(function () {
+    //     // Code that will run only after the
+    //     // entire view has been re-rendered
+    //     console.log("更新了")
+    //   })
+    // },
+
     created() {
       //  this.userName = localStorage.getItem('userName');      
     },
-    computed:{
-      // userName() {
-      //   return localStorage.getItem('userName');
+
+    computed: {
+      // key() {
+      //     return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
       // }
     }
   }
@@ -191,22 +227,25 @@ import {mapActions} from 'vuex'
     align-items: center;
     margin: -5px 0 0 12px;
   }
+
   @media screen and (min-width:960px) {
     .mini-header {
       position: fixed;
       left: 20px;
-      top:5px;
+      top: 5px;
     }
   }
 
   .navigation .router-link-active {
     background: #f3f3f3;
   }
+
   /* @media screen and(min-width: 501px) {
   .menu-wrapper li:nth-child(3) {
     visibility: hidden;
   }
 } */
+
   /*注意css执行顺序，后面的会覆盖前面的*/
 
   .menu-wrapper li:nth-child(4) {
@@ -220,7 +259,7 @@ import {mapActions} from 'vuex'
       margin: 0 auto;
       display: flex;
     }
-   
+
   }
 
   @media screen and (max-width:1201px) {
@@ -289,7 +328,6 @@ import {mapActions} from 'vuex'
     margin: 0;
     padding: 0;
   } */
-  
 
   .navigation {
     width: 100%;
@@ -308,13 +346,16 @@ import {mapActions} from 'vuex'
     /* display: block; */
     /* align-self: baseline; */
   }
+
   .user-login:hover {
     background: #9cd5b3;
     border-color: #9cd5b3;
   }
+
   .user-login a {
     padding: 5px 13px;
   }
+
   /* @media screen and (min-width:1500px) {
     .user-login {
     margin-top: 50px;
@@ -351,18 +392,21 @@ import {mapActions} from 'vuex'
     background: none !important;
   }
 
-/************
+  /************
   用户控制中心
 **************/
-.user-action a {
+
+  .user-action a {
     text-decoration: none;
-}
+  }
+
   .user-action {
     position: absolute;
     right: 20px;
     top: 24px;
     display: block;
   }
+
   .user-action img {
     cursor: pointer;
     border-radius: 50%;
@@ -372,28 +416,29 @@ import {mapActions} from 'vuex'
 
   @media screen and (min-width:960px) {
     .user-action {
-    position: absolute;
-    right: 30px;
-    top: 25px;
-    display: block;
-  }
-  .user-action img {
-    cursor: pointer;
-    border-radius: 50%;
-    height: 35px;
-    width: 35px;
-  }
+      position: absolute;
+      right: 30px;
+      top: 25px;
+      display: block;
+    }
+    .user-action img {
+      cursor: pointer;
+      border-radius: 50%;
+      height: 35px;
+      width: 35px;
+    }
   }
 
 
   .el-dropdown-menu a {
     text-decoration: none;
     /* color: #818181; */
-}
+  }
 
   /***********
     弹出菜单
 **************/
+
   .menu {
     opacity: 0;
     transition-delay: 0ms, 200ms, 200ms;
@@ -457,6 +502,7 @@ import {mapActions} from 'vuex'
     transform: scale(1);
     visibility: visible;
   }
+
   /**************
       搜索框
 **************/
@@ -534,41 +580,47 @@ import {mapActions} from 'vuex'
   }
 
 
-.logo {
-  width: 43px;
-  height: 48px;
-  animation: bounceIn 0.6s;
-  transform: rotate(0deg) scale(1) translateZ(0);
-  transition: all 0.4s cubic-bezier(.8,1.8,.75,.75);
-  cursor: pointer;
-}
-
-.logo:hover {
-  transform: rotate(10deg) scale(1.1);
-}
-
-.bubble { fill: #2DBF80; }
-.icon { fill:  #fff; }
-
-@keyframes bounceIn {
-  0% {
-    opacity: 1;
-    transform: scale(.3);
-  } 
-
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  } 
-
-  70% {
-    opacity: 1;
-    transform: scale(.9);
+  .logo {
+    width: 43px;
+    height: 48px;
+    animation: bounceIn 0.6s;
+    transform: rotate(0deg) scale(1) translateZ(0);
+    transition: all 0.4s cubic-bezier(.8, 1.8, .75, .75);
+    cursor: pointer;
   }
 
-  100% {
-    opacity: 1;
-    transform: scale(1);
+  .logo:hover {
+    transform: rotate(10deg) scale(1.1);
   }
-}
+
+  .bubble {
+    fill: #2DBF80;
+  }
+
+  .icon {
+    fill: #fff;
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 1;
+      transform: scale(.3);
+    }
+
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    70% {
+      opacity: 1;
+      transform: scale(.9);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
 </style>

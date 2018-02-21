@@ -74,7 +74,8 @@
             
           }
         }).catch(err => {
-              this.$message.error(`${err.message}`, 'ERROR!');
+              this.$message.error(`请先登录！`);
+              // this.$message.error(`${err.message}`, 'ERROR!');
             })
       },
 
