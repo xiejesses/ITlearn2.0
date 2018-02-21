@@ -7,23 +7,25 @@
             <h1>分享链接</h1>
             <h4 class="errMessage"></h4>
             <p>
-              <input type="text" v-model="formShare.url" name="shareUrl" class="input" placeholder="分享网址" value="">
+              <input type="text" v-model="formShare.url" name="shareUrl"  placeholder="分享网址" value="">
             </p>
             <p>
-              <input type="text" v-model="formShare.title" name="shareTitle" class="input" placeholder="标题" value="">
+              <input type="text" v-model="formShare.title" name="shareTitle"  placeholder="标题" value="">
             </p>
-            
-            <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择文章标签">
-              <el-option  v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
+            <p>
+              <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
+                <el-option  v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </p>
             <div class="actions">
               <div class="buttons">
                 <p class="submit">
-                  <a href="javascript:;" @click="share">发布</a>
-                  <!-- <input type="submit" name="user-submit" id="user-submit" value="发布"> -->
-                </p>
+                  <a class="user-submit" href="javascript:;" @click="share">发布</a>
+                  <!-- <input type="submit" @click="share" name="user-submit" value="发布"> -->
+                  <a href="javascript:;" class="cancel" @click="cancel">取消</a>
                 <!-- <p class="cancel">取消</p> -->
+                </p>
               </div>
             </div>
           </form>
@@ -107,7 +109,15 @@
             return false
           }
         })
+      
+      },
+
+      cancel() {
+        this.formShare.url = '';
+        this.formShare.title = '';
+        this.formShare.tags = '';
       }
+
 
     }
     
@@ -119,6 +129,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  a {
+    text-decoration: none;
+  }
   h3 {
     color: #54595f;
   }
@@ -184,6 +197,13 @@
     margin-top: 10px;
   }
 
+  .cancel {
+    color:gray;
+    font-size: 15px;
+    margin-left: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 
   .tips {
     /* width: 300px; */
@@ -215,17 +235,18 @@
     position: relative;
   }
 
-  input[type="submit"] {
+  .user-submit {
     display: inline-block;
     background: #f28964;
     height: 36px;
-    min-width: 100px;
+    min-width: 80px;
     padding: 0 10px 2px 10px;
     border: none;
     border-radius: 2px;
     outline: none;
     font-size: 17px;
-    line-height: 33px;
+    line-height: 36px;
+    text-align: center;
     color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;

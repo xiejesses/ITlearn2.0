@@ -9,28 +9,26 @@
         </div>
         <div class="mavon-editor">
           <!-- <mavon-editor v-on:save="getContent" v-model="formMarkdown.topicContent"  style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor> -->
-          <mavon-editor v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
+          <mavon-editor v-model="formMarkdown.topicContent" v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
         </div>
 
         <div class="actions">
           <div class="buttons">
             <p class="submit">
-              <a href="javascript:;" @click="cretetopic">发布</a>
-              <!-- <input type="submit" name="user-submit" id="user-submit" value="发布"  > -->
-              <!-- <router-link :to="{ name:'topicdetail', params:{tName:value}}" class="article-link">发布</router-link> -->
+              <a href="javascript:;" class="user-submit" @click="cretetopic">发布</a>
+            <a href="javascript:;" class="cancel" @click="cancel">取消</a>
             </p>
             <!-- <p class="cancel">取消</p> -->
-            <a href="javascript:;">取消</a>
           </div>
         </div>
       </form>
       <!-- 测试 -->
-      <div v-html="formMarkdown.topicContent" class="markdown-body">
+      <!-- <div v-html="formMarkdown.topicContent" class="markdown-body">
 
       </div>
       <div>
           {{formMarkdown.topicContent}}
-      </div>
+      </div> -->
       <!-- 测试-end -->
 
     </main>
@@ -133,6 +131,10 @@
         }).catch(err => {
           console.log(err)
         })
+      },
+      cancel() {
+        this.formMarkdown.topicContent = '';
+        this.formMarkdown.topicTitle = '';
       }
     },
     mounted() {
@@ -141,12 +143,15 @@
   }
 
 </script>
-<style>
+<style scoped>
   /* #editor {
      display: flex;
     flex-direction: column;
     min-height: 100%;
   } */
+  a {
+    text-decoration: none;
+  }
   
   main {
     margin: 5px auto;
@@ -161,6 +166,15 @@
     display: flex;
     justify-content: flex-end;
   }
+
+  .cancel {
+    color:gray;
+    font-size: 15px;
+    margin-left: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   input[type="text"] {
     display: block;
     /* color:#dbdee6; */
@@ -180,17 +194,18 @@
     vertical-align: bottom;
     position: relative;
   }
-  input[type="submit"] {
+  .user-submit {
     display: inline-block;
     background: #f28964;
     height: 36px;
-    min-width: 100px;
+    min-width: 80px;
     padding: 0 10px 2px 10px;
     border: none;
     border-radius: 2px;
     outline: none;
     font-size: 17px;
-    line-height: 33px;
+    line-height: 36px;
+    text-align: center;
     color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;

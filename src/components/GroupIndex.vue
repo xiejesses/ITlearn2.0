@@ -17,9 +17,9 @@
            
             <div class="actions">
               <div class="buttons">
-                <a href="javascript:;" @click="createGroup">创建</a>
+                <a href="javascript:;" class="user-submit" @click="createGroup">创建</a>
                 <!-- <input type="submit" @click="createGroup" name="user-submit" id="user-submit" value="创建"> -->
-                <p class="cancel" @click="isbuilding = false">取消</p>
+                <a class="cancel" @click="cancel">取消</a>
               </div>
             </div>
           </form>
@@ -76,6 +76,12 @@
         }).catch(err => {
               this.$message.error(`${err.message}`, 'ERROR!');
             })
+      },
+
+      cancel() {
+        this.isbuilding = false;
+        this.formGroup.groupName = '';
+        this.formGroup.groupIntro = '';
       }
     }
   }
@@ -128,16 +134,17 @@
     background: #2DB270;
   }
 
-input[type="submit"] {
+.user-submit {
     display: inline-block;
     background: #f28964;
     height: 35px;
-    min-width: 100px;
+    min-width: 80px;
     padding: 0 10px 0 10px;
     border: none;
     border-radius: 4px;
     outline: none;
     font-size: 17px;
+    text-decoration: none;
     line-height: 33px;
     color: #fff;
     -webkit-appearance: none;
@@ -151,13 +158,13 @@ input[type="submit"] {
     justify-content: flex-start;
   }
   .cancel {
-    display: inline-block;
-    margin: 5px 5px;
+    color:gray;
+    font-size: 15px;
+    margin-left: 5px;
+    text-decoration: underline;
     cursor: pointer;
-    color: #A0A0A0;
-    text-align: center;
-    border-bottom: 2px solid #a0a0a0;
   }
+
 
 .inputstyle {
   width:250px;

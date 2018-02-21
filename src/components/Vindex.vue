@@ -30,8 +30,6 @@
         
         <router-link to="/" exact="true" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
-        <router-link to="/project" class="ListItem">项目交流</router-link>
-        
         <router-link to="/share" class="LastItem">分享链接</router-link>
         <a href="javascript:void(0)" @click="isfocused = true">
           <i class="el-icon-search"></i>
@@ -52,12 +50,8 @@
               <el-dropdown-item>我的小组</el-dropdown-item>
             </router-link>
             <router-link to="/">
-              <el-dropdown-item>我的项目</el-dropdown-item>
-            </router-link>
-            <router-link to="/">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
-            <!-- <a href="javascript:;" @click="loginOut">退出</a> -->
               <el-dropdown-item divided @click.native="loginOut">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -104,7 +98,7 @@
 import { mapGetters } from 'vuex'
 import {mapActions} from 'vuex'
   export default {
-    name: 'HelloWorld',
+    name: 'vindex',
     data() {
       return {
         userName:'',

@@ -48,7 +48,7 @@
         </div>
         <div class="actions">
           <!-- <input type="submit" name="user-submit" id="user-submit" value="评论"> -->
-          <a href="javascript:;" @click="createComment">评论</a>
+          <a href="javascript:;" class="user-submit" @click="createComment">评论</a>
         </div>
 
         <section class="user-comment">
@@ -84,11 +84,11 @@
                             <v-gravatar v-bind:email="currentUserEmail" size='40' />
                           </div>
                           <div class="mavon-editor">
-                            <mavon-editor v-on:change="getReplyContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
+                            <mavon-editor  v-on:change="getReplyContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
                               v-bind:default_open="edit"></mavon-editor>
                           </div>
                         </div>
-                        <div class="actions">
+                        <div class="reply-actions">
                           <!-- <input type="submit" name="user-submit" id="user-submit" value="回复"> -->
                           <a href="javascript:;" @click="createReply(comment._id)">回复</a>
                           <a href="javascript:;" @click="cancelReply">取消</a>
@@ -207,7 +207,7 @@
         console.log(`after==>index:${index}`)
       },
       cancelReply(){
-        this.i = -1
+        this.i = -1;
       },
       fetchTopicDetail() {
         // console.log(this.gid)
@@ -427,8 +427,19 @@
     display: flex;
     justify-content: flex-end;
   }
+  .reply-actions{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+  }
+  .reply-actions a {
+    margin-left: 5px;
+    font-size: 15px;
+    color: gray;
+    
+  }
 
-  input[type="submit"] {
+  .user-submit{
     display: inline-block;
     background: #f28964;
     height: 36px;
@@ -436,9 +447,11 @@
     padding: 0 10px 2px 10px;
     border: none;
     border-radius: 2px;
+    text-decoration: none;
     outline: none;
     font-size: 17px;
-    line-height: 33px;
+    line-height: 36px;
+    text-align: center;
     color: #fff;
     -webkit-appearance: none;
     margin-top: 10px;
