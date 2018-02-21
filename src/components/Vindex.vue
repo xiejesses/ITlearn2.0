@@ -57,10 +57,8 @@
             <router-link to="/">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
-            <!-- <router-link to="/"> -->
-            <a href="javascript:;" @click="loginOut">退出</a>
-              <!-- <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item> -->
-            <!-- </router-link> -->
+            <!-- <a href="javascript:;" @click="loginOut">退出</a> -->
+              <el-dropdown-item divided @click.native="loginOut">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
