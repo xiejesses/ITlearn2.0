@@ -42,9 +42,12 @@ module.exports = {
       '/sharelink/addlovelink':{
         target:'http://localhost:3000',
       },
-      '/users/login':{
-        target:'http://localhost:3000'
+      '/sharelink/vote':{
+        target:'http://localhost:3000',
       },
+      // '/users/login':{
+      //   target:'http://localhost:3000'
+      // },
       '/users/*':{
         target:'http://localhost:3000'
       },

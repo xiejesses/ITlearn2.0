@@ -115,6 +115,16 @@
       changeVote(id, index) {
         this.articles[index].voteActive = true;
         // axios(id)
+        this.$http.post('sharelink/vote',{
+          article_id:id
+        }).then(response => {
+          let res = response.data;
+          if(res.status == '1') {
+
+          } else {
+
+          }
+        })
       },
       clickheart() {
         this.clickheart = !this.clickheart
