@@ -5,46 +5,47 @@
         <div class="user-data">
           <div class="user-meta">
             <div class="user-avatar">
-              <v-gravatar email="816657874@qq.com" size='40' />
+              <v-gravatar :email="userInfo.userEmail" size='40' />
             </div>
             <div class="user-introduce">
               <span v-if="isSave" class="save">
                 <i @click="saveEdit" class="el-icon-check" title="保存"></i>
                 <i @click="cancleEdit" class="el-icon-close" title="取消"></i>
               </span>
-              <span v-else class="edit">
+              <span v-else v-show="userName == currentUser" class="edit">
                 <i @click="edit" class="el-icon-edit" title="设置"></i>
               </span>
-              <input v-if="isEdit" type="text" v-model="userName">
-              <h2 v-else>{{userName}}</h2>
-              <input v-if="isEdit" type="text" v-model="msg">
-              <p v-else class="description">{{msg}}</p>
-
-
-              <!-- <p class="description">渣渣的前端工程师渣渣的前端工程师渣渣的前端工程师</p> -->
-              <!-- <p  v-else style="white-space: pre-line;">{{ msg }}</p> -->
-              <!-- <p v-else class="description">Design & front end development. Also a back end engineer</p> -->
-              <!-- <p class="description">Design & front end developmenront end development. Also Wordpress themingt. Also Wordpress themingront end development. Also Wordpress theming</p> -->
+              <!-- <input v-if="isEdit" type="text" v-model="userName"> -->
+              <!-- <h2 v-else>{{userInfo.userName}}</h2> -->
+              <h2>{{userInfo.userName}}</h2>
+              <!-- <span>{{userInfo.userName}}</span> -->
+              <textarea v-if="isEdit" v-model="userInfo.userIntro" name="" id="" cols="30" rows="2"></textarea>
+              <!-- <input v-if="isEdit" type="text" v-model="userInfo.userIntro"> -->
+              <pre v-else class="description">
+              <p >{{userInfo.userIntro}}</p>
+              </pre>
+              <!-- <p v-else class="description">{{userInfo.userIntro}}</p> -->
             </div>
           </div>
           <div class="profile-content">
             <ul>
               <li>
-                <div class="digits">83</div>
+                <div class="digits">{{userInfo.following.length}}</div>
                 正在关注
               </li>
               <li>
-                <div class="digits">234</div>
+                <div class="digits">{{follower}}</div>
                 关注者
               </li>
               <li>
-                <div class="digits">51</div>
+                <div class="digits">{{userInfo.lovelink.length}}</div>
                 喜欢
               </li>
             </ul>
           </div>
           <div class="follow">
-            <button>正在关注</button>
+            <!-- <button v-show="userName !== currentUser" @click="follow">关注</button> -->
+            <button v-show="userName !== currentUser" @click="follow">{{followmsg}}</button>
           </div>
         </div>
       </section>
@@ -55,6 +56,7 @@
           <router-link :to="{ name: 'group'}" class="ListItem">小组</router-link>
         </div>
         <router-view></router-view>
+        <!-- <router-view :key="key"></router-view> -->
       </section>
       
     </main>
@@ -66,17 +68,43 @@
     name: 'user',
     data() {
       return {
-        userName: 'Jesses',
+        userName: '',
+        currentUser:'',
+        userInfo:[],
+        followmsg:'关注',
+        follower:'',
         isEdit: false,
         isSave: false,
         msg: 'Design & front end development. Also a back end engineer'
         // msg: '一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑'
       }
     },
+    computed: {
+      // key() {
+      //     return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+      // }
+    },
+    mounted() {
+      this.fetchUserInfo();
+      this.currentUser = localStorage.getItem('userName');
+      this.userName = this.$route.params.uName;
+    },
     methods: {
       saveEdit() {
         this.isEdit = false;
         this.isSave = false;
+        this.$http.post('/users/updateintro',{
+           userName:this.$route.params.uName,
+          userIntro:this.userInfo.userIntro
+        })
+        .then(response => {
+          let res = response.data;
+          if(res.status == "1") {
+            this.$message.success(`更新成功`);
+          } else {
+            this.$message.success(`出现错误，请重试`)
+          }
+        })
       },
       cancleEdit() {
         this.isEdit = false;
@@ -85,14 +113,73 @@
       edit() {
         this.isSave = true;
         this.isEdit = true;
+      },
+
+      fetchUserInfo() {
+        // let param = {
+        //     userName:this.$route.params.uName,
+        //     currentUser:this.currentUser
+        //   }
+        this.$http.post('/users/getuserinfo',{
+          userName:this.$route.params.uName,
+          currentUser:localStorage.getItem('userName')
+        })
+          .then(response => {
+            let res = response.data;
+            if(res.status == '1') {
+              this.userInfo = res.doc;
+              this.follower = res.doc.follower.length;
+              if(res.currentuser.following.indexOf(res.doc._id) === -1) {
+                this.followmsg = "关注"
+              } else {
+                this.followmsg = "取消关注"
+              }
+              // console.log(`this.lovelinkid:${this.lovelinkid}`)
+              // console.log('lovelink-成功')
+            } else {
+              // console.log('lovelink-失败')
+            }
+          })
+      },
+      follow() {
+        this.$http.post('/users/following',{
+           userName:this.$route.params.uName,
+          currentUser:this.currentUser
+        })
+        .then(response => {
+          let res = response.data;
+          if(res.status == "1") {
+            this.followmsg = "取消关注";
+            this.follower++;
+            this.$message.success(`关注成功`);
+          } else if(res.status == "0") {
+            this.followmsg = "关注";
+            this.follower--;
+            this.$message.success(`${res.message}`)
+          } else {
+            this.$message.success(`出现错误`)
+          }
+        })
       }
-    }
+    },
+
   }
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+textarea {
+  /* resize:vertical */
+}
+pre {
+  /* margin: -30px auto; */
+  /* margin-bottom: -30px; */
+  /* height:60px; */
+  white-space: pre-wrap;
+  /* height:min-content; */
+  /* padding: 0; */
+}
   main {
     margin: 5px auto;
     height: auto;
@@ -148,10 +235,14 @@
   }
 
   .description {
-    padding: 5px 0 0 0;
-    font-size: 14px;
+    /* padding: 5px 0 0 0; */
+    /* font-size: 20px; */
     color: #bdc2c6;
-    margin: 0 30px;
+    margin: 0px 30px;
+  }
+  .description p {
+    font-size: 15px;
+    margin: 0 0 -20px 0;
   }
 
   input[type="text"] {
@@ -172,7 +263,9 @@
     width: 64px;
     border-radius: 50%;
   }
-
+  /* .profile-content {
+    margin-top: -25px;
+  } */
   .profile-content ul {
     padding: 0;
     margin-bottom: 10px;
@@ -206,6 +299,7 @@
     background: #2DBF80;
     border: none;
     cursor: pointer;
+    outline: none;
     padding: 5px 15px;
     font-size: 13px;
     color: #fff;
@@ -242,7 +336,7 @@
     .user-introduce h2 {
       font-size: 20px;
     }
-    .description {
+    .description p{
       font-size: 16px;
     }
     .profile-content li {

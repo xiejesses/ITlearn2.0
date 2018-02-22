@@ -78,25 +78,25 @@ const router = new Router({
         {
           path:'/user/:uName',
           name:'user',
-          meta: {
-            requireAuth:true //表示进入该路由需要登录
-          },
+          // meta: {
+          //   requireAuth:true //表示进入该路由需要登录
+          // },
           component:User,
           children:[
             {
               path:'',
               name:'article',
-              meta: {
-                requireAuth:true //表示进入该路由需要登录
-              },
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
               component:Article
             },
             {
               path:'mygroup',
               name:'group',
-              meta: {
-                requireAuth:true //表示进入该路由需要登录
-              },
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
               component:Group
             }
           ]

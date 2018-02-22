@@ -130,10 +130,10 @@
             let res = response.data;
             if(res.status == '1') {
               this.lovelinkid = res.doc.lovelink;
-              console.log(`this.lovelinkid:${this.lovelinkid}`)
-              console.log('lovelink-成功')
+              // console.log(`this.lovelinkid:${this.lovelinkid}`)
+              // console.log('lovelink-成功')
             } else {
-              console.log('lovelink-失败')
+              // console.log('lovelink-失败')
             }
           })
         } 
