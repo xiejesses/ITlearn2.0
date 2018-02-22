@@ -3,18 +3,18 @@
     <main>
       <section class="group-header">
         <div class="mini-header">
-
           <div class="follow">
-            <p>退出小组</p>
+            <p v-if="groupdetail.member.indexOf(userid) >= 0" @click="addlovegroup">{{joinmsg}}</p>
+            <p v-else @click="addlovegroup">{{joinmsg}}</p>
           </div>
         </div>
         <div class="header-body">
           <!-- <h2 class="group-name">{{this.$route.params.gName}}</h2> -->
-          <h2 class="group-name">{{this.groupdetail.groupName}}</h2>
+          <h2 class="group-name">{{groupdetail.groupName}}</h2>
           <!-- <h2 class="group-name">打开Vue的大门</h2> -->
-          <p class="author">by. {{this.groupdetail.author.userName}}</p>
-          <p class="description">{{this.groupdetail.groupIntro}}</p>
-          <p class="">成员：{{this.groupdetail.member}}</p>
+          <p class="author">by. {{groupdetail.author.userName}}</p>
+          <p class="description">{{groupdetail.groupIntro}}</p>
+          <p class="">成员：{{groupdetail.member.length}}</p>
         </div>
       </section>
 
@@ -33,7 +33,8 @@
         </div>
         <div class="publish-topic">
           <!-- <router-link to="/MarkdownEditor" class="LastItem">发表话题</router-link> -->
-          <router-link :to="{name: 'markdowneditor', params:{g_id:this.gid}}" class="LastItem">发表话题</router-link>
+          <!-- <router-link :to="{name: 'markdowneditor', params:{g_id:this.gid,u_id:this.userid}}" class="LastItem">发表话题</router-link> -->
+          <router-link :to="{name: 'markdowneditor', query:{g_id:this.gid,isjoin:this.isjoin}}" class="LastItem">发表话题</router-link>
         </div>
         <div>
           <el-dropdown>
@@ -91,7 +92,10 @@ import axios from 'axios'
       return {
         //   gName:'',
         gid:'',
+        userid:'',
         groupdetail:[],
+        joinmsg:'',
+        isjoin:'',
         topics:[],
         busy:true,
         page:1,
@@ -112,6 +116,7 @@ import axios from 'axios'
         // console.log(this.gid)
         let param = {
           g_id:this.gid,
+          userName:localStorage.getItem('userName')
         };
         axios.get('/group/fetchgroupdetail',
            {params:param}
@@ -119,7 +124,14 @@ import axios from 'axios'
           let res = response.data;
           if(res.status == "1") {
             // this.commentNum = res.result.groupTopic.comments.length
-            this.groupdetail = res.result
+            this.groupdetail = res.result;
+            this.userid = res.user._id;
+            this.isjoin = res.result.member.indexOf(res.user._id)
+           if(this.isjoin >= 0) {
+             this.joinmsg = '退出小组';
+           } else {
+             this.joinmsg = '加入小组';
+           }
           } else {
             this.groupdetail = []
           }
@@ -167,6 +179,39 @@ import axios from 'axios'
         })
       },
 
+      addlovegroup() {
+        if (!localStorage.getItem('userName')) {
+          this.$message.error(`请先登录！`);
+          return false;
+        } else {
+          this.$http.post('/group/joingroup', {
+            _id: this.gid,
+            userName: localStorage.getItem('userName')
+          }).then(response => {
+            let res = response.data
+            if (res.status == "1") {
+              // this.isHeartClick = true;
+              // this.i = index;
+              this.lovegroupid = res.lovegroup;
+              this.joinmsg = res.message;
+              this.isjoin = 0;
+              this.$message.success('加入成功');
+              // return true;
+            } else if (res.status == "2") {
+              // this.isHeartClick = false;
+              // this.i = -1;
+              this.lovegroupid = res.lovegroup;
+              this.joinmsg =  res.message;
+              this.isjoin = -1;
+              this.$message.success('退出成功');
+              // return false;
+            } else {
+              this.$message.error('发生错误');
+            }
+          })
+        }
+      },
+
       loadMore(){
           this.busy = true;
           setTimeout(() => {
@@ -192,6 +237,9 @@ import axios from 'axios'
 
   .group-header p {
     color: #fff;
+  }
+  .follow p {
+    cursor: pointer;
   }
 
   main {

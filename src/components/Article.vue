@@ -12,15 +12,15 @@
         </div>
     </main> -->
     <!-- <main v-else> -->
-      <main>
+    <main>
       <div class="sort">
-          <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
-          <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
-        </div>
-        <section class="articles">
+        <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
+        <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
+      </div>
+      <section class="articles">
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article._id">
-          <!-- <li> -->
+            <!-- <li> -->
             <section class="user-avatar">
               <!-- <v-gravatar email="8356145741@qq.com" size='40' /> -->
               <v-gravatar v-bind:email="article.author.userEmail" size='40' />
@@ -42,14 +42,14 @@
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
                 <!-- <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{article.tags}}</router-link> -->
                 <span v-for="(tag,tagindex) in article.tags" v-bind:key="tagindex">
-                <router-link :to="{ name: 'like', params: { uName: article.author.userName }}" >{{tag}}</router-link>
-                 <span class="separator"> • </span>
+                  <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{tag}}</router-link>
+                  <span class="separator"> • </span>
                 </span>
                 <span>
-                <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
-                <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)">
-                  <!-- <i class="heart el-icon-fa el-icon-fa-heart-o"   v-bind:class="{heartclick:i == 1}" aria-hidden="true"></i> -->
-                  <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:lovelinkid.indexOf(article._id) >= 0}"  aria-hidden="true"></i>
+                  <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
+                  <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)">
+                    <!-- <i class="heart el-icon-fa el-icon-fa-heart-o"   v-bind:class="{heartclick:i == 1}" aria-hidden="true"></i> -->
+                    <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:lovelinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
                   </a>
                 </span>
               </div>
@@ -62,36 +62,33 @@
           </li>
         </ul>
         <!-- 滚动加载组件 -->
-          <div class="view-more-normal"
-                   v-infinite-scroll="loadMore"
-                   infinite-scroll-disabled="busy"
-                   infinite-scroll-distance="20">
-              </div>
+        <div class="view-more-normal" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+        </div>
       </section>
     </main>
   </div>
 </template>
 
 <script>
- import axios from 'axios'
+  import axios from 'axios'
 
   export default {
     name: 'article',
     data() {
       return {
-        i:-1,
-        loading:false,
-        score:10,
-        isupmod:false,
-        isHeartClick:'',
-        articles:[],
-        currentVote:'',
+        i: -1,
+        loading: false,
+        score: 10,
+        isupmod: false,
+        isHeartClick: '',
+        articles: [],
+        currentVote: '',
 
-        busy:true,
-        page:1,
-        pageSize:5,
+        busy: true,
+        page: 1,
+        pageSize: 5,
 
-        lovelinkid:[],
+        lovelinkid: [],
 
       }
     },
@@ -100,20 +97,22 @@
     //   // console.log(this.articles)
     // },
     mounted() {
-       this.fetchArticle();
+      this.fetchArticle();
       this.fetchLovelink();
+
+      // console.log(this.$route.params.uName);
     },
-    computed:{
-      
-        
-      
+    computed: {
+
+
+
     },
-    
+
     watch: {
-      '$route':'fetchArticle'
+      '$route': 'fetchArticle'
     },
     methods: {
-      changeVote (id,index) {
+      changeVote(id, index) {
         this.articles[index].voteActive = true;
         // axios(id)
       },
@@ -121,58 +120,60 @@
         this.clickheart = !this.clickheart
       },
       fetchLovelink() {
-        if(localStorage.getItem('userName')) {
+        if (localStorage.getItem('userName')) {
           let param = {
-            userName:localStorage.getItem('userName')
+            userName: localStorage.getItem('userName')
           }
-          this.$http.get('/users/getlovelink',{params:param})
-          .then(response => {
-            let res = response.data;
-            if(res.status == '1') {
-              this.lovelinkid = res.doc.lovelink;
-              // console.log(`this.lovelinkid:${this.lovelinkid}`)
-              // console.log('lovelink-成功')
-            } else {
-              // console.log('lovelink-失败')
-            }
-          })
-        } 
+          this.$http.get('/users/getlovelink', {
+              params: param
+            })
+            .then(response => {
+              let res = response.data;
+              if (res.status == '1') {
+                this.lovelinkid = res.doc.lovelink;
+                // console.log(`this.lovelinkid:${this.lovelinkid}`)
+                // console.log('lovelink-成功')
+              } else {
+                // console.log('lovelink-失败')
+              }
+            })
+        }
         // else {
         //   return false;
         // }
       },
-      addlovelink (sharelink_id,index) {
-        if(!localStorage.getItem('userName')) {
+      addlovelink(sharelink_id, index) {
+        if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
         } else {
-          this.$http.post('/sharelink/addlovelink',{
-            _id:sharelink_id,
-            userName:localStorage.getItem('userName')
-        }).then(response => {
-          let res = response.data
-          if(res.status == "1"){
-            // this.isHeartClick = true;
-            // this.i = index;
-            this.lovelinkid = res.lovelink;
-            this.$message.success('成功收藏');
-            // return true;
-          } else if(res.status == "2") {
-            // this.isHeartClick = false;
-            // this.i = -1;
-            this.lovelinkid = res.lovelink;
-            this.$message.error('取消收藏');
-            // return false;
-          } else {
-            this.$message.error('发生错误');
-          }
-        })
+          this.$http.post('/sharelink/addlovelink', {
+            _id: sharelink_id,
+            userName: localStorage.getItem('userName')
+          }).then(response => {
+            let res = response.data
+            if (res.status == "1") {
+              // this.isHeartClick = true;
+              // this.i = index;
+              this.lovelinkid = res.lovelink;
+              this.$message.success('成功收藏');
+              // return true;
+            } else if (res.status == "2") {
+              // this.isHeartClick = false;
+              // this.i = -1;
+              this.lovelinkid = res.lovelink;
+              this.$message.error('取消收藏');
+              // return false;
+            } else {
+              this.$message.error('发生错误');
+            }
+          })
         }
-        
+
         // console.log(`_id:${_id}`)
         // console.log(`index:${index}`)
         // axios(id)
-        
+
         // if(this.articles[index].heartActive == true) {
         //   this.articles[index].heartActive = false;
         //   this.$message.error('取消收藏');
@@ -183,54 +184,56 @@
         //   type: 'success'
         //   });
         // }
-        
+
       },
-      fetchArticle (flag) {
-        this.loading = true;
-        let param = {
-          page:this.page,
-          pageSize:this.pageSize
-        };
-        axios.get("/sharelink",
-          {params:param}
-        ).then( (response) => {
-         
-          // this.loading = false;
-          // this.articles = res.data.result.list;
-
-
-          var res = response.data;
-                this.loading = false;
-                // status == 0 数据读取成功
-                if(res.status=="1"){
-                  // 不是第一次，需要拼接数据
-                  if(flag){
-                      this.articles = this.articles.concat(res.result.list);
-                        //如果没有数据，停止滚动加载
-                      if(res.result.count==0){
-                          this.busy = true;
-                      }else{
-                          this.busy = false;
-                      }
-                  }else{
-                      this.articles = res.result.list;
-                      this.busy = false;
-                  }
-                }else{
-                  this.articles = [];
+      fetchArticle(flag) {
+        //取出
+          this.loading = true;
+          let param = {
+            page: this.page,
+            pageSize: this.pageSize,
+            userName:this.$route.params.uName
+          };
+          axios.get("/sharelink", {
+            params: param
+          }).then((response) => {
+            // this.loading = false;
+            // this.articles = res.data.result.list;
+            var res = response.data;
+            this.loading = false;
+            // status == 0 数据读取成功
+            if (res.status == "1") {
+              // 不是第一次，需要拼接数据
+              if (flag) {
+                this.articles = this.articles.concat(res.result.list);
+                //如果没有数据，停止滚动加载
+                if (res.result.count == 0) {
+                  this.busy = true;
+                } else {
+                  this.busy = false;
                 }
+              } else {
+                this.articles = res.result.list;
+                this.busy = false;
+              }
+            } else {
+              this.articles = [];
+            }
 
-        }).catch(function (error) {
-          console.log(error)
-        })
+          }).catch(function (error) {
+            console.log(error)
+          })
+        
+
+
       },
 
-      loadMore(){
-          this.busy = true;
-          setTimeout(() => {
-            this.page++;
-            this.fetchArticle(true);
-          }, 500);
+      loadMore() {
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.fetchArticle(true);
+        }, 500);
       },
     }
 
@@ -250,19 +253,21 @@
   }
 
   .sort {
-  display: flex;
-  justify-content: flex-end;
-  margin: 5px 0 0 0;
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px 0 0 0;
   }
+
   .sort i {
     margin: 5px 5px;
-    color:#54595f;
+    color: #54595f;
     cursor: pointer;
   }
 
   /************
   loading
   *************/
+
   .load-wrapp {
     /* float: left; */
     width: 80px;
@@ -273,28 +278,30 @@
     border-radius: 5px;
     text-align: center;
     /* background-color: #d8d8d8; */
-}
+  }
 
-.load-5 .ball-holder {animation: loadingE 1.3s linear infinite;}
+  .load-5 .ball-holder {
+    animation: loadingE 1.3s linear infinite;
+  }
 
-.ring-2 {
+  .ring-2 {
     position: relative;
     width: 45px;
     height: 45px;
     margin: 0 auto;
     border: 4px solid #4b9cdb;
     border-radius: 100%;
-}
+  }
 
-.ball-holder {
+  .ball-holder {
     position: absolute;
     width: 12px;
     height: 45px;
     left: 17px;
     top: 0px;
-}
+  }
 
-.ball {
+  .ball {
     position: absolute;
     top: -11px;
     left: 0;
@@ -302,12 +309,16 @@
     height: 16px;
     border-radius: 100%;
     background: #4282B3;
-}
+  }
 
-@keyframes loadingE {
-    0% {transform: rotate(0deg);}
-    100% {transform: rotate(360deg);}
-}
+  @keyframes loadingE {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 
   /**********
 main区
@@ -336,9 +347,10 @@ main区
       margin: 0 auto;
 
       /* border: 1px solid green; */
-      height:auto;
+      height: auto;
     }
   }
+
   /**********
 文章列表li
 **********/
@@ -362,13 +374,15 @@ main区
     flex-direction: column;
     flex-wrap: wrap;
   }
+
   .article-title h2 a:hover {
-    color:#EC681B;
+    color: #EC681B;
   }
+
   /* .article-title h2 a:visited {
     color: #9a9a9a;
   } */
-  
+
   @media screen and (min-width:1200px) {
     .article-title {
       /* white-space: nowrap;
@@ -384,6 +398,7 @@ main区
       flex-wrap: wrap; */
     }
   }
+
   /**********
 用户头像
 ***********/
@@ -414,6 +429,7 @@ main区
       width: 45px;
     }
   }
+
   /**********
 domain区
 **********/
@@ -435,6 +451,7 @@ domain区
       font-size: 18px;
     }
   }
+
   /**********
 文章标题
 **********/
@@ -465,6 +482,7 @@ domain区
       text-overflow: ellipsis;
     }
   }
+
   /*********
 meta信息
 ***********/
@@ -483,19 +501,24 @@ meta信息
     text-decoration: none;
     border-bottom: 2px solid #f3f3f3;
   }
+
   .meta a:last-child {
-      border: 0 !important;
-    }
-  .heart::before{
+    border: 0 !important;
+  }
+
+  .heart::before {
     font-size: 13px;
-    
-}
-.heartclick {
-  color: #EC681B;
-}
-.heartvisited {
-  outline: none;
-}
+
+  }
+
+  .heartclick {
+    color: #EC681B;
+  }
+
+  .heartvisited {
+    outline: none;
+  }
+
   abbr {
     font-size: 11px;
   }
@@ -508,9 +531,9 @@ meta信息
     abbr {
       font-size: 13px;
     }
-    .heart::before{
-    font-size: 14px;
-}
+    .heart::before {
+      font-size: 14px;
+    }
   }
 
   @media screen and (min-width:768px) {
@@ -521,138 +544,149 @@ meta信息
     /* .meta a:last-child {
       border: 0 !important;
     } */
-    .heart::before{
-    font-size: 15px;
-}
+    .heart::before {
+      font-size: 15px;
+    }
   }
+
   .separator {
     padding: 0 3px;
     color: #bfbfbf;
   }
 
-/*********
+  /*********
   箭头
 *********/
-.up {
-  background: url(https://d22wsyl1zemnyu.cloudfront.net/images/visuals-1.7.min.gz.svg) no-repeat -300px -297px;
-  display: inline-block;
-  width:16px;
-  height: 16px;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-}
-.upmod:hover {
-  -webkit-animation: none !important;
-  animation: none !important;
-}
-.upmod {
-  background: url("https://d22wsyl1zemnyu.cloudfront.net/images/visuals-1.7.min.gz.svg") no-repeat -400px -397px;
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  outline: none
-}
-.scored {
-  color:#e0e0e0 !important;
-}
+
+  .up {
+    background: url(https://d22wsyl1zemnyu.cloudfront.net/images/visuals-1.7.min.gz.svg) no-repeat -300px -297px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+  }
+
+  .upmod:hover {
+    -webkit-animation: none !important;
+    animation: none !important;
+  }
+
+  .upmod {
+    background: url("https://d22wsyl1zemnyu.cloudfront.net/images/visuals-1.7.min.gz.svg") no-repeat -400px -397px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    outline: none
+  }
+
+  .scored {
+    color: #e0e0e0 !important;
+  }
 
 
-@-webkit-keyframes slideDown {
-  0% {
-    background-position: -300px -297px
+  @-webkit-keyframes slideDown {
+    0% {
+      background-position: -300px -297px
+    }
+    25% {
+      background-position: -300px -300px
+    }
+    75% {
+      background-position: -300px -294px
+    }
+    100% {
+      background-position: -300px -297px
+    }
   }
-  25% {
-    background-position: -300px -300px
-  }
-  75% {
-    background-position: -300px -294px
-  }
-  100% {
-    background-position: -300px -297px
-  }
-}
 
-@keyframes slideDown {
-  0% {
-    background-position: -300px -297px
+  @keyframes slideDown {
+    0% {
+      background-position: -300px -297px
+    }
+    25% {
+      background-position: -300px -300px
+    }
+    75% {
+      background-position: -300px -294px
+    }
+    100% {
+      background-position: -300px -297px
+    }
   }
-  25% {
-    background-position: -300px -300px
-  }
-  75% {
-    background-position: -300px -294px
-  }
-  100% {
-    background-position: -300px -297px
-  }
-}
-.up:hover {
-  -webkit-animation: slideDown 0.5s linear;
-  animation: slideDown 0.5s linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards
-}
 
-.article-vote {
-  width:50px;
-  text-align: right;
-  display: flex;
-  -webkit-box-pack: end;
-  justify-content: flex-end;
-  -webkit-box-align: center;
-  align-items: center;
-  align-self: flex-start;
-  margin: 15px 10px 0 0;
-  overflow: hidden;
-}
-/* .article-vote a {
-  text-decoration: none;
-}
-.article-vote a:visited {
-  color: #e0e0e0;
-} */
-@media screen and (min-width:500px){
+  .up:hover {
+    -webkit-animation: slideDown 0.5s linear;
+    animation: slideDown 0.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards
+  }
+
   .article-vote {
-    width:60px;
-
-  }
-}
-@media screen and (min-width:660px){
-  .article-vote {
+    width: 50px;
     text-align: right;
     display: flex;
     -webkit-box-pack: end;
     justify-content: flex-end;
     -webkit-box-align: center;
     align-items: center;
-    align-self: center;
-    margin: 0 10px 0 0;
+    align-self: flex-start;
+    margin: 15px 10px 0 0;
+    overflow: hidden;
   }
-}
-@media screen and (min-width:1200px){
-  .article-vote {
-    width: 85px;
-    margin: 0;
-  }
-}
 
-.score {
-  font-size: 14px;
-  color: #8f8f8f;
-  margin: 0 4px 0 0;
-  position: relative;
-  display: inline-block;
-  transition:transform 0.3s, -webkit-transform 0.3s;
-  line-height: 24px;
+  /* .article-vote a {
+  text-decoration: none;
 }
-@media screen and (min-width:500px){
-  .score {
-    font-size: 17px;
+.article-vote a:visited {
+  color: #e0e0e0;
+} */
+
+  @media screen and (min-width:500px) {
+    .article-vote {
+      width: 60px;
+
+    }
   }
-}
+
+  @media screen and (min-width:660px) {
+    .article-vote {
+      text-align: right;
+      display: flex;
+      -webkit-box-pack: end;
+      justify-content: flex-end;
+      -webkit-box-align: center;
+      align-items: center;
+      align-self: center;
+      margin: 0 10px 0 0;
+    }
+  }
+
+  @media screen and (min-width:1200px) {
+    .article-vote {
+      width: 85px;
+      margin: 0;
+    }
+  }
+
+  .score {
+    font-size: 14px;
+    color: #8f8f8f;
+    margin: 0 4px 0 0;
+    position: relative;
+    display: inline-block;
+    transition: transform 0.3s, -webkit-transform 0.3s;
+    line-height: 24px;
+  }
+
+  @media screen and (min-width:500px) {
+    .score {
+      font-size: 17px;
+    }
+  }
 
 </style>

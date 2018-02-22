@@ -51,9 +51,9 @@
       </section>
       <section>
         <div class="tab">
-          <router-link :to="{ name: 'article'}" exact="true" class="ListItem">收藏</router-link>
+          <router-link :to="{ name: 'article'}" exact="true" class="ListItem">收藏({{userInfo.lovelink.length}})</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'group'}" class="ListItem">小组</router-link>
+          <router-link :to="{ name: 'group'}" class="ListItem">小组({{userInfo.lovegroup.length}})</router-link>
         </div>
         <router-view></router-view>
         <!-- <router-view :key="key"></router-view> -->
@@ -88,6 +88,7 @@
       this.fetchUserInfo();
       this.currentUser = localStorage.getItem('userName');
       this.userName = this.$route.params.uName;
+
     },
     methods: {
       saveEdit() {

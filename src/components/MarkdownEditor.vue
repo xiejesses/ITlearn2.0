@@ -58,6 +58,8 @@
       return {
         Name:'test',
         gid:'',
+        // uid:'',
+        isjoin:'',
         formMarkdown:{
           topicTitle:'',
           topicContent:'',
@@ -102,6 +104,28 @@
         },
       }
     },
+    beforeRouteEnter (to, from, next) {
+     
+      if(to.query.isjoin >= 0) {
+        next()
+      } else {
+        from.$message.success('请先加入')
+        next(false)
+      }
+    
+      
+      console.log(from)
+      console.log(to)
+      console.log(to.query.isjoin)
+      // next(vm => {
+      //   // 通过 `vm` 访问组件实例
+        
+      //   console.log(vm)
+      //   console.log("gid"+vm.gid)
+      //   console.log("userid"+vm.uid)
+      //   console.log("isjoin"+vm.isjoin)
+      // })
+    },
     methods: {
       getContent(val, render) {
         this.formMarkdown.topicContent = render;
@@ -138,7 +162,13 @@
       }
     },
     mounted() {
-     this.gid = this.$route.params.g_id;
+    //  this.gid = this.$route.params.g_id;
+     this.gid = this.$route.query.g_id;
+    //  this.uid = this.$route.query.u_id;
+     this.isjoin = this.$route.query.isjoin
+     console.log( this.$route.query.g_id)
+    //  console.log( this.$route.query.u_id)
+     console.log( this.$route.query.isjoin)
     }
   }
 

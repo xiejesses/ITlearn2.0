@@ -3,7 +3,7 @@
     <main>
       <section class="groups">
         <ul class="groups-list">
-          <li v-for="group in groups" v-bind:key="group._id">
+          <li v-for="(group,index) in groups" v-bind:key="group._id">
             <section class="user-avatar">
               <v-gravatar v-bind:email="group.author.userEmail" size='40' />
             </section>
@@ -18,16 +18,19 @@
                   {{ group.groupIntro }}
               </div>
               <div class="author-meta">
-                <router-link :to="{ name: 'like', params: { uName: group.author.userName }}"> {{ group.author.userName }}</router-link>
+                <router-link :to="{ name: 'article', params: { uName: group.author.userName }}"> {{ group.author.userName }}</router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="group.createTime"> {{ moment(group.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
                 <!-- <span class="separator">• </span> -->
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
-                <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.member}}</span>
+                <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.member.length}}</span>
                 
               </div>
             </section>
-            <section class="join-group"><button>加入</button></section>
+            <section class="join-group">
+              <button v-if="lovegroupid.indexOf(group._id) >= 0" @click="addlovegroup(group._id,index)">退出</button>
+              <button v-else @click="addlovegroup(group._id,index)">加入</button>
+              </section>
           </li>
         </ul>
         <div class="view-more-normal"
@@ -48,21 +51,25 @@
         // userName: 'jesses',
         // groupName:'打开Vue的大门',
         // creatTime: '2017-11-2 16:30:20',
-
+        // joinmsg:'关注',
         groups:[],
         busy:true,
         page:1,
-        pageSize:5
+        pageSize:5,
+        lovegroupid: [],
+        member:''
       }
     },
     mounted() {
        this.fetchGroup();
+       this.fetchLovegroup()
     },
     methods:{
       fetchGroup (flag) {
         let param = {
           page:this.page,
-          pageSize:this.pageSize
+          pageSize:this.pageSize,
+          userName:this.$route.params.uName
         };
         axios.get("/group/fetchgroup",
           {params:param}
@@ -96,6 +103,59 @@
         }).catch(function (error) {
           console.log(error)
         })
+      },
+
+      addlovegroup(group_id, index) {
+        if (!localStorage.getItem('userName')) {
+          this.$message.error(`请先登录！`);
+          return false;
+        } else {
+          this.$http.post('/group/joingroup', {
+            _id: group_id,
+            userName: localStorage.getItem('userName')
+          }).then(response => {
+            let res = response.data
+            if (res.status == "1") {
+              // this.isHeartClick = true;
+              // this.i = index;
+              this.lovegroupid = res.lovegroup;
+              // this.joinmsg = "取消关注"
+              this.$message.success('加入成功');
+              // return true;
+            } else if (res.status == "2") {
+              // this.isHeartClick = false;
+              // this.i = -1;
+              this.lovegroupid = res.lovegroup;
+              this.$message.success('退出成功');
+              // return false;
+            } else {
+              this.$message.error('发生错误');
+            }
+          })
+        }
+      },
+      fetchLovegroup() {
+        if (localStorage.getItem('userName')) {
+          let param = {
+            userName: localStorage.getItem('userName')
+          }
+          this.$http.get('/users/getlovegroup', {
+              params: param
+            })
+            .then(response => {
+              let res = response.data;
+              if (res.status == '1') {
+                this.lovegroupid = res.doc.lovegroup;
+                // console.log(`this.lovelinkid:${this.lovelinkid}`)
+                // console.log('lovelink-成功')
+              } else {
+                // console.log('lovelink-失败')
+              }
+            })
+        }
+        // else {
+        //   return false;
+        // }
       },
 
       loadMore(){
@@ -202,6 +262,7 @@ a {
     .join-group button {
         background: none;
         border: 1px solid #8f8f8f;
+        outline:none;
         border-radius: 20px;
         padding: 3px 10px;
         margin: 0 5px 0 10px;
