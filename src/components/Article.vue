@@ -37,7 +37,7 @@
                 <router-link :to="{ name: 'article', params: { uName: article.author.userName }}">{{article.author.userName}}</router-link>
                 <span class="separator"> • </span>
                 <!-- <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr> -->
-                <abbr class="timeago" :title="article.createTime">{{moment(article.createTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <abbr class="timeago" :title="new Date(article.createTime)">{{moment(new Date(article.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
                 <!-- <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{article.tags}}</router-link> -->

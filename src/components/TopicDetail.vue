@@ -9,7 +9,7 @@
           <div class="meta" style="margin-left:10px">
             <router-link :to="{ name: 'like', params: { uName: topicdetail.author.userName }}">{{topicdetail.author.userName}}</router-link>
             <span class="separator">• </span>
-            <abbr class="timeago" :title="topicdetail.createTime"> {{ moment(topicdetail.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
+            <abbr class="timeago" :title="new Date(topicdetail.createTime)"> {{ moment(new Date(topicdetail.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
           </div>
         </div>
         <!-- <p class="topic-name">{{$route.params.tName}}</p> -->
@@ -69,7 +69,7 @@
                         <div class="meta">
                           <router-link :to="{ name: 'like', params: { uName: comment.author.userName }}"> {{comment.author.userName}}</router-link>
                           <span class="separator">• </span>
-                          <abbr class="timeago" :title="comment.createTime"> {{ moment(comment.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                          <abbr class="timeago" :title="new Date(comment.createTime)"> {{ moment(new Date(comment.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                         </div>
                         <div v-html="comment.content" class="custom markdown-body"></div>
                         <div class="reply">
@@ -111,7 +111,7 @@
                               <div class="meta">
                                 <router-link :to="{ name: 'like', params: { uName: reply.author.userName }}"> {{reply.author.userName}}</router-link>
                                 <span class="separator">• </span>
-                                <abbr class="timeago" :title="reply.createTime"> {{ moment(reply.createTime, "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                                <abbr class="timeago" :title="new Date(reply.createTime)"> {{ moment(new Date(reply.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                               </div>
                               <div v-html="reply.content" class="custom markdown-body"></div>
                             </div>

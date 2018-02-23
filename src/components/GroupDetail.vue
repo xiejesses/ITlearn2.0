@@ -65,7 +65,7 @@
               <div class="meta">
                 <router-link :to="{ name: 'like', params: { uName: topic.author.userName }}">{{topic.author.userName}}</router-link>
                 <span class="separator"> • </span>
-                <abbr class="timeago" :title="topic.createTime">{{moment(topic.createTime, "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <abbr class="timeago" :title="new Date(topic.createTime)">{{moment(new Date(topic.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
               </div>
             </div>
             <div class="comment-num" >
