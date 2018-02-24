@@ -51,7 +51,7 @@
             <v-gravatar :email="userEmail" size='40' />
           </span>
           <el-dropdown-menu slot="dropdown">
-            <router-link :to="{ name: 'article', params: { uName: userName }}">
+            <router-link :to="{ name: 'user_article', params: { uName: userName }}">
               <el-dropdown-item>我的主页</el-dropdown-item>
             </router-link>
             <router-link to="/">
@@ -211,9 +211,54 @@
     font-size: 16px;
   }
 
+   /**********
+main区
+**********/
+
+  .vindex {
+    margin: 0 auto;
+
+    /* border: 1px solid green; */
+    height: auto;
+  }
+
+  @media screen and (min-width:960px) {
+    .vindex {
+      width: 720px;
+      margin: 0 auto;
+
+      /* border: 1px solid green; */
+      height: auto;
+    }
+  }
+
+  @media screen and (min-width:1200px) {
+    .vindex {
+      /* width: 940px; */
+      width: 75%;
+      margin: 0 auto;
+
+      /* border: 1px solid green; */
+      height: auto;
+    }
+  }
+  @media screen and (min-width:1600px) {
+    .vindex {
+      /* width: 940px; */
+      width: 65%;
+      margin: 0 auto;
+
+      /* border: 1px solid green; */
+      height: auto;
+    }
+  }
+
+
+
   .header {
     height: 89px;
-    width: 940px;
+    /* width: 940px; */
+    width: 100%;
     margin: 0 auto;
     display: flex;
     border-bottom: 3px solid #f3f3f3;
@@ -255,7 +300,8 @@
   @media screen and (max-width:1500px) {
     .header {
       height: 89px;
-      width: 940px;
+      /* width: 940px; */
+      /* width: 940px; */
       margin: 0 auto;
       display: flex;
     }
@@ -265,7 +311,7 @@
   @media screen and (max-width:1201px) {
     .header {
       height: 89px;
-      width: 720px;
+      /* width: 720px; */
       margin: 0 auto;
       display: flex;
     }
@@ -274,7 +320,7 @@
   @media screen and (max-width:960px) {
     .header {
       height: 80px;
-      width: 100%;
+      /* width: 100%; */
     }
     .navigation {
       display: flex;
@@ -302,7 +348,7 @@
   @media screen and (max-width:500px) {
     .header {
       height: 80px;
-      width: 100%;
+      /* width: 100%; */
     }
     .navigation {
       display: flex;

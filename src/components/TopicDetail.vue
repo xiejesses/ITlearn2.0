@@ -330,6 +330,7 @@
   }
 
   main {
+    width: 100%;
     margin: 5px auto;
     height: auto;
     padding: 0 15px;
@@ -504,11 +505,11 @@
 } */
 
   @media screen and (min-width:960px) {
-    main {
+    /* main {
       width: 720px;
       margin: 5px auto;
       height: auto;
-    }
+    } */
     .user-avatar img {
       height: 35px;
       width: 35px;
@@ -521,7 +522,14 @@
 
   @media screen and (min-width:1200px) {
     main {
-      width: 700px;
+      width: 85%;
+      margin: 5px auto;
+      height: auto;
+    }
+  }
+  @media screen and (min-width:1600px) {
+    main {
+      width: 80%;
       margin: 5px auto;
       height: auto;
     }

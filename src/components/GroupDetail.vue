@@ -243,6 +243,7 @@ import axios from 'axios'
   }
 
   main {
+    width: 100%;
     margin: 0 auto;
     /* border: 1px solid green; */
     height: auto;
@@ -504,22 +505,31 @@ meta信息
 
 
   @media screen and (min-width:960px) {
-    main {
+    /* main {
       width: 720px;
       margin: 0 auto;
       height: auto;
-    }
+    } */
     .comment-num {
     margin:0;
   }
   }
 
-  @media screen and (min-width:1200px) {
+  /* @media screen and (min-width:1200px) {
     main {
       width: 940px;
+      width: 70%;
       margin: 2px auto;
       height: auto;
     }
   }
+  @media screen and (min-width:1600px) {
+    main {
+      width: 940px;
+      width: 65%;
+      margin: 2px auto;
+      height: auto;
+    }
+  } */
 
 </style>

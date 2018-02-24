@@ -13,10 +13,10 @@
     </main> -->
     <!-- <main v-else> -->
     <main>
-      <div class="sort">
+      <!-- <div class="sort">
         <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
         <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
-      </div>
+      </div> -->
       <section class="articles">
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article._id">
@@ -27,14 +27,14 @@
             </section>
             <section class="article-title">
               <!-- <div class="domain">webkit.org</div> -->
-              <div class="domain">{{ article.url }}</div>
+              <div class="domain">{{ article.urlhostname }}</div>
               <h2>
                 <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
-                <a href="http://localhost:8080/" class="article-link">{{article.title}}</a>
+                <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
               </h2>
               <div class="meta">
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">{{userName}}</router-link> -->
-                <router-link :to="{ name: 'article', params: { uName: article.author.userName }}">{{article.author.userName}}</router-link>
+                <router-link :to="{ name: 'user_article', params: { uName: article.author.userName }}">{{article.author.userName}}</router-link>
                 <span class="separator"> • </span>
                 <!-- <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr> -->
                 <abbr class="timeago" :title="new Date(article.createTime)">{{moment(new Date(article.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
@@ -42,7 +42,7 @@
                 <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
                 <!-- <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{article.tags}}</router-link> -->
                 <span v-for="(tag,tagindex) in article.tags" v-bind:key="tagindex">
-                  <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{tag}}</router-link>
+                  <router-link :to="{ name: 'tag_article', params: { tName: tag }}">{{tag}}</router-link>
                   <span class="separator"> • </span>
                 </span>
                 <span>
@@ -202,7 +202,8 @@
           let param = {
             page: this.page,
             pageSize: this.pageSize,
-            userName:this.$route.params.uName
+            userName:this.$route.params.uName,
+            tag:this.$route.params.tName
           };
           axios.get("/sharelink", {
             params: param
@@ -336,17 +337,16 @@ main区
 
   main {
     margin: 0 auto;
-
+    width: 100%;
     /* border: 1px solid green; */
     height: auto;
   }
 
-  @media screen and (min-width:960px) {
+  /* @media screen and (min-width:960px) {
     main {
       width: 720px;
       margin: 0 auto;
 
-      /* border: 1px solid green; */
       height: auto;
     }
   }
@@ -354,12 +354,21 @@ main区
   @media screen and (min-width:1200px) {
     main {
       width: 940px;
+      width: 80%;
       margin: 0 auto;
 
-      /* border: 1px solid green; */
       height: auto;
     }
   }
+  @media screen and (min-width:1600px) {
+    main {
+      width: 940px;
+      width: 65%;
+      margin: 0 auto;
+
+      height: auto;
+    }
+  } */
 
   /**********
 文章列表li

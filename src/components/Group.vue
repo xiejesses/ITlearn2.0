@@ -191,6 +191,7 @@ a {
     /* color:black; */
 }
   main {
+    width: 100%;
     margin: 0 auto;
     /* border: 1px solid green; */
     height: auto;
@@ -320,12 +321,11 @@ a {
   }
 
   @media screen and (min-width:960px) {
-    main {
+    /* main {
       width: 720px;
       margin: 0 auto;
-      /* border: 1px solid green; */
       height: auto;
-    }
+    } */
     .groups-intro {
         max-width: 450px;
         font-size: 16px;
@@ -336,12 +336,11 @@ a {
   }
 
   @media screen and (min-width:1200px) {
-    main {
+    /* main {
       width: 940px;
       margin: 0 auto;
-      /* border: 1px solid green; */
       height: auto;
-    }
+    } */
     .groups-name a{
       font-size: 22px;
       overflow: hidden;
@@ -351,5 +350,13 @@ a {
         max-width: 500px;
     }
   }
+  /* @media screen and (min-width:1600px) {
+    main {
+      width: 940px;
+      width: 100%;
+      margin: 0 auto;
+      height: auto;
+    }
+  } */
 
 </style>

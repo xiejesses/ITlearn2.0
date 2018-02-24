@@ -13,6 +13,7 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import TopicDetail from '@/components/TopicDetail'
 // import test from '@/components/test'
 import Vindex from '@/components/Vindex'
+import Tag from '@/components/Tag'
 
 Vue.use(Router)
 
@@ -26,8 +27,8 @@ const router = new Router({
       component: Vindex,
       children:[
         {
-          path:'',
-          name:'',
+          path:'/',
+          name:'home_article',
           component:Article
         },
         {
@@ -38,6 +39,25 @@ const router = new Router({
             requireAuth:true //表示进入该路由需要登录
           },
           component:Share
+        },
+        {
+          path:'/tag/:tName',
+          name:'tag',
+          //添加路由元信息
+          // meta: {
+          //   requireAuth:true //表示进入该路由需要登录
+          // },
+          component:Tag,
+          children:[
+            {
+              path:'/',
+              name:'tag_article',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component:Article
+            },
+          ]
         },
         {
           path: '/MarkdownEditor',
@@ -85,7 +105,7 @@ const router = new Router({
           children:[
             {
               path:'',
-              name:'article',
+              name:'user_article',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },

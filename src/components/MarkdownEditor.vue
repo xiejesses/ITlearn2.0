@@ -184,6 +184,7 @@
   }
   
   main {
+    width: 100%;
     margin: 5px auto;
   }
 
@@ -244,7 +245,7 @@
   }
 
 
-  @media screen and (min-width:960px) {
+  /* @media screen and (min-width:960px) {
     main {
       width: 720px;
       margin: 5px auto;
@@ -257,6 +258,6 @@
       width: 800px;
       margin: 5px auto;
     }
-  }
+  } */
 
 </style>

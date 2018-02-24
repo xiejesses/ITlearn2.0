@@ -92,6 +92,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   main {
+    width: 100%;
     margin: 5px auto;
     height: auto;
     /* border: 1px solid green; */
@@ -173,25 +174,34 @@
 
  
   @media screen and (min-width:960px) {
-    main {
+    /* main {
       width: 720px;
       margin: 5px auto;
       height: auto;
-    }
+    } */
     .inputstyle {
     width:300px;
     }
   }
 
   @media screen and (min-width:1200px) {
-    main {
+    /* main {
       width: 940px;
+      width: 70%;
       margin: 5px auto;
       height: auto;
-    }
+    } */
     .inputstyle {
   width:400px;
 }
   }
+  /* @media screen and (min-width:1600px) {
+    main {
+      width: 940px;
+      width: 65%;
+      margin: 0 auto;
+      height: auto;
+    }
+  } */
 
 </style>

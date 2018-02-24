@@ -14,7 +14,7 @@
             </p>
             <p>
               <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
-                <el-option  v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                <el-option  v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
                 </el-option>
               </el-select>
             </p>
@@ -100,9 +100,11 @@
         this.$http.get('/tags').then(response => {
           let res = response.data;
           if(res.status == "1") {
-            this.options = res.result[0].tags;
+            this.options = res.result;
+            // this.options = res.result[0].tags;
             // this.options.push(res.result[0].tags[0]);
             // this.options.concat(res.result[0].tags[0]);
+            console.log(this.options)
           } else {
             // this.tags.push('没有相关标签')\
             // console.log("失败")

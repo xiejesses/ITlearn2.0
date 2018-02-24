@@ -49,9 +49,9 @@
           </div>
         </div>
       </section>
-      <section>
+      <section >
         <div class="tab">
-          <router-link :to="{ name: 'article'}" exact="true" class="ListItem">收藏({{userInfo.lovelink.length}})</router-link>
+          <router-link :to="{ name: 'user_article'}" exact="true" class="ListItem">收藏({{userInfo.lovelink.length}})</router-link>
           <span class="separator"> / </span>
           <router-link :to="{ name: 'group'}" class="ListItem">小组({{userInfo.lovegroup.length}})</router-link>
         </div>
@@ -182,6 +182,7 @@ pre {
   /* padding: 0; */
 }
   main {
+    width: 100%;
     margin: 5px auto;
     height: auto;
     /* border: 1px solid green; */
@@ -363,23 +364,32 @@ pre {
   }
 
   @media screen and (min-width:960px) {
-    main {
+    /* main {
       width: 720px;
       margin: 5px auto;
       height: auto;
-    }
+    } */
     input[type="text"] {
       margin-top: 6px;
       height: 22px;
     }
   }
 
-  @media screen and (min-width:1200px) {
+  /* @media screen and (min-width:1200px) {
     main {
       width: 940px;
+      width: 70%;
       margin: 5px auto;
       height: auto;
     }
   }
+  @media screen and (min-width:1600px) {
+    main {
+      width: 940px;
+      width: 65%;
+      margin: 5px auto;
+      height: auto;
+    }
+  } */
 
 </style>
