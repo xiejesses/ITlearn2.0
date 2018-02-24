@@ -1,17 +1,5 @@
 <template>
   <div class="index">
-    <!-- <main class="loading" v-if="loading">
-      <div class="load-wrapp">
-            <div class="load-5">
-                <div class="ring-2">
-                    <div class="ball-holder">
-                        <div class="ball"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main> -->
-    <!-- <main v-else> -->
     <main>
       <!-- <div class="sort">
         <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
@@ -20,35 +8,25 @@
       <section class="articles">
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article._id">
-            <!-- <li> -->
             <section class="user-avatar">
-              <!-- <v-gravatar email="8356145741@qq.com" size='40' /> -->
               <v-gravatar v-bind:email="article.author.userEmail" size='40' />
             </section>
             <section class="article-title">
-              <!-- <div class="domain">webkit.org</div> -->
               <div class="domain">{{ article.urlhostname }}</div>
               <h2>
-                <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
                 <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
               </h2>
               <div class="meta">
-                <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">{{userName}}</router-link> -->
                 <router-link :to="{ name: 'user_article', params: { uName: article.author.userName }}">{{article.author.userName}}</router-link>
                 <span class="separator"> • </span>
-                <!-- <abbr class="timeago" :title="creatTime">{{moment(creatTime, "YYYYMMDDHHmmss").fromNow()}}</abbr> -->
                 <abbr class="timeago" :title="new Date(article.createTime)">{{moment(new Date(article.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
-                <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
-                <!-- <router-link :to="{ name: 'like', params: { uName: article.author.userName }}">{{article.tags}}</router-link> -->
                 <span v-for="(tag,tagindex) in article.tags" v-bind:key="tagindex">
                   <router-link :to="{ name: 'tag_article', params: { tName: tag }}">{{tag}}</router-link>
                   <span class="separator"> • </span>
                 </span>
                 <span>
-                  <!-- <a href="javascript:void(0)" @click="isHeartClick = !isHeartClick"><span class="separator"> • </span ><i class="heart el-icon-fa el-icon-fa-heart-o"  v-bind:class="{heartclick:isHeartClick}" aria-hidden="true"></i></a> -->
                   <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)">
-                    <!-- <i class="heart el-icon-fa el-icon-fa-heart-o"   v-bind:class="{heartclick:i == 1}" aria-hidden="true"></i> -->
                     <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:lovelinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
                   </a>
                 </span>
@@ -77,8 +55,7 @@
     data() {
       return {
         i: -1,
-        loading: false,
-        score: 10,
+        // loading: false,
         isupmod: false,
         isHeartClick: '',
         articles: [],
@@ -92,19 +69,12 @@
 
       }
     },
-    // created () {
-    //   this.fetchArticle()
-    //   // console.log(this.articles)
-    // },
     mounted() {
       this.fetchArticle();
       this.fetchLovelink();
 
-      // console.log(this.$route.params.uName);
     },
     computed: {
-
-
 
     },
 
@@ -114,8 +84,7 @@
     methods: {
       changeVote(id, index) {
         this.articles[index].voteActive = true;
-        // axios(id)
-        this.$http.post('sharelink/vote',{
+        this.$http.post('/sharelink/vote',{
           article_id:id
         }).then(response => {
           let res = response.data;
@@ -141,16 +110,10 @@
               let res = response.data;
               if (res.status == '1') {
                 this.lovelinkid = res.doc.lovelink;
-                // console.log(`this.lovelinkid:${this.lovelinkid}`)
-                // console.log('lovelink-成功')
               } else {
-                // console.log('lovelink-失败')
               }
             })
         }
-        // else {
-        //   return false;
-        // }
       },
       addlovelink(sharelink_id, index) {
         if (!localStorage.getItem('userName')) {
@@ -163,37 +126,16 @@
           }).then(response => {
             let res = response.data
             if (res.status == "1") {
-              // this.isHeartClick = true;
-              // this.i = index;
               this.lovelinkid = res.lovelink;
               this.$message.success('成功收藏');
-              // return true;
             } else if (res.status == "2") {
-              // this.isHeartClick = false;
-              // this.i = -1;
               this.lovelinkid = res.lovelink;
               this.$message.error('取消收藏');
-              // return false;
             } else {
               this.$message.error('发生错误');
             }
           })
         }
-
-        // console.log(`_id:${_id}`)
-        // console.log(`index:${index}`)
-        // axios(id)
-
-        // if(this.articles[index].heartActive == true) {
-        //   this.articles[index].heartActive = false;
-        //   this.$message.error('取消收藏');
-        // } else {
-        //   this.articles[index].heartActive = true;
-        //   this.$message({
-        //   message: '已加入收藏',
-        //   type: 'success'
-        //   });
-        // }
 
       },
       fetchArticle(flag) {
@@ -208,11 +150,8 @@
           axios.get("/sharelink", {
             params: param
           }).then((response) => {
-            // this.loading = false;
-            // this.articles = res.data.result.list;
             var res = response.data;
             this.loading = false;
-            // status == 0 数据读取成功
             if (res.status == "1") {
               // 不是第一次，需要拼接数据
               if (flag) {
@@ -234,8 +173,6 @@
           }).catch(function (error) {
             console.log(error)
           })
-        
-
 
       },
 
@@ -260,7 +197,6 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    /* text-decoration: none; */
   }
 
   .sort {
@@ -338,37 +274,8 @@ main区
   main {
     margin: 0 auto;
     width: 100%;
-    /* border: 1px solid green; */
     height: auto;
   }
-
-  /* @media screen and (min-width:960px) {
-    main {
-      width: 720px;
-      margin: 0 auto;
-
-      height: auto;
-    }
-  }
-
-  @media screen and (min-width:1200px) {
-    main {
-      width: 940px;
-      width: 80%;
-      margin: 0 auto;
-
-      height: auto;
-    }
-  }
-  @media screen and (min-width:1600px) {
-    main {
-      width: 940px;
-      width: 65%;
-      margin: 0 auto;
-
-      height: auto;
-    }
-  } */
 
   /**********
 文章列表li
@@ -398,25 +305,6 @@ main区
     color: #EC681B;
   }
 
-  /* .article-title h2 a:visited {
-    color: #9a9a9a;
-  } */
-
-  @media screen and (min-width:1200px) {
-    .article-title {
-      /* white-space: nowrap;
-      text-overflow: ellipsis;
-      display: inline-block; */
-      /* padding: 15px 0;
-      -webkit-box-flex: 1;
-      flex: 1;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      flex-direction: column;
-      flex-wrap: wrap; */
-    }
-  }
 
   /**********
 用户头像
@@ -560,9 +448,6 @@ meta信息
       font-size: 15px;
       line-height: 24px;
     }
-    /* .meta a:last-child {
-      border: 0 !important;
-    } */
     .heart::before {
       font-size: 15px;
     }
@@ -657,13 +542,6 @@ meta信息
     margin: 15px 10px 0 0;
     overflow: hidden;
   }
-
-  /* .article-vote a {
-  text-decoration: none;
-}
-.article-vote a:visited {
-  color: #e0e0e0;
-} */
 
   @media screen and (min-width:500px) {
     .article-vote {

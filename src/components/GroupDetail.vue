@@ -9,9 +9,7 @@
           </div>
         </div>
         <div class="header-body">
-          <!-- <h2 class="group-name">{{this.$route.params.gName}}</h2> -->
           <h2 class="group-name">{{groupdetail.groupName}}</h2>
-          <!-- <h2 class="group-name">打开Vue的大门</h2> -->
           <p class="author">by. {{groupdetail.author.userName}}</p>
           <p class="description">{{groupdetail.groupIntro}}</p>
           <p class="">成员：{{groupdetail.member.length}}</p>
@@ -32,8 +30,6 @@
           </el-dropdown>
         </div>
         <div class="publish-topic">
-          <!-- <router-link to="/MarkdownEditor" class="LastItem">发表话题</router-link> -->
-          <!-- <router-link :to="{name: 'markdowneditor', params:{g_id:this.gid,u_id:this.userid}}" class="LastItem">发表话题</router-link> -->
           <router-link :to="{name: 'markdowneditor', query:{g_id:this.gid,isjoin:this.isjoin}}" class="LastItem">发表话题</router-link>
         </div>
         <div>
@@ -52,7 +48,6 @@
 
       <section class="articles">
         <ul class="articles-list">
-          <!-- <li v-for="article in articles" v-bind:key="article.id"> -->
           <li v-for="topic in topics" v-bind:key="topic._id">
             <div class="user-avatar">
               <v-gravatar v-bind:email="topic.author.userEmail" size='40' />
@@ -60,7 +55,6 @@
             <div class="article-title">
               <h2>
                 <router-link :to="{ name:'topicdetail', params:{t_id:topic._id}}" class="article-link">{{topic.title}}</router-link>
-                <!-- <a href="http://localhost:8080/" class="article-link">Release Notes for Safari Technology Preview 43</a> -->
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'like', params: { uName: topic.author.userName }}">{{topic.author.userName}}</router-link>
@@ -113,7 +107,6 @@ import axios from 'axios'
     },
     methods:{
       fetchGroupDetail() {
-        // console.log(this.gid)
         let param = {
           g_id:this.gid,
           userName:localStorage.getItem('userName')
@@ -123,7 +116,6 @@ import axios from 'axios'
         ).then(response => {
           let res = response.data;
           if(res.status == "1") {
-            // this.commentNum = res.result.groupTopic.comments.length
             this.groupdetail = res.result;
             this.userid = res.user._id;
             this.isjoin = res.result.member.indexOf(res.user._id)
@@ -149,13 +141,7 @@ import axios from 'axios'
           {params:param}
         ).then( (response) => {
          
-          // this.loading = false;
-          // this.articles = res.data.result.list;
-
-
           var res = response.data;
-                // this.loading = false;
-                // status == 0 数据读取成功
                 if(res.status=="1"){
                   // 不是第一次，需要拼接数据
                   if(flag){
@@ -190,21 +176,15 @@ import axios from 'axios'
           }).then(response => {
             let res = response.data
             if (res.status == "1") {
-              // this.isHeartClick = true;
-              // this.i = index;
               this.lovegroupid = res.lovegroup;
               this.joinmsg = res.message;
               this.isjoin = 0;
               this.$message.success('加入成功');
-              // return true;
             } else if (res.status == "2") {
-              // this.isHeartClick = false;
-              // this.i = -1;
               this.lovegroupid = res.lovegroup;
               this.joinmsg =  res.message;
               this.isjoin = -1;
               this.$message.success('退出成功');
-              // return false;
             } else {
               this.$message.error('发生错误');
             }
@@ -228,12 +208,8 @@ import axios from 'axios'
 <style scoped>
   a {
     text-decoration: none;
-    /* color: black; */
   }
 
-  .vindex {
-    /* background: red !important; */
-  }
 
   .group-header p {
     color: #fff;
@@ -245,10 +221,7 @@ import axios from 'axios'
   main {
     width: 100%;
     margin: 0 auto;
-    /* border: 1px solid green; */
     height: auto;
-    /* background: #52524E; */
-    /* background: #F1F4F6; */
     background: #fff;
   }
 
@@ -288,7 +261,6 @@ import axios from 'axios'
 
   .group-name {
     font-size: 22px;
-    /* font-weight: 20; */
     color: #54595f;
   }
 
@@ -300,7 +272,6 @@ import axios from 'axios'
   .description {
     padding: 5px 0 0 0;
     font-size: 15px;
-    /* color: #bdc2c6; */
     margin: 0 50px 10px 50px;
   }
 
@@ -314,10 +285,8 @@ import axios from 'axios'
     height: 45px;
     margin-top: 10px;
     box-shadow: 0 0px 5px #9ba09f;
-    /* border: 1px solid green; */
   }
   .publish-topic {
-    /* border: 1px solid green; */
     display: flex;
     height: 45px;
     align-items: center;
@@ -328,11 +297,6 @@ import axios from 'axios'
     color:#fff;
   }
 
-  /* .topics {
-    margin-top: 1px;
-    height: 300px;
-    border: 1px solid green;
-  } */
 
    /**********
 文章列表li
@@ -363,9 +327,6 @@ import axios from 'axios'
   .article-title h2 a:hover {
     color:#EC681B;
   }
-  /* .article-title h2 a:visited {
-    color: #9a9a9a;
-  } */
   
   @media screen and (min-width:1200px) {
     .article-title {
@@ -387,7 +348,6 @@ import axios from 'axios'
   }
 
   .user-avatar img {
-    /* border-radius: 50%; */
     height: 20px;
     width: 20px;
   }
@@ -400,7 +360,6 @@ import axios from 'axios'
       align-self: center;
     }
     .user-avatar img {
-      /* border-radius: 50%; */
       height: 45px;
       width: 45px;
     }
@@ -427,7 +386,6 @@ import axios from 'axios'
 
   @media screen and (min-width:660px) {
     .articles h2 {
-      /* margin-top: 10px; */
     }
     .articles h2 a {
       font-size: 20px;
@@ -483,7 +441,6 @@ meta信息
     .meta {
       font-size: 15px;
       line-height: 24px;
-      /* margin-top: -10px; */
     }
   }
   .separator {
@@ -495,7 +452,6 @@ meta信息
   评论数
   *********/
   .comment-num {
-    /* font-size: 20px; */
     color:#9f8484;
     margin-right: 5px;
   }
@@ -505,31 +461,9 @@ meta信息
 
 
   @media screen and (min-width:960px) {
-    /* main {
-      width: 720px;
-      margin: 0 auto;
-      height: auto;
-    } */
     .comment-num {
     margin:0;
   }
   }
-
-  /* @media screen and (min-width:1200px) {
-    main {
-      width: 940px;
-      width: 70%;
-      margin: 2px auto;
-      height: auto;
-    }
-  }
-  @media screen and (min-width:1600px) {
-    main {
-      width: 940px;
-      width: 65%;
-      margin: 2px auto;
-      height: auto;
-    }
-  } */
 
 </style>

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Index from '@/components/Index'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Share from '@/components/Share'
@@ -11,9 +10,9 @@ import Group from '@/components/Group'
 import GroupDetail from '@/components/GroupDetail'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import TopicDetail from '@/components/TopicDetail'
-// import test from '@/components/test'
 import Vindex from '@/components/Vindex'
 import Tag from '@/components/Tag'
+import Follow from '@/components/Follow'
 
 Vue.use(Router)
 
@@ -103,6 +102,15 @@ const router = new Router({
           // },
           component:User,
           children:[
+            
+            {
+              path:'mygroup',
+              name:'group',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component:Group
+            },
             {
               path:'',
               name:'user_article',
@@ -112,13 +120,22 @@ const router = new Router({
               component:Article
             },
             {
-              path:'mygroup',
-              name:'group',
+              path:'following',
+              name:'following',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component:Group
-            }
+              component:Follow
+            },
+            {
+              path:'follower',
+              name:'follower',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component:Follow
+            },
+
           ]
         }
       ]
@@ -133,13 +150,6 @@ const router = new Router({
       name:'register',
       component:Register
     },
-    
-    //测试用
-    // {
-    //   path: '/test',
-    //   name: '',
-    //   component: test
-    // },
   ]
 })
 

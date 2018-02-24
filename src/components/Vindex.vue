@@ -99,7 +99,6 @@
     </header>
 
     <router-view :key="key"></router-view>
-    <!-- <router-view></router-view> -->
   </div>
 </template>
 
@@ -121,9 +120,6 @@
         msg: 'Welcome to Your Vue.js App'
       }
     },
-    beforeCreate() {
-      // this.userName = localStorage.getItem('userName');
-    },
     methods: {
       ...mapActions(['userLoginOut']),
       // 登出loginOut
@@ -137,8 +133,6 @@
             path: '/'
           }) //不带刷新
           this.$message.success('登出成功');
-          // this.$router.go(0)
-          // this.$router.go('/'); //带刷新
         } else {
           this.$message.success('登出失败');
         }
@@ -157,32 +151,10 @@
     },
     watch: {
       '$route': 'userInfo',
-
-      //   userName:function (val, oldVal) {
-      //   console.log('new: %s, old: %s', val, oldVal)
-      // },
     },
     mounted() {
       this.userName = localStorage.getItem('userName');
       this.userEmail = localStorage.getItem('userEmail');
-      //  this.userEmail = this.$store.state.userEmail;
-      // this.userName = 'js';
-      // this.$refs['input'].focus()
-      // console.log("store" + store.state)
-      // this.userName = this.$store.getters.getUserName;
-
-    },
-
-    //   updated: function () {
-    //   this.$nextTick(function () {
-    //     // Code that will run only after the
-    //     // entire view has been re-rendered
-    //     console.log("更新了")
-    //   })
-    // },
-
-    created() {
-      //  this.userName = localStorage.getItem('userName');      
     },
 
     computed: {
@@ -217,8 +189,6 @@ main区
 
   .vindex {
     margin: 0 auto;
-
-    /* border: 1px solid green; */
     height: auto;
   }
 
@@ -226,29 +196,21 @@ main区
     .vindex {
       width: 720px;
       margin: 0 auto;
-
-      /* border: 1px solid green; */
       height: auto;
     }
   }
 
   @media screen and (min-width:1200px) {
     .vindex {
-      /* width: 940px; */
       width: 75%;
       margin: 0 auto;
-
-      /* border: 1px solid green; */
       height: auto;
     }
   }
   @media screen and (min-width:1600px) {
     .vindex {
-      /* width: 940px; */
       width: 65%;
       margin: 0 auto;
-
-      /* border: 1px solid green; */
       height: auto;
     }
   }
@@ -257,7 +219,6 @@ main区
 
   .header {
     height: 89px;
-    /* width: 940px; */
     width: 100%;
     margin: 0 auto;
     display: flex;
@@ -285,12 +246,6 @@ main区
     background: #f3f3f3;
   }
 
-  /* @media screen and(min-width: 501px) {
-  .menu-wrapper li:nth-child(3) {
-    visibility: hidden;
-  }
-} */
-
   /*注意css执行顺序，后面的会覆盖前面的*/
 
   .menu-wrapper li:nth-child(4) {
@@ -300,8 +255,6 @@ main区
   @media screen and (max-width:1500px) {
     .header {
       height: 89px;
-      /* width: 940px; */
-      /* width: 940px; */
       margin: 0 auto;
       display: flex;
     }
@@ -311,7 +264,6 @@ main区
   @media screen and (max-width:1201px) {
     .header {
       height: 89px;
-      /* width: 720px; */
       margin: 0 auto;
       display: flex;
     }
@@ -320,7 +272,6 @@ main区
   @media screen and (max-width:960px) {
     .header {
       height: 80px;
-      /* width: 100%; */
     }
     .navigation {
       display: flex;
@@ -348,7 +299,6 @@ main区
   @media screen and (max-width:500px) {
     .header {
       height: 80px;
-      /* width: 100%; */
     }
     .navigation {
       display: flex;
@@ -367,14 +317,6 @@ main区
     }
   }
 
-  /* .mini-header {
-    position: relative;
-    left: 10px;
-    top: 10px;
-    margin: 0;
-    padding: 0;
-  } */
-
   .navigation {
     width: 100%;
     font-size: 10px;
@@ -389,8 +331,6 @@ main区
     top: 30px;
     border: 1px solid #2DBF80;
     background: #2DBF80;
-    /* display: block; */
-    /* align-self: baseline; */
   }
 
   .user-login:hover {
@@ -401,12 +341,6 @@ main区
   .user-login a {
     padding: 5px 13px;
   }
-
-  /* @media screen and (min-width:1500px) {
-    .user-login {
-    margin-top: 50px;
-  }
-  } */
 
   .navigation a,
   .user-login a,
@@ -478,7 +412,6 @@ main区
 
   .el-dropdown-menu a {
     text-decoration: none;
-    /* color: #818181; */
   }
 
   /***********

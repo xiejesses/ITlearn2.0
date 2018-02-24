@@ -9,20 +9,15 @@
             </section>
             <section class="groups-meta">
               <div class="groups-name">
-                  <!-- <h2><router-link :to="{ name: 'groupdetail', params: { gName: group.groupName }}">{{group.groupName}}</router-link></h2> -->
                   <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.groupName}}</router-link></h2>
                   </div>
               <div class="groups-intro">
-                  <!-- 一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑
-                  一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑 -->
                   {{ group.groupIntro }}
               </div>
               <div class="author-meta">
                 <router-link :to="{ name: 'article', params: { uName: group.author.userName }}"> {{ group.author.userName }}</router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(group.createTime)"> {{ moment(new Date(group.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                <!-- <span class="separator">• </span> -->
-                <!-- <router-link :to="{ name: 'like', params: { uName: userName }}">Vue</router-link> -->
                 <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.member.length}}</span>
                 
               </div>
@@ -48,10 +43,6 @@
     name: 'group',
     data() {
       return {
-        // userName: 'jesses',
-        // groupName:'打开Vue的大门',
-        // creatTime: '2017-11-2 16:30:20',
-        // joinmsg:'关注',
         groups:[],
         busy:true,
         page:1,
@@ -74,14 +65,9 @@
         axios.get("/group/fetchgroup",
           {params:param}
         ).then( (response) => {
-         
-          // this.loading = false;
-          // this.articles = res.data.result.list;
 
 
           var res = response.data;
-                // this.loading = false;
-                // status == 0 数据读取成功
                 if(res.status=="1"){
                   // 不是第一次，需要拼接数据
                   if(flag){
@@ -116,18 +102,11 @@
           }).then(response => {
             let res = response.data
             if (res.status == "1") {
-              // this.isHeartClick = true;
-              // this.i = index;
               this.lovegroupid = res.lovegroup;
-              // this.joinmsg = "取消关注"
               this.$message.success('加入成功');
-              // return true;
             } else if (res.status == "2") {
-              // this.isHeartClick = false;
-              // this.i = -1;
               this.lovegroupid = res.lovegroup;
               this.$message.success('退出成功');
-              // return false;
             } else {
               this.$message.error('发生错误');
             }
@@ -146,16 +125,10 @@
               let res = response.data;
               if (res.status == '1') {
                 this.lovegroupid = res.doc.lovegroup;
-                // console.log(`this.lovelinkid:${this.lovelinkid}`)
-                // console.log('lovelink-成功')
               } else {
-                // console.log('lovelink-失败')
               }
             })
         }
-        // else {
-        //   return false;
-        // }
       },
 
       loadMore(){
@@ -177,7 +150,6 @@ a {
     padding: 0;
     margin: 0;
     list-style: none;
-    /* text-decoration: none; */
   }
   abbr {
     font-size: 11px;
@@ -188,12 +160,10 @@ a {
     font-size: 14px;
     margin-bottom: 5px;
     color:#423c3c;
-    /* color:black; */
 }
   main {
     width: 100%;
     margin: 0 auto;
-    /* border: 1px solid green; */
     height: auto;
   }
   .groups li {
@@ -220,7 +190,6 @@ a {
     text-decoration: none;
   }
   .groups-name h2 {
-      /* margin: 0 0 10px 0; */
       margin-top: 0;
       margin-bottom: 10px;
   }
@@ -321,11 +290,6 @@ a {
   }
 
   @media screen and (min-width:960px) {
-    /* main {
-      width: 720px;
-      margin: 0 auto;
-      height: auto;
-    } */
     .groups-intro {
         max-width: 450px;
         font-size: 16px;
@@ -336,11 +300,6 @@ a {
   }
 
   @media screen and (min-width:1200px) {
-    /* main {
-      width: 940px;
-      margin: 0 auto;
-      height: auto;
-    } */
     .groups-name a{
       font-size: 22px;
       overflow: hidden;
@@ -350,13 +309,5 @@ a {
         max-width: 500px;
     }
   }
-  /* @media screen and (min-width:1600px) {
-    main {
-      width: 940px;
-      width: 100%;
-      margin: 0 auto;
-      height: auto;
-    }
-  } */
 
 </style>

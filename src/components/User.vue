@@ -15,27 +15,27 @@
               <span v-else v-show="userName == currentUser" class="edit">
                 <i @click="edit" class="el-icon-edit" title="设置"></i>
               </span>
-              <!-- <input v-if="isEdit" type="text" v-model="userName"> -->
-              <!-- <h2 v-else>{{userInfo.userName}}</h2> -->
               <h2>{{userInfo.userName}}</h2>
-              <!-- <span>{{userInfo.userName}}</span> -->
               <textarea v-if="isEdit" v-model="userInfo.userIntro" name="" id="" cols="30" rows="2"></textarea>
-              <!-- <input v-if="isEdit" type="text" v-model="userInfo.userIntro"> -->
               <pre v-else class="description">
               <p >{{userInfo.userIntro}}</p>
               </pre>
-              <!-- <p v-else class="description">{{userInfo.userIntro}}</p> -->
             </div>
           </div>
           <div class="profile-content">
             <ul>
               <li>
-                <div class="digits">{{userInfo.following.length}}</div>
+                <router-link :to="{ name: 'following' ,params: { uName: userName }}">
+                  <div class="digits">{{userInfo.following.length}}</div>
                 正在关注
+                </router-link>
+                
               </li>
               <li>
-                <div class="digits">{{follower}}</div>
+                 <router-link :to="{ name: 'follower', params: { uName: userName }}">
+                <div class="digits">{{userInfo.follower.length}}</div>
                 关注者
+                 </router-link>
               </li>
               <li>
                 <div class="digits">{{userInfo.lovelink.length}}</div>
@@ -44,7 +44,6 @@
             </ul>
           </div>
           <div class="follow">
-            <!-- <button v-show="userName !== currentUser" @click="follow">关注</button> -->
             <button v-show="userName !== currentUser" @click="follow">{{followmsg}}</button>
           </div>
         </div>
@@ -56,7 +55,6 @@
           <router-link :to="{ name: 'group'}" class="ListItem">小组({{userInfo.lovegroup.length}})</router-link>
         </div>
         <router-view></router-view>
-        <!-- <router-view :key="key"></router-view> -->
       </section>
       
     </main>
@@ -76,13 +74,7 @@
         isEdit: false,
         isSave: false,
         msg: 'Design & front end development. Also a back end engineer'
-        // msg: '一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑一起学习 vue 相关的知识,探索和发现各种技巧,提出你踩过的坑'
       }
-    },
-    computed: {
-      // key() {
-      //     return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
-      // }
     },
     mounted() {
       this.fetchUserInfo();
@@ -117,10 +109,6 @@
       },
 
       fetchUserInfo() {
-        // let param = {
-        //     userName:this.$route.params.uName,
-        //     currentUser:this.currentUser
-        //   }
         this.$http.post('/users/getuserinfo',{
           userName:this.$route.params.uName,
           currentUser:localStorage.getItem('userName')
@@ -135,10 +123,7 @@
               } else {
                 this.followmsg = "取消关注"
               }
-              // console.log(`this.lovelinkid:${this.lovelinkid}`)
-              // console.log('lovelink-成功')
             } else {
-              // console.log('lovelink-失败')
             }
           })
       },
@@ -170,22 +155,17 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-textarea {
-  /* resize:vertical */
+a {
+  text-decoration: none;
+  color: white;
 }
 pre {
-  /* margin: -30px auto; */
-  /* margin-bottom: -30px; */
-  /* height:60px; */
   white-space: pre-wrap;
-  /* height:min-content; */
-  /* padding: 0; */
 }
   main {
     width: 100%;
     margin: 5px auto;
     height: auto;
-    /* border: 1px solid green; */
   }
 
   .user-data {
@@ -237,8 +217,6 @@ pre {
   }
 
   .description {
-    /* padding: 5px 0 0 0; */
-    /* font-size: 20px; */
     color: #bdc2c6;
     margin: 0px 30px;
   }
@@ -249,15 +227,11 @@ pre {
 
   input[type="text"] {
     display: block;
-    /* margin-top: 10px; */
-    /* align-items: center; */
-    /* padding: 0 0 0 0; */
     border: none;
     font-size: 14px;
     color: black;
     margin-top: 13px;
     height: 20px;
-    /* margin: 0 30px; */
   }
 
   .user-meta img {
@@ -265,9 +239,6 @@ pre {
     width: 64px;
     border-radius: 50%;
   }
-  /* .profile-content {
-    margin-top: -25px;
-  } */
   .profile-content ul {
     padding: 0;
     margin-bottom: 10px;
@@ -282,9 +253,6 @@ pre {
     font-size: 14px;
     margin-right: 15px;
   }
-  /* .profile-content li:hover {
-    color: #bdc2c6;
-  } */
 
   .profile-content li+li {
     border-left: 1px solid #8c8585;
@@ -294,7 +262,6 @@ pre {
   .follow {
     margin-bottom: 10px;
     width: 100px;
-    /* border: 1px solid red; */
   }
 
   .follow button {
@@ -333,7 +300,6 @@ pre {
     .user-meta img {
       height: 76px;
       width: 76px;
-      /* border-radius: 50%; */
     }
     .user-introduce h2 {
       font-size: 20px;
@@ -356,7 +322,6 @@ pre {
     .user-meta img {
       height: 96px;
       width: 96px;
-      /* border-radius: 50%; */
     }
     .user-introduce h2 {
       font-size: 22px;
@@ -364,32 +329,10 @@ pre {
   }
 
   @media screen and (min-width:960px) {
-    /* main {
-      width: 720px;
-      margin: 5px auto;
-      height: auto;
-    } */
     input[type="text"] {
       margin-top: 6px;
       height: 22px;
     }
   }
-
-  /* @media screen and (min-width:1200px) {
-    main {
-      width: 940px;
-      width: 70%;
-      margin: 5px auto;
-      height: auto;
-    }
-  }
-  @media screen and (min-width:1600px) {
-    main {
-      width: 940px;
-      width: 65%;
-      margin: 5px auto;
-      height: auto;
-    }
-  } */
 
 </style>

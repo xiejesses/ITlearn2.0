@@ -22,9 +22,7 @@
               <div class="buttons">
                 <p class="submit">
                   <a class="user-submit" href="javascript:;" @click="share">发布</a>
-                  <!-- <input type="submit" @click="share" name="user-submit" value="发布"> -->
                   <a href="javascript:;" class="cancel" @click="cancel">取消</a>
-                <!-- <p class="cancel">取消</p> -->
                 </p>
               </div>
             </div>
@@ -72,11 +70,6 @@
     },
     methods: {
       share() {
-        // let formData = {
-        //   url: this.formShare.url,
-        //   title: this.formShare.title,
-        //   tags: this.formShare.tags
-        // };
         this.$http.post('/sharelink/submit',{
           url: this.formShare.url,
           title: this.formShare.title,
@@ -85,11 +78,7 @@
         }).then(response => {
             let res = response.data;
             if (res.status == "1") {
-              // this.userLogin(res);
               this.$message.success(`${res.message}`)
-              //登录成功，跳转到首页
-              //this.$router.push({name:'Home'})
-              // this.$router.push('/')
             } else {
               this.$message.error(`${res.message}`);
               return false;
@@ -101,13 +90,8 @@
           let res = response.data;
           if(res.status == "1") {
             this.options = res.result;
-            // this.options = res.result[0].tags;
-            // this.options.push(res.result[0].tags[0]);
-            // this.options.concat(res.result[0].tags[0]);
             console.log(this.options)
           } else {
-            // this.tags.push('没有相关标签')\
-            // console.log("失败")
             return false
           }
         })
@@ -119,11 +103,7 @@
         this.formShare.title = '';
         this.formShare.tags = '';
       }
-
-
     }
-    
-    
 
   }
 
@@ -149,9 +129,6 @@
 
   .main {
     margin: 40px 0 0 0;
-
-
-    /* border: 1px solid green; */
   }
 
   @media screen and (min-width:960px) {
@@ -164,8 +141,6 @@
   section {
     width: 80%;
     margin: 0 auto;
-
-    /* border: 1px solid red; */
   }
 
   @media screen and (min-width:500px) {
@@ -191,7 +166,6 @@
       border-radius: 2px;
       margin-top: 50px;
       box-sizing: border-box;
-      /* box-shadow:0px 0px 5px 0px #6b5858; */
     }
   }
 
@@ -208,12 +182,8 @@
   }
 
   .tips {
-    /* width: 300px; */
     height: auto;
     margin-top: 20px;
-
-
-    /* border: 1px solid black; */
   }
 
 

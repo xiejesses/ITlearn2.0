@@ -22,12 +22,8 @@
                 name="userPwd" type="password" placeholder="Password">
               <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
             </p>
-            <!-- <p>
-              <input type="password" v-model="formLogin.userPwd" name="userPwd" id="user_pass" class="input" placeholder="Password" value="">
-            </p> -->
             <div class="actions">
               <div class="buttons">
-                <!-- <p class="submit"><input type="submit" name="user-submit" id="user-submit" value="提交"></p> -->
                 <p class="submit">
                   <a href="javascript:;" class="user-login" @click="login">登录</a>
                 </p>
@@ -35,8 +31,6 @@
               </div>
               <div class="toRegister">
                 <h3 class="message">还没有帐户？
-                  <!-- <a href="javascript:void(0)" @click="isloginfrom=false">立即注册</a> -->
-                  <!-- <router-link to="/register " class="">点击注册</router-link> -->
                   <router-link :to="{ name: 'register'}" >点击注册</router-link>
                 </h3>
               </div>
@@ -80,12 +74,9 @@
           userEmail: user.userEmail,
           userPwd: user.userPwd
         };
-        // console.log(this.$errors.has('userEmail'))
-        // console.log('11111')
         this.$validator.validateAll().then((result) => {
-          if (result) { // eslint-disable-next-line
+          if (result) { 
             this.$http.post('/users/login', {
-              // axios.post("/users/login",{
               userEmail: formData.userEmail,
               userPwd: formData.userPwd
             })
@@ -100,7 +91,6 @@
                   //  你需要接受路由的参数再跳转
                   path: redirect
                 })
-                // this.$router.push('/')
               } else {
                 this.$message.error(`${res.message}`);
                 return false;
@@ -115,115 +105,7 @@
           }
           
         });
-
-
-          
-
       },
-
-      //关闭注册验证
-      register() {
-        let user = this.formRegister;
-        let formData = {
-          userName: user.userName,
-          userEmail: user.userEmail,
-          userPwd: user.userPwd
-        };
-        
-        this.$validator.validateAll().then((result) => {
-          if (result) { // eslint-disable-next-line
-            this.$http.post('/users/register', {
-            userName: formData.userName,
-            userEmail: formData.userEmail,
-            userPwd: formData.userPwd
-          })
-          .then(response => {
-            let res = response.data;
-            if (res.status == "1") {
-              this.userLogin(res);
-              this.$message.success(`${res.message}`)
-              //注册成功，跳转到之前页面
-              //this.$router.push({name:'Home'})
-              var redirect = decodeURIComponent(this.$route.query.redirect || '/')
-                this.$router.push({
-                  //  你需要接受路由的参数再跳转
-                  path: redirect
-                })
-              // this.$router.push('/')
-            } else {
-              this.$message.error(`${res.message}`);
-              return false;
-            }
-          })
-          .catch(err => {
-            this.$message.error(`${err.message}`, 'ERROR!');
-          })
-          } else {
-              this.$message.error(`邮箱或密码有误，请重新填写！`);
-              return false;
-          }
-          
-        });
-      }
-      //关闭注册验证
-
-      //没有注册验证
-      // register() {
-      //   let user = this.formRegister;
-      //   let formData = {
-      //     userName: user.userName,
-      //     userEmail: user.userEmail,
-      //     userPwd: user.userPwd
-      //   };
-      //       this.$http.post('/users/register', {
-      //       userName: formData.userName,
-      //       userEmail: formData.userEmail,
-      //       userPwd: formData.userPwd
-      //     })
-      //     .then(response => {
-      //       let res = response.data;
-      //       if (res.status == "1") {
-      //         this.userLogin(res);
-      //         this.$message.success(`${res.message}`)
-      //         //登录成功，跳转到首页
-      //         //this.$router.push({name:'Home'})
-      //         this.$router.push('/')
-      //       } else {
-      //         this.$message.error(`${res.message}`);
-      //         return false;
-      //       }
-      //     })
-      //     .catch(err => {
-      //       this.$message.error(`${err.message}`, 'ERROR!');
-      //     })
-      // }
-      // //没有注册验证
-
-      // login(){
-      //          let user = this.formLogin;
-      //             let formData = {
-      //                 userEmail: user.userEmail,
-      //                 userPwd: user.userPwd
-      //             };
-      //         axios.post("/users/login",{
-      //              userEmail:formData.userEmail,
-      //         userPwd:formData.userPwd
-      //         },{headers:{'Content-Type':'application/x-www-form-urlencoded'}}).then((response)=>{
-      //             let res = response.data;
-      //             if(res.status=="1"){
-      //             //   this.errorTip = false;
-      //             //   this.loginModalFlag = false;
-      //             //   this.$store.commit("updateUserInfo",res.result.userName);
-      //             //   this.getCartCount();
-      //             alert(res.message)
-      //             }else{
-      //             //   this.errorTip = true;
-      //             alert(res.message)
-      //             }
-      //         }).catch(err => {
-      //             this.$message.error(`ai${err.message}`,'ERROR!');
-      //     })
-      //     },
     }
   }
 
@@ -231,10 +113,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .login {
-    /* background-color: #F8F8F8; */
-    /* height: 800px; */
-  }
 
   .log-in h2 {
     color: #676c72;
@@ -255,9 +133,6 @@
 
   .main {
     margin: 40px 0 0 0;
-
-
-    /* border: 1px solid green; */
   }
 
   @media screen and (min-width:960px) {
@@ -267,12 +142,10 @@
     }
     .log-in h2 {
       display: block;
-      /* position: relative; */
       text-align: center;
       color: #676c72;
       font-size: 24px;
       padding: 20px 0 0 0;
-      /* margin-top: 20px; */
     }
     input[type="submit"] {
       width: 100%;
@@ -282,8 +155,6 @@
   .log-in {
     width: 80%;
     margin: 0 auto;
-
-    /* border: 1px solid red; */
   }
 
   @media screen and (min-width:500px) {

@@ -11,12 +11,6 @@
             <p>
                  <input  v-model="formRegister.userName" name="userName" type="text" placeholder="用户名">
             </p>
-            <!-- <p>
-                 <input  v-model="formRegister.userEmail" name="userEmail" type="text" placeholder="邮箱">
-            </p>
-            <p>
-                 <input  v-model="formRegister.userPwd" name="userPwd" type="text" placeholder="密码">
-            </p> -->
 
             <!-- <p :class="{ 'control': true }">
               <input v-validate="'required|userName'" v-model="formLogin.userName" :class="{'input': true, 'is-danger': errors.has('userName') }"
@@ -39,12 +33,9 @@
                 <p class="submit">
                   <a href="javascript:;" class="user-register" @click="register">注册</a>
                 </p>
-                <!-- <p class="cancel">取消</p> -->
               </div>
               <div class="toRegister">
                 <h3 class="message">已有帐户？
-                  <!-- <a href="javascript:void(0)" @click="isloginfrom=true">点击登录</a> -->
-                  <!-- <router-link to="/login " class="">点击登录</router-link> -->
                   <router-link :to="{ name: 'login'}" >点击登录</router-link>
                 </h3>
               </div>
@@ -76,9 +67,7 @@
     },
     methods: {
       ...mapActions(['userLogin']),
-
-
-      //关闭注册验证
+     
       register() {
         let user = this.formRegister;
         let formData = {
@@ -88,7 +77,7 @@
         };
         
         this.$validator.validateAll().then((result) => {
-          if (result) { // eslint-disable-next-line
+          if (result) { 
             this.$http.post('/users/register', {
             userName: formData.userName,
             userEmail: formData.userEmail,
@@ -99,8 +88,6 @@
             if (res.status == "1") {
               this.userLogin(res);
               this.$message.success(`${res.message}`)
-              //登录成功，跳转到首页
-              //this.$router.push({name:'Home'})
               this.$router.push('/')
             } else {
               this.$message.error(`${res.message}`);
@@ -117,39 +104,6 @@
           
         });
       }
-      //关闭注册验证
-
-      //没有注册验证
-      // register() {
-      //   let user = this.formRegister;
-      //   let formData = {
-      //     userName: user.userName,
-      //     userEmail: user.userEmail,
-      //     userPwd: user.userPwd
-      //   };
-      //       this.$http.post('/users/register', {
-      //       userName: formData.userName,
-      //       userEmail: formData.userEmail,
-      //       userPwd: formData.userPwd
-      //     })
-      //     .then(response => {
-      //       let res = response.data;
-      //       if (res.status == "1") {
-      //         this.userLogin(res);
-      //         this.$message.success(`${res.message}`)
-      //         //登录成功，跳转到首页
-      //         //this.$router.push({name:'Home'})
-      //         this.$router.push('/')
-      //       } else {
-      //         this.$message.error(`${res.message}`);
-      //         return false;
-      //       }
-      //     })
-      //     .catch(err => {
-      //       this.$message.error(`${err.message}`, 'ERROR!');
-      //     })
-      // }
-      // //没有注册验证
     }
   }
 
@@ -157,10 +111,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .login {
-    /* background-color: #F8F8F8; */
-    /* height: 800px; */
-  }
 
   .register-in h2 {
     color: #676c72;
@@ -181,9 +131,6 @@
 
   .main {
     margin: 40px 0 0 0;
-
-
-    /* border: 1px solid green; */
   }
 
   @media screen and (min-width:960px) {
@@ -193,12 +140,10 @@
     }
     .register-in h2 {
       display: block;
-      /* position: relative; */
       text-align: center;
       color: #676c72;
       font-size: 24px;
       padding: 20px 0 0 0;
-      /* margin-top: 20px; */
     }
     input[type="submit"] {
       width: 100%;
@@ -208,8 +153,6 @@
   .register-in {
     width: 80%;
     margin: 0 auto;
-
-    /* border: 1px solid red; */
   }
 
   @media screen and (min-width:500px) {

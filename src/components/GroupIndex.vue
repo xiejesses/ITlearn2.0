@@ -5,7 +5,6 @@
         <p>发现和创建小组，共同学习与分享知识</p>
         <div class="build-form" v-if="isbuilding">
           <form name="buildform" :v-model="formGroup" id="buildform" action="#" method="post">
-            <!-- <h1>分享链接</h1> -->
             <h4 class="errMessage"></h4>
             <p>
               <el-input  class="inputstyle" v-model="formGroup.groupName" placeholder="小组名"></el-input>
@@ -18,7 +17,6 @@
             <div class="actions">
               <div class="buttons">
                 <a href="javascript:;" class="user-submit" @click="createGroup">创建</a>
-                <!-- <input type="submit" @click="createGroup" name="user-submit" id="user-submit" value="创建"> -->
                 <a class="cancel" @click="cancel">取消</a>
               </div>
             </div>
@@ -27,11 +25,8 @@
         <div class="build-button" v-else>
           <button @click="isbuilding = true">创建小组</button>
         </div>
-        <!-- <div contenteditable>edit</div> -->
       </section>
-
       <section>
-        
         <router-view></router-view>
       </section>
     </main>
@@ -54,7 +49,6 @@
     },
     methods:{
       createGroup() {
-        // this.isbuilding = true;
         
         this.$http.post('/group/creategroup',{
           groupName:this.formGroup.groupName,
@@ -64,7 +58,6 @@
           let res = response.data;
           if(res.status == "1") {
             this.$router.push('/groupindex')
-            // this.$message.success(`创建成功！`);
             this.$message.success('创建成功');
             this.isbuilding = false;
             this.formGroup.groupName = '';
@@ -75,7 +68,6 @@
           }
         }).catch(err => {
               this.$message.error(`请先登录！`);
-              // this.$message.error(`${err.message}`, 'ERROR!');
             })
       },
 
@@ -95,11 +87,9 @@
     width: 100%;
     margin: 5px auto;
     height: auto;
-    /* border: 1px solid green; */
   }
 
   .build-group {
-    /* background: #54595f; */
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -118,7 +108,6 @@
   .build-button {
     margin-bottom: 10px;
     width: 100px;
-    /* border: 1px solid red; */
   }
 
   .build-button button {
@@ -174,34 +163,15 @@
 
  
   @media screen and (min-width:960px) {
-    /* main {
-      width: 720px;
-      margin: 5px auto;
-      height: auto;
-    } */
     .inputstyle {
     width:300px;
     }
   }
 
   @media screen and (min-width:1200px) {
-    /* main {
-      width: 940px;
-      width: 70%;
-      margin: 5px auto;
-      height: auto;
-    } */
     .inputstyle {
   width:400px;
 }
   }
-  /* @media screen and (min-width:1600px) {
-    main {
-      width: 940px;
-      width: 65%;
-      margin: 0 auto;
-      height: auto;
-    }
-  } */
 
 </style>
