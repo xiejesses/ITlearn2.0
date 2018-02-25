@@ -289,6 +289,10 @@ main区
     -webkit-box-align: center;
     align-items: center;
   }
+  .articles li:hover {
+    background: #fafafa63;
+    
+  }
 
   .article-title {
     padding: 15px 0;
