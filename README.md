@@ -1,6 +1,5 @@
 # 开发者交流分享平台
-
-[![](https://img.shields.io/badge/Powered by-Vue-brightgreen.svg)](https://cn.vuejs.org/index.html)
+[![Vue](https://img.shields.io/badge/Powered_by-Vue-green.svg?style=flat)](https://cn.vuejs.org/index.html)
 
 本应用参考目前市面上各大开发者社区，例如，[掘金](https://juejin.im/) 、[SegmentFault](https://segmentfault.com/) ，采取前、后端分离的模式，[前端](https://github.com/xiejesses/ITlearn2.0) 结合 [Vue](https://cn.vuejs.org/index.html) 及其生态系统 [Vue-Router](https://router.vuejs.org/zh-cn/) 、[Vuex](https://vuex.vuejs.org/zh-cn/) 、[vue-cli](https://github.com/vuejs/vue-cli) 和 [Element](http://element.eleme.io/#/zh-CN) 组件库; [后端](https://github.com/xiejesses/ITlearn2.0-Server) 结合 [Express](https://expressjs.com/zh-cn/) 和 [mongoose](http://mongoosejs.com/) 共同开发的集分享文章链接、创建/加入小组、讨论某个话题等功能的开发者交流分享平台。
 
