@@ -63,7 +63,7 @@
 
         busy: true,
         page: 1,
-        pageSize: 5,
+        pageSize: 3,
 
         lovelinkid: [],
 

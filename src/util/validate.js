@@ -44,6 +44,5 @@ Validator.extend('userName', {
   getMessage: () => '用户名有误',
   validate: value => {
     // return /^[a-zA-Z0-9_-]{4,16}$/.test(value)
-    return value.length > 2
-  }
+    }
 });
