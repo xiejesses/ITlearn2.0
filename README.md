@@ -7,7 +7,7 @@
 
 ## 演示
 
-![](http://odwrkh0qd.bkt.clouddn.com/18-2-26/15408408.jpg)
+![](https://github.com/xiejesses/ITlearn2.0/blob/master/static/img/show.gif)
 
 
 
