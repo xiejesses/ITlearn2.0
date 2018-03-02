@@ -48,7 +48,7 @@
       <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar :email="userEmail" size='40' />
+            <v-gravatar :email="userEmail" size='40' :alt="userName"/>
           </span>
           <el-dropdown-menu slot="dropdown">
             <router-link :to="{ name: 'user_article', params: { uName: userName }}">

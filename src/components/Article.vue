@@ -9,7 +9,7 @@
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="article.author.userEmail" size='40' />
+              <v-gravatar v-bind:email="article.author.userEmail" size='40' :alt="article.author.userName" />
             </section>
             <section class="article-title">
               <div class="domain">{{ article.urlhostname }}</div>

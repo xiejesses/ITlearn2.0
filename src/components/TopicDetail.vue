@@ -42,7 +42,7 @@
                 <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
                   <div class="grid-content">
                     <div class="user-avatar">
-                      <v-gravatar v-bind:email="comment.author.userEmail" size='40' align="right" />
+                      <v-gravatar v-bind:email="comment.author.userEmail" size='40' :alt="comment.author.userName" align="right" />
                     </div>
                   </div>
                 </el-col>
@@ -64,7 +64,7 @@
                       <div v-show="index == i">
                         <div class="comment-input">
                           <div class="user-avatar">
-                            <v-gravatar v-bind:email="currentUserEmail" size='40' />
+                            <v-gravatar v-bind:email="currentUserEmail"  size='40' />
                           </div>
                           <div class="mavon-editor">
                             <mavon-editor  v-on:change="getReplyContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
@@ -83,7 +83,7 @@
                         <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
                           <div class="grid-content bg-purple">
                             <div class="user-avatar">
-                              <v-gravatar v-bind:email="reply.author.userEmail" size='40' align="right" />
+                              <v-gravatar v-bind:email="reply.author.userEmail" size='40' :alt="reply.author.userName" align="right" />
                             </div>
                           </div>
                         </el-col>

@@ -5,7 +5,7 @@
         <ul class="groups-list">
           <li v-for="(group,index) in groups" v-bind:key="group._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="group.author.userEmail" size='40' />
+              <v-gravatar v-bind:email="group.author.userEmail" size='40' :alt="group.author.userName"/>
             </section>
             <section class="groups-meta">
               <div class="groups-name">
