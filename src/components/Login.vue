@@ -75,21 +75,20 @@
           userPwd: user.userPwd
         };
         this.$validator.validateAll().then((result) => {
-          if (result) { 
-            this.$http.post('/users/login', {
-              userEmail: formData.userEmail,
-              userPwd: formData.userPwd
+          if (result) {
+            this.$http.post(this.$config.user.login.url, {
+              email: formData.userEmail,
+              password: formData.userPwd
             })
             .then(response => {
               let res = response.data;
-              if (res.status == "1") {
+
+              if (res.status === 0) {
                 this.userLogin(res);
-                this.$message.success(`${res.message}`)
+                this.$message.success("登录成功");
                 //登录成功，跳转到要到的页面
-                var redirect = decodeURIComponent(this.$route.query.redirect || '/')
                 this.$router.push({
-                  //  你需要接受路由的参数再跳转
-                  path: redirect
+                  path: decodeURIComponent(this.$route.query.redirect || '/') //  你需要接受路由的参数再跳转
                 })
               } else {
                 this.$message.error(`${res.message}`);
@@ -97,13 +96,12 @@
               }
             })
             .catch(err => {
-              this.$message.error(`${err.message}`, 'ERROR!');
+              this.$message.error(err.response.data.user);
             })
           } else {
               this.$message.error(`邮箱或密码有误，请重新填写！`);
               return false;
           }
-          
         });
       },
     }
