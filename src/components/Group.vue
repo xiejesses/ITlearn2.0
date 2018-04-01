@@ -25,7 +25,7 @@
             <section class="join-group">
               <button v-if="lovegroupid.indexOf(group._id) >= 0" @click="addlovegroup(group._id,index)">退出</button>
               <button v-else @click="addlovegroup(group._id,index)">加入</button>
-              </section>
+            </section>
           </li>
         </ul>
         <div class="view-more-normal"

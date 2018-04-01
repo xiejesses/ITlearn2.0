@@ -13,6 +13,7 @@ import TopicDetail from '@/components/TopicDetail'
 import Vindex from '@/components/Vindex'
 import Tag from '@/components/Tag'
 import Follow from '@/components/Follow'
+import Search from '@/components/Search'
 
 Vue.use(Router)
 
@@ -149,6 +150,11 @@ const router = new Router({
       path:'/register',
       name:'register',
       component:Register
+    },
+    {
+      path:'/search',
+      name:'search',
+      component:Search
     },
   ]
 })
