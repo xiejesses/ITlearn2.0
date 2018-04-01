@@ -27,7 +27,7 @@
                 name="userPwd" type="password" placeholder="密码">
               <span v-show="errors.has('userPwd')" class="help is-danger">{{ errors.first('userPwd') }}</span>
             </p>
-            
+
             <div class="actions">
               <div class="buttons">
                 <p class="submit">
@@ -67,41 +67,34 @@
     },
     methods: {
       ...mapActions(['userLogin']),
-     
+
       register() {
-        let user = this.formRegister;
-        let formData = {
-          userName: user.userName,
-          userEmail: user.userEmail,
-          userPwd: user.userPwd
-        };
-        
         this.$validator.validateAll().then((result) => {
-          if (result) { 
-            this.$http.post('/users/register', {
-            userName: formData.userName,
-            userEmail: formData.userEmail,
-            userPwd: formData.userPwd
-          })
-          .then(response => {
-            let res = response.data;
-            if (res.status == "1") {
-              this.userLogin(res);
-              this.$message.success(`${res.message}`)
-              this.$router.push('/')
-            } else {
-              this.$message.error(`${res.message}`);
-              return false;
-            }
-          })
-          .catch(err => {
-            this.$message.error(`${err.message}`, 'ERROR!');
-          })
+          if (result) {
+            this.$http.post(this.$config.user.url, {
+              nickname: this.formRegister.userName,
+              email: this.formRegister.userEmail,
+              password: this.formRegister.userPwd
+            })
+              .then(response => {
+                let res = response.data.data;
+                if (response.data.status === 0) {
+                  this.userLogin(res);
+                  this.$message.success("注册成功");
+                  this.$router.push('/');
+                } else {
+                  this.$message.error("注册异常");
+                  return false;
+                }
+              })
+              .catch(err => {
+                this.$message.error(err.response.data.message);
+              });
           } else {
               this.$message.error(`邮箱或密码有误，请重新填写！`);
               return false;
           }
-          
+
         });
       }
     }

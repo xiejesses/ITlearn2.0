@@ -37,10 +37,6 @@
     components: {
       mavonEditor
     },
-    data: {
-
-    },
-
     data() {
       return {
         Name:'test',
@@ -90,11 +86,11 @@
       }
     },
     beforeRouteEnter (to, from, next) {
-     
+
       if(to.query.isjoin >= 0) {
         next()
       } else {
-        from.$message.success('请先加入')
+        from.$message.success('请先加入');
         next(false)
       }
     },
@@ -103,23 +99,24 @@
         this.formMarkdown.topicContent = render;
       },
       cretetopic() {
-        this.$http.post('/topic/createtopic',{
-          _id:this.gid,
-          topicTitle:this.formMarkdown.topicTitle,
-          topicContent:this.formMarkdown.topicContent,
-          userName:localStorage.getItem('userName')
+        this.$http.post(this.$config.topic.url,{
+          group: this.gid,
+          title: this.formMarkdown.topicTitle,
+          content: this.formMarkdown.topicContent,
+          user: localStorage.getItem('userName')
         }).then(response => {
           let res = response.data;
-          if(res.status == "1") {
+          if(res.status === this.$status.success) {
             //成功返回上一级
-            window.history.go(-1)
+            window.history.go(-1);
             this.$message.success('发表成功');
           }else {
             this.$message.error('发生错误，请重试！');
           }
         }).catch(err => {
-          console.log(err)
-        })
+          this.$message.error(err.response.data.message);
+          // todo state权限显示message
+        });
       },
       cancel() {
         this.formMarkdown.topicContent = '';
@@ -128,9 +125,9 @@
     },
     mounted() {
      this.gid = this.$route.query.g_id;
-     this.isjoin = this.$route.query.isjoin
-     console.log( this.$route.query.g_id)
-     console.log( this.$route.query.isjoin)
+      this.isjoin = this.$route.query.isjoin;
+      console.log(this.$route.query.g_id);
+      console.log(this.$route.query.isjoin);
     }
   }
 
@@ -139,7 +136,7 @@
   a {
     text-decoration: none;
   }
-  
+
   main {
     width: 100%;
     margin: 5px auto;

@@ -41,13 +41,13 @@
     methods: {
       fetchTag() {
         let param = {
-          tag: this.$route.params.tName
+          _id: this.$route.params._id
         };
-        this.$http.get('/tags', {
+        this.$http.get(this.$config.recommend.tag.url, {
           params: param
         }).then(response => {
           let res = response.data;
-          if (res.status == "1") {
+          if (res.status === this.$status) {
             this.styleObject = res.result.styleObject;
           } else {
             return false

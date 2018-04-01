@@ -9,7 +9,7 @@
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="article.author.userEmail" size='40' :alt="article.author.userName" />
+              <v-gravatar v-bind:email="article.user.email" size='40' :alt="article.user.nickname" />
             </section>
             <section class="article-title">
               <div class="domain">{{ article.urlhostname }}</div>
@@ -17,7 +17,7 @@
                 <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'user_article', params: { uName: article.author.userName }}">{{article.author.userName}}</router-link>
+                <router-link :to="{ name: 'user_article', params: { user: article.user._id }}">{{article.author.user.nickname}}</router-link>
                 <span class="separator"> • </span>
                 <abbr class="timeago" :title="new Date(article.createTime)">{{moment(new Date(article.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
@@ -48,8 +48,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     name: 'article',
     data() {
@@ -74,8 +72,8 @@
       this.fetchLovelink();
 
     },
-    computed: {
 
+    computed: {
     },
 
     watch: {
@@ -98,21 +96,28 @@
       clickheart() {
         this.clickheart = !this.clickheart
       },
+
       fetchLovelink() {
         if (localStorage.getItem('userName')) {
-          let param = {
-            userName: localStorage.getItem('userName')
-          }
-          this.$http.get('/users/getlovelink', {
-              params: param
-            })
+          let format = {user_id: localStorage.getItem('userId')};
+          let url = this.$config.user.collection.url.format(format);
+          let params = {user: localStorage.getItem('userId')};
+
+          this.$http.get(url, params)
             .then(response => {
               let res = response.data;
-              if (res.status == '1') {
-                this.lovelinkid = res.doc.lovelink;
+              if (res.status === this.$status.success) {
+                // 添加收藏字段
+                for (let collection of res.data) {
+                  this.lovelinkid.push(collection.recommend);
+                }
               } else {
+
               }
             })
+            .catch(err => {
+              this.$message.error(err.response.data.message);
+            });
         }
       },
       addlovelink(sharelink_id, index) {
@@ -124,8 +129,8 @@
             _id: sharelink_id,
             userName: localStorage.getItem('userName')
           }).then(response => {
-            let res = response.data
-            if (res.status == "1") {
+            let res = response.data;
+            if (res.status === this.$status.success) {
               this.lovelinkid = res.lovelink;
               this.$message.success('成功收藏');
             } else if (res.status == "2") {
@@ -143,36 +148,35 @@
           this.loading = true;
           let param = {
             page: this.page,
-            pageSize: this.pageSize,
-            userName:this.$route.params.uName,
-            tag:this.$route.params.tName
+            page_size: this.pageSize,
+            user: this.$route.params.user,
+            tag: this.$route.params.tName
           };
-          axios.get("/sharelink", {
-            params: param
-          }).then((response) => {
-            var res = response.data;
-            this.loading = false;
-            if (res.status == "1") {
-              // 不是第一次，需要拼接数据
-              if (flag) {
-                this.articles = this.articles.concat(res.result.list);
-                //如果没有数据，停止滚动加载
-                if (res.result.count == 0) {
-                  this.busy = true;
-                } else {
-                  this.busy = false;
-                }
+        this.$http.get("/sharelink", {
+          params: param
+        }).then((response) => {
+          let res = response.data;
+          this.loading = false;
+          if (res.status == "1") {
+            // 不是第一次，需要拼接数据
+            if (flag) {
+              this.articles = this.articles.concat(res.result.list);
+              //如果没有数据，停止滚动加载
+              if (res.result.count == 0) {
+                this.busy = true;
               } else {
-                this.articles = res.result.list;
                 this.busy = false;
               }
             } else {
-              this.articles = [];
+              this.articles = res.result.list;
+              this.busy = false;
             }
-
-          }).catch(function (error) {
-            console.log(error)
-          })
+          } else {
+            this.articles = [];
+          }
+        }).catch(function (error) {
+          console.log(error)
+        });
 
       },
 
@@ -291,7 +295,7 @@ main区
   }
   .articles li:hover {
     background: #fafafa63;
-    
+
   }
 
   .article-title {

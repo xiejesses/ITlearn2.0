@@ -11,14 +11,14 @@ export const mutations = {
     // 将token和username储存在本地
     localStorage.setItem('token', data.token);
     state.token = data.token;
-    localStorage.setItem('userName', data.user.nickname);
-    state.userName = data.user.nickname;
+    localStorage.setItem('userName', data.nickname);
+    state.userName = data.nickname;
 
-    localStorage.setItem('userEmail', data.user.email);
-    state.userEmail = data.user.email;
+    localStorage.setItem('userEmail', data.email);
+    state.userEmail = data.email;
 
-    localStorage.setItem('userId', data.user._id);
-    state.userId = data.user._id;
+    localStorage.setItem('userId', data._id);
+    state.userId = data._id;
       // vuex的本质作用是管理组件之间复杂的状态的（如购物车逻辑等等...）
       // 所以当刷新浏览器时，这些状态也会一并被清空
       // 所以还是需要有一个长期在浏览器中保存如登录/登出状态的机制
@@ -27,7 +27,7 @@ export const mutations = {
   },
   [types.LOGINOUT](state) {
     localStorage.removeItem('token');
-    state.token = null
+    state.token = null;
     localStorage.removeItem('userName');
     state.userName = null;
     localStorage.removeItem('userEmail');

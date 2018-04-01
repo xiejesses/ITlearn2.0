@@ -10,7 +10,10 @@ const urlConfig ={
   // 用户模块
   user: {
     url: `/${version}/users/`,
+    fields: {
+      _id: "_id",
 
+    },
     login: {
       url: `/${version}/users/login/`,
     },
@@ -41,7 +44,10 @@ const urlConfig ={
 
   // 小组模块
   group:{
-    url: `/${version}/groups/`
+    url: `/${version}/groups/`,
+    join: {
+      url: `/${version}/groups/{group_id}/join/`
+    }
   },
 
   // 评论模块
@@ -55,4 +61,9 @@ const urlConfig ={
   }
 };
 
-export default {urlConfig, urlRegex};
+const status = {
+  success: 0,
+  fail: 1
+};
+
+export default {urlConfig, urlRegex, status};

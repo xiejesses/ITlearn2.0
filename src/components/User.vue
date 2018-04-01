@@ -29,7 +29,7 @@
                   <div class="digits">{{userInfo.following.length}}</div>
                 正在关注
                 </router-link>
-                
+
               </li>
               <li>
                  <router-link :to="{ name: 'follower', params: { uName: userName }}">
@@ -56,7 +56,7 @@
         </div>
         <router-view></router-view>
       </section>
-      
+
     </main>
   </div>
 </template>
@@ -86,7 +86,7 @@
       saveEdit() {
         this.isEdit = false;
         this.isSave = false;
-        this.$http.post('/users/updateintro',{
+        this.$http.patch(this.$config.user.url,{
            userName:this.$route.params.uName,
           userIntro:this.userInfo.userIntro
         })
@@ -108,24 +108,29 @@
         this.isEdit = true;
       },
 
+      // 获取用户信息
       fetchUserInfo() {
-        this.$http.post('/users/getuserinfo',{
-          userName:this.$route.params.uName,
-          currentUser:localStorage.getItem('userName')
-        })
+        this.$http.post(this.$config.user.url,{
+          _id:this.$route.params._id,
+          })
           .then(response => {
             let res = response.data;
-            if(res.status == '1') {
-              this.userInfo = res.doc;
-              this.follower = res.doc.follower.length;
-              if(res.currentuser.following.indexOf(res.doc._id) === -1) {
-                this.followmsg = "关注"
-              } else {
-                this.followmsg = "取消关注"
-              }
+            if(res.status === this.$status.success){
+              this.userInfo = res.data[0];
             } else {
+              this.$message.error(res.message);
             }
           })
+          .catch(err => {
+              this.$message.error(err.response.data.message);
+          });
+//        this.follower = res.doc.follower.length;
+//        if(res.currentuser.following.indexOf(res.doc._id) === -1) {
+//          this.followmsg = "关注"
+//        } else {
+//          this.followmsg = "取消关注"
+//        }
+        // todo follower补充
       },
       follow() {
         this.$http.post('/users/following',{
@@ -134,7 +139,7 @@
         })
         .then(response => {
           let res = response.data;
-          if(res.status == "1") {
+          if(res.status === this.$status.success) {
             this.followmsg = "取消关注";
             this.follower++;
             this.$message.success(`关注成功`);

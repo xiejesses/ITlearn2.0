@@ -14,7 +14,7 @@
             </p>
             <p>
               <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
-                <el-option  v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
+                <el-option  v-for="item in options" :key="item.name" :label="item.name" :value="item._id">
                 </el-option>
               </el-select>
             </p>
@@ -27,7 +27,7 @@
               </div>
             </div>
           </form>
-          
+
         </div>
         <div class="tips">
           <h2>Tips:</h2>
@@ -45,9 +45,9 @@
 
         </div>
       </section>
-        
+
     </div>
-    
+
   </div>
 </template>
 
@@ -66,36 +66,43 @@
     },
     mounted() {
        this.fetchTags();
-      
+
     },
     methods: {
       share() {
-        this.$http.post('/sharelink/submit',{
+        this.$http.post(this.$config.recommend.url, {
           url: this.formShare.url,
           title: this.formShare.title,
           tags: this.formShare.tags,
-          userName:localStorage.getItem('userName')
+          user: localStorage.getItem('userId')
         }).then(response => {
-            let res = response.data;
-            if (res.status == "1") {
-              this.$message.success(`${res.message}`)
-            } else {
-              this.$message.error(`${res.message}`);
-              return false;
-            }
-        })
+          let res = response.data;
+          if (res.status === 0) {
+            this.$message.success('添加成功');
+          } else {
+            this.$message.error(`${res.message}`);
+            return false;
+          }
+        }).catch(
+          err =>
+            this.$message.err(err.message)
+          // todo 状态码返回提示操作
+        );
       },
       fetchTags() {
-        this.$http.get('/tags').then(response => {
+        this.$http.get(this.$config.recommend.tag.url).then(response => {
           let res = response.data;
-          if(res.status == "1") {
-            this.options = res.result;
+          if (res.status === this.$status.success) {
+            this.options = res.data;
             console.log(this.options)
           } else {
-            return false
+            console.log("获取标签失败");
+            return false;
           }
-        })
-      
+        }).catch(err =>
+          this.$message.error(err.response.data.message)
+        );
+
       },
 
       cancel() {

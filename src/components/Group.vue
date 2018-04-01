@@ -3,23 +3,23 @@
     <main>
       <section class="groups">
         <ul class="groups-list">
-          <li v-for="(group,index) in groups" v-bind:key="group._id">
+          <li v-for="(group, index) in groups" v-bind:key="group._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="group.author.userEmail" size='40' :alt="group.author.userName"/>
+              <v-gravatar v-bind:email="group.user.email" size='40' :alt="group.user.nickname" ></v-gravatar>
             </section>
             <section class="groups-meta">
               <div class="groups-name">
-                  <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.groupName}}</router-link></h2>
+                  <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.name }}</router-link></h2>
                   </div>
               <div class="groups-intro">
                   {{ group.groupIntro }}
               </div>
               <div class="author-meta">
-                <router-link :to="{ name: 'article', params: { uName: group.author.userName }}"> {{ group.author.userName }}</router-link>
+                <router-link :to="{ name: 'article', params: { uName: group.user._id }}"> {{ group.user.nickname }}</router-link>
                 <span class="separator">• </span>
-                <abbr class="timeago" :title="new Date(group.createTime)"> {{ moment(new Date(group.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.member.length}}</span>
-                
+                <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.users.length}}</span>
+
               </div>
             </section>
             <section class="join-group">
@@ -38,7 +38,6 @@
   </div>
 </template>
 <script>
- import axios from 'axios'
   export default {
     name: 'group',
     data() {
@@ -59,36 +58,28 @@
       fetchGroup (flag) {
         let param = {
           page:this.page,
-          pageSize:this.pageSize,
-          userName:this.$route.params.uName
+          page_size:this.pageSize,
         };
-        axios.get("/group/fetchgroup",
-          {params:param}
-        ).then( (response) => {
+        this.$http.get(this.$config.group.url, {params: param}
+        ).then((response) => {
+          let res = response.data;
+          if (res.status === this.$status.success) {
 
-
-          var res = response.data;
-                if(res.status=="1"){
-                  // 不是第一次，需要拼接数据
-                  if(flag){
-                      this.groups = this.groups.concat(res.result.list);
-                        //如果没有数据，停止滚动加载
-                      if(res.result.count==0){
-                          this.busy = true;
-                      }else{
-                          this.busy = false;
-                      }
-                  }else{
-                      this.groups = res.result.list;
-                      this.busy = false;
-                  }
-                }else{
-                  this.groups = [];
-                }
-
-        }).catch(function (error) {
-          console.log(error)
-        })
+            // 不是第一次，需要拼接数据
+            if (flag) {
+              this.groups = this.groups.concat(res.data);
+              //如果没有数据，停止滚动加载
+              this.busy = res.data.length === 0;
+            } else {
+              this.groups = res.data;
+              this.busy = false;
+            }
+          } else {
+            this.groups = [];
+          }
+        }).catch(error =>
+          this.$message.error(error.response.data.message)
+        );
       },
 
       addlovegroup(group_id, index) {
@@ -96,38 +87,42 @@
           this.$message.error(`请先登录！`);
           return false;
         } else {
-          this.$http.post('/group/joingroup', {
-            _id: group_id,
-            userName: localStorage.getItem('userName')
-          }).then(response => {
-            let res = response.data
-            if (res.status == "1") {
-              this.lovegroupid = res.lovegroup;
-              this.$message.success('加入成功');
-            } else if (res.status == "2") {
-              this.lovegroupid = res.lovegroup;
-              this.$message.success('退出成功');
-            } else {
-              this.$message.error('发生错误');
-            }
-          })
+          this.$http.get(this.$config.group.join.url.format({"group_id": group_id}))
+            .then(response => {
+              let res = response.data;
+              if (res.status === this.$status.success) {
+                this.lovegroupid = res.lovegroup;
+                this.$message.success('加入成功');
+              } else {
+                this.$message.error('发生错误');
+              }
+            })
+            .catch(
+              err => this.$message.error()
+            );
+          }
         }
       },
       fetchLovegroup() {
         if (localStorage.getItem('userName')) {
           let param = {
-            userName: localStorage.getItem('userName')
-          }
-          this.$http.get('/users/getlovegroup', {
-              params: param
-            })
+            users: localStorage.getItem('userId')
+          };
+          this.$http.get(this.$config.group.url, {params: param})
             .then(response => {
               let res = response.data;
-              if (res.status == '1') {
-                this.lovegroupid = res.doc.lovegroup;
+              if (res.status === this.$status.success) {
+                this.lovegroupid = [];
+                for (let group of res.data) {
+                  this.lovegroupid.push(group._id);
+                }
               } else {
+                // todo 获取当前用户喜爱小组失败
               }
             })
+            .catch(err =>
+              this.$message.error(err.response.data.message)
+            );
         }
       },
 
@@ -138,7 +133,7 @@
             this.fetchGroup(true);
           }, 500);
       },
-    }
+
   }
 
 </script>
@@ -228,7 +223,7 @@ a {
   .users-number {
       margin-left: 3px;
   }
- 
+
     .join-group button {
         background: none;
         border: 1px solid #8f8f8f;

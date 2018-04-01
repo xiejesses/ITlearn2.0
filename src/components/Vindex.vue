@@ -51,7 +51,7 @@
             <v-gravatar :email="userEmail" size='40' :alt="userName"/>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <router-link :to="{ name: 'user_article', params: { uName: userName }}">
+            <router-link :to="{ name: 'user_article', params: { _id: userId }}">
               <el-dropdown-item>我的主页</el-dropdown-item>
             </router-link>
             <router-link to="/">
@@ -68,7 +68,7 @@
         <router-link to="/login" class="">登录</router-link>
       </div>
       <!-- 搜索框 -->
-      <section class="search" v-bind:class="{focused:isfocused}" @click="closeModal">
+      <section class="search" v-bind:class="{focused: isfocused}" @click="closeModal">
         <form class="search-form" method="get" action="" role="search" v-on:click.stop>
           <input type="text" ref="input" class="search-input" name="s" placeholder="搜索文章..." autofocus>
         </form>
@@ -115,6 +115,7 @@
       return {
         userName: '',
         userEmail: '',
+        userId: '',
         isvisible: false,
         isfocused: false,
         msg: 'Welcome to Your Vue.js App'
@@ -129,9 +130,10 @@
 
           this.userName = '';
           this.userEmail = '';
+          this.userId = '';
           this.$router.push({
             path: '/'
-          }) //不带刷新
+          }); //不带刷新
           this.$message.success('登出成功');
         } else {
           this.$message.success('登出失败');
@@ -145,6 +147,7 @@
       userInfo() {
         this.userName = localStorage.getItem('userName');
         this.userEmail = localStorage.getItem('userEmail');
+        this.userId = localStorage.getItem('userId');
       }
 
 
@@ -155,6 +158,7 @@
     mounted() {
       this.userName = localStorage.getItem('userName');
       this.userEmail = localStorage.getItem('userEmail');
+      this.userId = localStorage.getItem('userId');
     },
 
     computed: {

@@ -81,22 +81,21 @@
               password: formData.userPwd
             })
             .then(response => {
-              let res = response.data;
-
-              if (res.status === 0) {
+              let res = response.data.user;
+              if (response.data.status === 0) {
                 this.userLogin(res);
                 this.$message.success("登录成功");
                 //登录成功，跳转到要到的页面
                 this.$router.push({
                   path: decodeURIComponent(this.$route.query.redirect || '/') //  你需要接受路由的参数再跳转
-                })
+                });
               } else {
                 this.$message.error(`${res.message}`);
                 return false;
               }
             })
             .catch(err => {
-              this.$message.error(err.response.data.user);
+              this.$message.error(err.response.data.message);
             })
           } else {
               this.$message.error(`邮箱或密码有误，请重新填写！`);
