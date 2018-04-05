@@ -21,9 +21,6 @@ const urlConfig ={
     },
     logout: {
       url: `/${version}/users/register/`
-    },
-    follow: {
-      url: `/${version}/users/follow/`
     }
   },
 
@@ -39,7 +36,14 @@ const urlConfig ={
 
   // 推荐模块
   recommend:{
-    url: `/${version}/recommends/`
+    url: `/${version}/recommends/`,
+
+    follow: {
+      url: `/${version}/users/follow/`
+    },
+    count: {
+      url: `/${version}/users/count/`
+    }
   },
 
   // 标签模块
@@ -58,7 +62,7 @@ const urlConfig ={
 
     // 加入小组功能
     join: {
-      url: `/${version}/groups/join/{group_id}`
+      url: `/${version}/groups/join/`
     }
   },
 
