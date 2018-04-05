@@ -7,26 +7,26 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 // axios.defaults.baseURL = 'localhost:3000';
 
 //axios 拦截请求
-axios.interceptors.request.use(
-    config => {
-        // 判断localStorage是否存在token，如果存在的话，则每个http header都加上token
-        if(localStorage.getItem('token')) {
-            config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`.replace(/(^\")|(\"$)/g, '');
-        } 
-        // else {
-        //     router.replace({
-        //         path:'login',
-        //         query: {
-        //             redirect: router.currentRoute.fullPath
-        //         }
-        //     })
-        // }
-        return config
-    },
-    err => {
-        return Promise.reject(err)
-    }
-)
+// axios.interceptors.request.use(
+//     config => {
+//         // 判断localStorage是否存在token，如果存在的话，则每个http header都加上token
+//         if(localStorage.getItem('token')) {
+//             config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`.replace(/(^\")|(\"$)/g, '');
+//         }
+//         // else {
+//         //     router.replace({
+//         //         path:'login',
+//         //         query: {
+//         //             redirect: router.currentRoute.fullPath
+//         //         }
+//         //     })
+//         // }
+//         return config
+//     },
+//     err => {
+//         return Promise.reject(err)
+//     }
+// )
 
 // axios拦截响应
 // axios.interceptors.response.use(response => {

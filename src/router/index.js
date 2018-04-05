@@ -1,20 +1,20 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import Register from '@/components/Register'
-import Share from '@/components/Share'
-import User from '@/components/User'
-import Article from '@/components/Article'
-import GroupIndex from '@/components/GroupIndex'
-import Group from '@/components/Group'
-import GroupDetail from '@/components/GroupDetail'
-import MarkdownEditor from '@/components/MarkdownEditor'
-import TopicDetail from '@/components/TopicDetail'
-import Vindex from '@/components/Vindex'
-import Tag from '@/components/Tag'
-import Follow from '@/components/Follow'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Login from '@/components/Login';
+import Register from '@/components/Register';
+import Share from '@/components/Share';
+import User from '@/components/User';
+import Article from '@/components/Article';
+import GroupIndex from '@/components/GroupIndex';
+import Group from '@/components/Group';
+import GroupDetail from '@/components/GroupDetail';
+import MarkdownEditor from '@/components/MarkdownEditor';
+import TopicDetail from '@/components/TopicDetail';
+import Vindex from '@/components/Vindex';
+import Follow from '@/components/Follow';
+import Tag from '@/components/Tag';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
   mode: 'history', //去掉 #
@@ -24,37 +24,37 @@ const router = new Router({
       path: '/',
       name: 'vindex',
       component: Vindex,
-      children:[
+      children: [
         {
-          path:'/',
-          name:'home_article',
-          component:Article
+          path: '/',
+          name: 'home_article',
+          component: Article
         },
         {
-          path:'/share',
-          name:'share',
+          path: '/share',
+          name: 'share',
           //添加路由元信息
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireAuth: true //表示进入该路由需要登录
           },
-          component:Share
+          component: Share
         },
         {
-          path:'/tag/:tName',
-          name:'tag',
+          path: '/tag/:tName',
+          name: 'tag',
           //添加路由元信息
           // meta: {
           //   requireAuth:true //表示进入该路由需要登录
           // },
-          component:Tag,
-          children:[
+          component: Tag,
+          children: [
             {
-              path:'/',
-              name:'tag_article',
+              path: '/',
+              name: 'tag_article',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component:Article
+              component: Article
             },
           ]
         },
@@ -62,7 +62,7 @@ const router = new Router({
           path: '/MarkdownEditor',
           name: 'markdowneditor',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireAuth: true //表示进入该路由需要登录
           },
           component: MarkdownEditor
         },
@@ -70,70 +70,70 @@ const router = new Router({
           path: '/groupindex',
           name: '',
           component: GroupIndex,
-          children:[
+          children: [
             {
-              path:'',
-              name:'',
-              component:Group
+              path: '',
+              name: '',
+              component: Group
             }
           ]
         },
         {
-          path:'/g/:g_id',
-          name:'groupdetail',
+          path: '/g/:g_id',
+          name: 'groupdetail',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireAuth: true //表示进入该路由需要登录
           },
-          component:GroupDetail
+          component: GroupDetail
         },
         {
-          path:'/t/:t_id',
-          name:'topicdetail',
+          path: '/t/:t_id',
+          name: 'topicdetail',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireAuth: true //表示进入该路由需要登录
           },
-          component:TopicDetail
+          component: TopicDetail
         },
         {
-          path:'/user/:uName',
-          name:'user',
+          path: '/user/:userId',
+          name: 'user',
           // meta: {
           //   requireAuth:true //表示进入该路由需要登录
           // },
-          component:User,
-          children:[
-            
+          component: User,
+          children: [
+
             {
-              path:'mygroup',
-              name:'group',
+              path: 'mygroup',
+              name: 'group',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component:Group
+              component: Group
             },
             {
-              path:'',
-              name:'user_article',
+              path: '',
+              name: 'user_article',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component:Article
+              component: Article
             },
             {
-              path:'following',
-              name:'following',
+              path: 'following',
+              name: 'following',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component:Follow
+              component: Follow
             },
             {
-              path:'follower',
-              name:'follower',
+              path: 'follower',
+              name: 'follower',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component:Follow
+              component: Follow
             },
 
           ]
@@ -141,36 +141,36 @@ const router = new Router({
       ]
     },
     {
-      path:'/login',
-      name:'login',
-      component:Login
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
-      path:'/register',
-      name:'register',
-      component:Register
+      path: '/register',
+      name: 'register',
+      component: Register
     },
   ]
-})
+});
 
 
 // 设置路由拦截
-// 在vue-router的全局钩子中设置拦截 
+// 在vue-router的全局钩子中设置拦截
 // 每个路由皆会的钩子函数
 // to 进入 from 离开 next 传递
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('token');
-  if(to.meta.requireAuth) {
-    if(token) {
+  if (to.meta.requireAuth) {
+    if (token) {
       next();
     } else {
       next({
-        path:'/login',
+        path: '/login',
         query: {
-          redirect:to.fullPath
+          redirect: to.fullPath
         }
       })
-    } 
+    }
   } else {
     next()
   }
@@ -180,5 +180,5 @@ router.beforeEach((to, from, next) => {
 export default router;
 
 // export default new Router({
-  
+
 // })
