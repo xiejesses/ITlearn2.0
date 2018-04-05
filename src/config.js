@@ -27,22 +27,28 @@ const urlConfig ={
   // 收藏模块
   collection:{
     url: `/${version}/collections/`,
+    count: {
+      url:`/${version}/collections/count/`
+    }
   },
 
   // 粉丝模块
   relation: {
-    url: `/${version}/relations/`
+    url: `/${version}/relations/`,
+
+    follow: {
+      url: `/${version}/relations/follow/`
+    },
+    count: {
+      url: `/${version}/relations/user/`
+    }
   },
 
   // 推荐模块
   recommend:{
     url: `/${version}/recommends/`,
-
-    follow: {
-      url: `/${version}/users/follow/`
-    },
     count: {
-      url: `/${version}/users/count/`
+      url: `/${version}/recommends/count/`
     }
   },
 
