@@ -14,27 +14,37 @@ const urlConfig ={
       _id: "_id",
 
     },
+
+    // 功能url
     login: {
       url: `/${version}/users/login/`,
     },
     logout: {
       url: `/${version}/users/register/`
     },
+    follow: {
+      url: `/${version}/users/follow/`
+    }
+  },
 
-    // 收藏模块
-    collection:{
-      url: `/${version}/users/{user_id}/collections`,
-    },
+  // 收藏模块
+  collection:{
+    url: `/${version}/collections/`,
+  },
+
+  // 粉丝模块
+  relation: {
+    url: `/${version}/relations/`
   },
 
   // 推荐模块
   recommend:{
-    url: `/${version}/recommends/`,
+    url: `/${version}/recommends/`
+  },
 
-    // 标签模块
-    tag: {
-      url: `/${version}/tags/`
-    }
+  // 标签模块
+  tag: {
+    url: `/${version}/tags/`
   },
 
   // 项目模块
@@ -45,8 +55,10 @@ const urlConfig ={
   // 小组模块
   group:{
     url: `/${version}/groups/`,
+
+    // 加入小组功能
     join: {
-      url: `/${version}/groups/{group_id}/join/`
+      url: `/${version}/groups/join/{group_id}`
     }
   },
 
