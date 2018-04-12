@@ -42,7 +42,7 @@
                 <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
                   <div class="grid-content">
                     <div class="user-avatar">
-                      <v-gravatar v-bind:email="comment.author.userEmail" size='40' :alt="comment.author.userName" align="right" />
+                      <v-gravatar v-bind:email="comment.user.email" size='40' :alt="comment.user.nickname" align="right" />
                     </div>
                   </div>
                 </el-col>
@@ -51,7 +51,7 @@
                     <section class="comment-content">
                       <div class="user-comment-right">
                         <div class="meta">
-                          <router-link :to="{ name: 'like', params: { uName: comment.author.userName }}"> {{comment.author.userName}}</router-link>
+                          <router-link :to="{ name: 'like', params: { uName: comment.user.nickname }}"> {{comment.user.nickname}}</router-link>
                           <span class="separator">• </span>
                           <abbr class="timeago" :title="new Date(comment.createTime)"> {{ moment(new Date(comment.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                         </div>
@@ -77,31 +77,31 @@
                         </div>
                       </div>
                       <!-- 回复评论显示 -->
-                      <ul class="user-reply">
-                          <li v-for="reply in comment.replys" v-bind:key="reply._id">
-                              <el-row :gutter="10" class="replyTo">
-                        <el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">
-                          <div class="grid-content bg-purple">
-                            <div class="user-avatar">
-                              <v-gravatar v-bind:email="reply.author.userEmail" size='40' :alt="reply.author.userName" align="right" />
-                            </div>
-                          </div>
-                        </el-col>
-                        <el-col :xs="21" :sm="22" :md="22" :lg="22" :xl="22">
-                          <div class="grid-content bg-purple">
-                            <div>
-                              <div class="meta">
-                                <router-link :to="{ name: 'like', params: { uName: reply.author.userName }}"> {{reply.author.userName}}</router-link>
-                                <span class="separator">• </span>
-                                <abbr class="timeago" :title="new Date(reply.createTime)"> {{ moment(new Date(reply.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                              </div>
-                              <div v-html="reply.content" class="custom markdown-body"></div>
-                            </div>
-                          </div>
-                        </el-col>
-                      </el-row>
-                          </li>
-                      </ul>
+                      <!--<ul class="user-reply">-->
+                          <!--<li v-for="reply in comment.replys" v-bind:key="reply._id">-->
+                              <!--<el-row :gutter="10" class="replyTo">-->
+                        <!--<el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">-->
+                          <!--<div class="grid-content bg-purple">-->
+                            <!--<div class="user-avatar">-->
+                              <!--<v-gravatar v-bind:email="reply.author.userEmail" size='40' :alt="reply.author.userName" align="right" />-->
+                            <!--</div>-->
+                          <!--</div>-->
+                        <!--</el-col>-->
+                        <!--<el-col :xs="21" :sm="22" :md="22" :lg="22" :xl="22">-->
+                          <!--<div class="grid-content bg-purple">-->
+                            <!--<div>-->
+                              <!--<div class="meta">-->
+                                <!--<router-link :to="{ name: 'like', params: { uName: reply.author.userName }}"> {{reply.author.userName}}</router-link>-->
+                                <!--<span class="separator">• </span>-->
+                                <!--<abbr class="timeago" :title="new Date(reply.createTime)"> {{ moment(new Date(reply.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>-->
+                              <!--</div>-->
+                              <!--<div v-html="reply.content" class="custom markdown-body"></div>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                        <!--</el-col>-->
+                      <!--</el-row>-->
+                          <!--</li>-->
+                      <!--</ul>-->
                     </section>
                   </div>
                 </el-col>
@@ -192,6 +192,8 @@
           console.log(error)
         });
       },
+
+      // 创建评论
       createComment() {
         this.$http.post(this.$config.comment.url, {
           content: this.commentContent,
@@ -201,65 +203,62 @@
           let res = response.data;
           if (res.status === this.$status.success) {
             this.$message.success('评论成功');
+            this.commentNum++;
           } else {
             this.$message.error('评论失败！请重试');
-
           }
         }).catch(err => {
           this.$message.error(`${err.message}`, 'ERROR!');
         })
       },
-      fetchComment(flag) {
-        let param = {
-          page: this.page,
-          pageSize: this.pageSize,
-          t_id: this.tid
-        };
-        axios.get("/comment/fetchcomment", {
-          params: param
-        }).then((response) => {
 
-          var res = response.data;
-          if (res.status == "1") {
-            this.commentNum = res.result.count;
-            if (flag) {
-              this.comments = this.comments.concat(res.result.list.comments);
-              if (res.result.count == 0) {
-                this.busy = true;
+      // 获取评论列表
+      fetchComment(flag) {
+        let params = {
+          page: this.page,
+          page_size: this.pageSize,
+          topic: this.tid
+        };
+        this.$http.get(this.$config.comment.url, {params: params})
+          .then((response) => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              if (flag) {
+                this.comments = this.comments.concat(res.data);
+                this.busy = res.result.count === 0;
               } else {
+                this.comments = res.data;
                 this.busy = false;
               }
             } else {
-              this.comments = res.result.list.comments;
-              this.busy = false;
+              this.comments = [];
             }
-          } else {
-            this.comments = [];
-          }
 
-        }).catch(function (error) {
+          }).catch(function (error) {
           console.log(error)
-        })
-      },
-      createReply(id) {
-        this.$http.post('/comment/createreply', {
-          content: this.replyContent,
-          userName: this.currentUserName,
-          c_id: id,
-        }).then(response => {
-          let res = response.data;
-          if (res.status == "1") {
-            this.$router.go()
-            this.$message.success('回复成功');
-          } else {
-            this.$message.error('回复失败！请重试');
-
-          }
-        }).catch(err => {
-          this.$message.error(`${err.message}`, 'ERROR!');
-        })
+        });
       },
 
+      // 获取评论数量
+      getCommentCount() {
+        let params = {
+          page: this.page,
+          page_size: this.pageSize,
+          topic: this.tid
+        };
+        this.$http.get(this.$config.comment.count.url, {params: params})
+          .then((response) => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              this.commentNum = res.count;
+            } else {
+              this.$message.error(err.message);
+            }
+          })
+          .catch(err => {
+              this.$message.error(err.response.data.message);
+          });
+      },
       loadMore() {
         this.busy = true;
         setTimeout(() => {
