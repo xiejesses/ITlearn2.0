@@ -9,10 +9,10 @@
           </div>
         </div>
         <div class="header-body">
-          <h2 class="group-name">{{groupdetail.groupName}}</h2>
-          <p class="author">by. {{groupdetail.author.userName}}</p>
-          <p class="description">{{groupdetail.groupIntro}}</p>
-          <p class="">成员：{{groupdetail.member.length}}</p>
+          <h2 class="group-name">{{groupdetail.name}}</h2>
+          <p class="author">by. {{groupdetail.user.nickname}}</p>
+          <p class="description">{{groupdetail.desc}}</p>
+          <p class="">成员：{{groupdetail.users.length}}</p>
         </div>
       </section>
 
@@ -30,7 +30,7 @@
           </el-dropdown>
         </div>
         <div class="publish-topic">
-          <router-link :to="{name: 'markdowneditor', query:{g_id:this.gid,isjoin:this.isjoin}}" class="LastItem">发表话题</router-link>
+          <router-link :to="{name: 'markdowneditor', query:{g_id:this.gid, isjoin:this.isjoin}}" class="LastItem">发表话题</router-link>
         </div>
         <div>
           <el-dropdown>
@@ -50,16 +50,16 @@
         <ul class="articles-list">
           <li v-for="topic in topics" v-bind:key="topic._id">
             <div class="user-avatar">
-              <v-gravatar v-bind:email="topic.author.userEmail" size='40' :alt="topic.author.userName" />
+              <v-gravatar v-bind:email="topic.user.email" size='40' :alt="topic.user.nickname" />
             </div>
             <div class="article-title">
               <h2>
                 <router-link :to="{ name:'topicdetail', params:{t_id:topic._id}}" class="article-link">{{topic.title}}</router-link>
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'like', params: { uName: topic.author.userName }}">{{topic.author.userName}}</router-link>
+                <router-link :to="{ name: 'like', params: { uName: topic.user.nickname }}">{{topic.user.nickname}}</router-link>
                 <span class="separator"> • </span>
-                <abbr class="timeago" :title="new Date(topic.createTime)">{{moment(new Date(topic.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <abbr class="timeago" :title="new Date(topic.createDateTime)">{{moment(new Date(topic.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
               </div>
             </div>
             <div class="comment-num" >
@@ -73,13 +73,12 @@
                    infinite-scroll-disabled="busy"
                    infinite-scroll-distance="20">
               </div>
-      </section>      
+      </section>
     </main>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
   export default {
     name: 'groupdetail',
     data() {
@@ -101,68 +100,58 @@ import axios from 'axios'
     },
     mounted() {
       this.gid = this.$route.params.g_id;
-      
+      this.userid = localStorage.getItem('userId');
       this.fetchGroupDetail();
       this.fetchTopic();
     },
     methods:{
       fetchGroupDetail() {
-        let param = {
-          g_id:this.gid,
-          userName:localStorage.getItem('userName')
+        let params = {
+          _id: this.gid,
         };
-        axios.get('/group/fetchgroupdetail',
-           {params:param}
-        ).then(response => {
+        this.$http.get(this.$config.group.url, {params: params}).then(response => {
           let res = response.data;
-          if(res.status == "1") {
-            this.groupdetail = res.result;
-            this.userid = res.user._id;
-            this.isjoin = res.result.member.indexOf(res.user._id)
-           if(this.isjoin >= 0) {
-             this.joinmsg = '退出小组';
-           } else {
-             this.joinmsg = '加入小组';
-           }
+          if (res.status === this.$status.success) {
+            this.groupdetail = res.data[0];
+            this.isjoin = this.groupdetail.users.indexOf(this.userid);
+            if (this.isjoin >= 0) {
+              this.joinmsg = '退出小组';
+            } else {
+              this.joinmsg = '加入小组';
+            }
           } else {
             this.groupdetail = []
           }
         }).catch(error => {
           console.log(error)
-        })
+        });
       },
-      fetchTopic (flag) {
-        let param = {
-          page:this.page,
-          pageSize:this.pageSize,
-          g_id:this.gid
-        };
-        axios.get("/topic/fetchtopic",
-          {params:param}
-        ).then( (response) => {
-         
-          var res = response.data;
-                if(res.status=="1"){
-                  // 不是第一次，需要拼接数据
-                  if(flag){
-                      this.topics = this.topics.concat(res.result.list.groupTopic);
-                        //如果没有数据，停止滚动加载
-                      if(res.result.count==0){
-                          this.busy = true;
-                      }else{
-                          this.busy = false;
-                      }
-                  }else{
-                      this.topics = res.result.list.groupTopic;
-                      this.busy = false;
-                  }
-                }else{
-                  this.topics = [];
-                }
 
-        }).catch(function (error) {
-          console.log(error)
-        })
+      fetchTopic (flag) {
+        let params = {
+          page: this.page,
+          page_size: this.pageSize,
+          group: this.gid
+        };
+        this.$http.get(this.$config.topic.url, {params: params})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              // 不是第一次，需要拼接数据
+              if (flag) {
+                this.topics = this.topics.concat(res.data);
+                //如果没有数据，停止滚动加载
+                this.busy = res.data.length === 0;
+              } else {
+                this.topics = res.data;
+                this.busy = false;
+              }
+            } else {
+              this.topics = [];
+            }
+          }).catch(err =>
+            this.$message.error(err.response.data.message)
+          );
       },
 
       addlovegroup() {
@@ -170,25 +159,26 @@ import axios from 'axios'
           this.$message.error(`请先登录！`);
           return false;
         } else {
-          this.$http.post('/group/joingroup', {
-            _id: this.gid,
-            userName: localStorage.getItem('userName')
-          }).then(response => {
-            let res = response.data
-            if (res.status == "1") {
-              this.lovegroupid = res.lovegroup;
-              this.joinmsg = res.message;
-              this.isjoin = 0;
-              this.$message.success('加入成功');
-            } else if (res.status == "2") {
-              this.lovegroupid = res.lovegroup;
-              this.joinmsg =  res.message;
-              this.isjoin = -1;
-              this.$message.success('退出成功');
-            } else {
-              this.$message.error('发生错误');
-            }
-          })
+          this.$http.post(this.$config.group.join.url, {_id: this.gid,})
+            .then(response => {
+              let res = response.data;
+              if (res.exit === 1) {
+                this.joinmsg = '退出小组';
+                this.isjoin = 0;
+                this.$message.success(res.message);
+
+              } else if (res.exit === 0) {
+                this.joinmsg = "加入小组";
+                this.isjoin = -1;
+                this.$message.success(res.message);
+
+              } else {
+                this.$message.error('发生错误');
+              }
+            })
+            .catch(err => {
+              this.$message.error(err.response.data.message);
+            });
         }
       },
 
@@ -327,7 +317,7 @@ import axios from 'axios'
   .article-title h2 a:hover {
     color:#EC681B;
   }
-  
+
   @media screen and (min-width:1200px) {
     .article-title {
       white-space: nowrap;

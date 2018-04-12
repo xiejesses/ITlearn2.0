@@ -4,12 +4,12 @@
       <section class="topic-content">
         <div class="user-info">
           <div class="user-avatar">
-            <v-gravatar v-bind:email="topicdetail.author.userEmail" size='40' />
+            <v-gravatar v-bind:email="topicdetail.user.email" size='40' />
           </div>
           <div class="meta" style="margin-left:10px">
-            <router-link :to="{ name: 'like', params: { uName: topicdetail.author.userName }}">{{topicdetail.author.userName}}</router-link>
+            <router-link :to="{ name: 'like', params: { userId: topicdetail.user._id }}">{{topicdetail.user.nickname}}</router-link>
             <span class="separator">• </span>
-            <abbr class="timeago" :title="new Date(topicdetail.createTime)"> {{ moment(new Date(topicdetail.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
+            <abbr class="timeago" :title="new Date(topicdetail.createDateTime)"> {{ moment(new Date(topicdetail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
           </div>
         </div>
         <p class="topic-name">{{topicdetail.title}}</p>
@@ -160,6 +160,7 @@
       this.tid = this.$route.params.t_id;
       this.currentUserName = localStorage.getItem('userName');
       this.currentUserEmail = localStorage.getItem('userEmail');
+      this.currentUserId = localStorage.getItem('userId');
 
       this.fetchTopicDetail();
       this.fetchComment();
@@ -178,31 +179,27 @@
         this.i = -1;
       },
       fetchTopicDetail() {
-        let param = {
-          t_id: this.tid,
-        };
-        axios.get('/topic/fetchtopicdetail', {
-          params: param
-        }).then(response => {
-          let res = response.data;
-          if (res.status == "1") {
-            this.topicdetail = res.result
-          } else {
-            this.topicdetail = []
-          }
-        }).catch(error => {
+        let params = {_id: this.tid};
+        this.$http.get(this.$config.topic.url, {params: params})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              this.topicdetail = res.data[0];
+            } else {
+              this.topicdetail = []
+            }
+          }).catch(error => {
           console.log(error)
-        })
+        });
       },
       createComment() {
-
-        this.$http.post('/comment/createcomment', {
+        this.$http.post(this.$config.comment.url, {
           content: this.commentContent,
-          userName: this.currentUserName,
-          t_id: this.tid,
+          user: this.currentUserId,
+          topic: this.tid,
         }).then(response => {
           let res = response.data;
-          if (res.status == "1") {
+          if (res.status === this.$status.success) {
             this.$message.success('评论成功');
           } else {
             this.$message.error('评论失败！请重试');
@@ -388,7 +385,7 @@
     margin-left: 5px;
     font-size: 15px;
     color: gray;
-    
+
   }
 
   .user-submit{

@@ -90,7 +90,7 @@
         );
       },
       fetchTags() {
-        this.$http.get(this.$config.recommend.tag.url).then(response => {
+        this.$http.get(this.$config.tag.url).then(response => {
           let res = response.data;
           if (res.status === this.$status.success) {
             this.options = res.data;

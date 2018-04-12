@@ -22,7 +22,6 @@ import config from './config';
 //   return response;
 // }, function (error) {
 //   // 对响应错误做点什么
-//   return Promise.reject(error);
 // });
 String.prototype.format = function (args) {
   let result = this;
@@ -47,6 +46,21 @@ String.prototype.format = function (args) {
   }
   return result;
 };
+
+
+//   return Promise.reject(error);
+Array.prototype.remove=function(dx)
+{
+  if(isNaN(dx)||dx>this.length){return false;}
+  for(var i=0,n=0;i<this.length;i++)
+  {
+    if(this[i]!=this[dx])
+    {
+      this[n++]=this[i]
+    }
+  }
+  this.length-=1
+}
 
 
 Vue.prototype.$http = axios;

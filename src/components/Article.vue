@@ -17,9 +17,9 @@
                 <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'user_article', params: { user: article.user._id }}">{{article.author.user.nickname}}</router-link>
+                <router-link :to="{ name: 'user_article', params: { user: article.user._id }}">{{article.user.nickname}}</router-link>
                 <span class="separator"> • </span>
-                <abbr class="timeago" :title="new Date(article.createTime)">{{moment(new Date(article.createTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
+                <abbr class="timeago" :title="new Date(article.createDateTime)">{{moment(new Date(article.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
                 <span v-for="(tag,tagindex) in article.tags" v-bind:key="tagindex">
                   <router-link :to="{ name: 'tag_article', params: { tName: tag }}">{{tag}}</router-link>
@@ -81,17 +81,20 @@
     },
     methods: {
       changeVote(id, index) {
+        let params = {recommend: id, user: this.localStorage.getItem("userId")};
         this.articles[index].voteActive = true;
-        this.$http.post('/sharelink/vote',{
-          article_id:id
-        }).then(response => {
-          let res = response.data;
-          if(res.status == '1') {
-
-          } else {
-
-          }
-        })
+        this.$http.post(this.$config.recommend.vote.url, {params: params})
+          .then(response => {
+            let res = response.data;
+            if (res.status === 0) {
+              this.$message.success(res.message);
+            } else {
+              this.$message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
       },
       clickheart() {
         this.clickheart = !this.clickheart
@@ -100,19 +103,20 @@
       fetchLovelink() {
         if (localStorage.getItem('userName')) {
           let format = {user_id: localStorage.getItem('userId')};
-          let url = this.$config.user.collection.url.format(format);
+          let url = this.$config.collection.url;
           let params = {user: localStorage.getItem('userId')};
 
-          this.$http.get(url, params)
+          // todo 按照原生设定 获取的收藏recommend 有数量限制
+          this.$http.get(url, {params: params})
             .then(response => {
               let res = response.data;
               if (res.status === this.$status.success) {
                 // 添加收藏字段
                 for (let collection of res.data) {
-                  this.lovelinkid.push(collection.recommend);
+                  this.lovelinkid.push(collection.recommend._id);
                 }
               } else {
-
+                this.$message.error(response.message);
               }
             })
             .catch(err => {
@@ -120,60 +124,86 @@
             });
         }
       },
+
       addlovelink(sharelink_id, index) {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
-        } else {
-          this.$http.post('/sharelink/addlovelink', {
-            _id: sharelink_id,
-            userName: localStorage.getItem('userName')
-          }).then(response => {
-            let res = response.data;
-            if (res.status === this.$status.success) {
-              this.lovelinkid = res.lovelink;
-              this.$message.success('成功收藏');
-            } else if (res.status == "2") {
-              this.lovelinkid = res.lovelink;
-              this.$message.error('取消收藏');
-            } else {
-              this.$message.error('发生错误');
-            }
-          })
+        }
+
+        let data = {
+          recommend: sharelink_id,
+          user: localStorage.getItem("userId")
+        };
+
+        if(!this.lovelinkid.indexOf(sharelink_id)){
+          this.$http.post(this.$config.collection.url, {data: data})
+            .then(response => {
+              let res = response.data;
+              if (res.status === this.$status.success) {
+                this.lovelinkid.push(sharelink_id);
+                this.$message.success('成功收藏');
+              } else {
+                this.$message.error('发生错误');
+              }
+            })
+            .catch(err => {
+                this.$message.error(err.response.data.message);
+            });
+        } else if(this.lovelinkid.indexOf(sharelink_id)){
+          this.$http.delete(this.$config.collection.url, {params: data})
+            .then(response => {
+              let res = reponse.data;
+              if (res.status === this.$status.success) {
+                this.lovelinkid.remove(sharelink_id);
+                this.$message.success('成功收藏');
+              } else {
+                this.$message.error('发生错误');
+              }
+            })
+            .catch(err => {
+                this.$message.error(err.response.data.message);
+            });
         }
 
       },
       fetchArticle(flag) {
         //取出
-          this.loading = true;
-          let param = {
-            page: this.page,
-            page_size: this.pageSize,
-            user: this.$route.params.user,
-            tag: this.$route.params.tName
-          };
-        this.$http.get("/sharelink", {
-          params: param
-        }).then((response) => {
-          let res = response.data;
-          this.loading = false;
-          if (res.status == "1") {
-            // 不是第一次，需要拼接数据
-            if (flag) {
-              this.articles = this.articles.concat(res.result.list);
-              //如果没有数据，停止滚动加载
-              if (res.result.count == 0) {
-                this.busy = true;
+        this.loading = true;
+        let params = {
+          page: this.page,
+          page_size: this.pageSize,
+        };
+
+        if (this.$route.params.userId) {
+          params.user = this.$route.params.userId;
+        }
+
+        if (this.$route.params.tagId) {
+          params.tags = this.$route.params.tagId;
+        }
+
+        this.$http.get(this.$config.recommend.url, {params: params})
+          .then((response) => {
+            let res = response.data;
+            this.loading = false;
+            if (res.status === 0) {
+              // 不是第一次，需要拼接数据
+              if (flag) {
+                this.articles = this.articles.concat(res.data);
+                //如果没有数据，停止滚动加载
+                if (res.data.length === 0) {
+                  this.busy = true;
+                } else {
+                  this.busy = false;
+                }
               } else {
+                this.articles = res.data;
                 this.busy = false;
               }
             } else {
-              this.articles = res.result.list;
-              this.busy = false;
+              this.articles = [];
             }
-          } else {
-            this.articles = [];
-          }
         }).catch(function (error) {
           console.log(error)
         });

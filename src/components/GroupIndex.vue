@@ -13,7 +13,7 @@
               <el-input class="inputstyle" v-model="formGroup.groupIntro" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" >
               </el-input>
             </p>
-           
+
             <div class="actions">
               <div class="buttons">
                 <a href="javascript:;" class="user-submit" @click="createGroup">创建</a>
@@ -49,26 +49,25 @@
     },
     methods:{
       createGroup() {
-        
-        this.$http.post('/group/creategroup',{
-          groupName:this.formGroup.groupName,
-          groupIntro:this.formGroup.groupIntro,
-          userName:localStorage.getItem('userName')
-        }).then(response => {
+
+        this.$http.post(this.$config.group.url, {
+            name: this.formGroup.groupName,
+            desc: this.formGroup.groupIntro,
+            user: localStorage.getItem('userId')
+          }).then(response => {
           let res = response.data;
-          if(res.status == "1") {
-            this.$router.push('/groupindex')
+          if (res.status === this.$status.success) {
+            this.$router.push('/groupindex');
             this.$message.success('创建成功');
             this.isbuilding = false;
             this.formGroup.groupName = '';
             this.formGroup.groupIntro = '';
           } else {
             this.$message.error('创建失败！请重试');
-            
           }
         }).catch(err => {
-              this.$message.error(`请先登录！`);
-            })
+          this.$message.error(`请先登录！`);
+        });
       },
 
       cancel() {
@@ -161,7 +160,7 @@
   width:250px;
 }
 
- 
+
   @media screen and (min-width:960px) {
     .inputstyle {
     width:300px;

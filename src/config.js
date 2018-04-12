@@ -49,7 +49,10 @@ const urlConfig ={
     url: `/${version}/recommends/`,
     count: {
       url: `/${version}/recommends/count/`
-    }
+    },
+    vote: {
+      url: `/${version}/recommend/vote/`
+    },
   },
 
   // 标签模块

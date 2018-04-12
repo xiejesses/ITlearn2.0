@@ -12,7 +12,7 @@
                   <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.name }}</router-link></h2>
                   </div>
               <div class="groups-intro">
-                  {{ group.groupIntro }}
+                  {{ group.desc }}
               </div>
               <div class="author-meta">
                 <router-link :to="{ name: 'article', params: { uName: group.user._id }}"> {{ group.user.nickname }}</router-link>
@@ -54,11 +54,11 @@
        this.fetchGroup();
        this.fetchLovegroup()
     },
-    methods:{
-      fetchGroup (flag) {
+    methods: {
+      fetchGroup(flag) {
         let param = {
-          page:this.page,
-          page_size:this.pageSize,
+          page: this.page,
+          page_size: this.pageSize,
         };
         this.$http.get(this.$config.group.url, {params: param}
         ).then((response) => {
@@ -86,22 +86,26 @@
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
-        } else {
-          this.$http.get(this.$config.group.join.url.format({"group_id": group_id}))
-            .then(response => {
-              let res = response.data;
-              if (res.status === this.$status.success) {
-                this.lovegroupid = res.lovegroup;
-                this.$message.success('加入成功');
-              } else {
-                this.$message.error('发生错误');
-              }
-            })
-            .catch(
-              err => this.$message.error()
-            );
-          }
         }
+
+        this.$http.get(this.$config.group.join.url)
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              if (res.exit === 0) {
+                this.lovegroupid.remove(group_id);
+                this.$message.success('退出成功');
+              } else {
+                this.lovegroupid.push(group_id);
+                this.$message.success('加入成功');
+              }
+            } else {
+              this.$message.error('发生错误');
+            }
+          })
+          .catch(
+            err => this.$message.error(err.response.data.message)
+          );
       },
       fetchLovegroup() {
         if (localStorage.getItem('userName')) {
@@ -126,14 +130,14 @@
         }
       },
 
-      loadMore(){
-          this.busy = true;
-          setTimeout(() => {
-            this.page++;
-            this.fetchGroup(true);
-          }, 500);
+      loadMore() {
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.fetchGroup(true);
+        }, 500);
       },
-
+    }
   }
 
 </script>
