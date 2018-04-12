@@ -5,6 +5,7 @@ import Register from '@/components/Register'
 import Share from '@/components/Share'
 import User from '@/components/User'
 import Article from '@/components/Article'
+
 import GroupIndex from '@/components/GroupIndex'
 import Group from '@/components/Group'
 import GroupDetail from '@/components/GroupDetail'
