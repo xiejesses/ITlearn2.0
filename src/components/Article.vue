@@ -34,8 +34,8 @@
             </section>
             <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
             <section class="article-vote" @click="article.voteNumber++">
-              <span class="score" v-bind:class="{scored: article.voteActive == true}">{{article.upVotes.length}}</span>
-              <span class="arrow up" v-bind:class="{upmod: article.voteActive == true}" @click="changeVote(article._id, index)"></span>
+              <span class="score" v-bind:class="{scored: article.upVotes.indexOf(userId) >= 0}">{{article.upVotes.length}}</span>
+              <span class="arrow up" v-bind:class="{upmod: article.upVotes.indexOf(userId) >= 0}" @click="changeVote(article._id, index)"></span>
             </section>
           </li>
         </ul>
@@ -79,6 +79,8 @@
       '$route': 'fetchArticle'
     },
     methods: {
+
+      // 投票
       changeVote(id, index) {
         let params = {recommend: id, user: localStorage.getItem("userId")};
         this.articles[index].voteActive = true;
@@ -86,6 +88,10 @@
           .then(response => {
             let res = response.data;
             if (res.status === 0) {
+              if (!(res.isVote === 0)) {
+                this.articles[index].upVotes.push(localStorage.getItem("userId"));
+                this.articles[index].voteActive = true;
+              }
               this.$message.success(res.message);
             } else {
               this.$message.error(res.message);
@@ -98,6 +104,7 @@
       clickheart() {
         this.clickheart = !this.clickheart
       },
+
 
       fetchLovelink() {
         if (localStorage.getItem('userName')) {
@@ -202,8 +209,8 @@
             } else {
               this.articles = [];
             }
-            this.articles.every(function (article) {
-              article.voteActive = localStorage.getItem("userId") in article.upVotes;
+            this.articles.forEach(function (article) {
+              article.voteActive = article.upVotes.indexOf(localStorage.getItem("userId")) >= 0;
             });
           }).catch(function (error) {
             console.log(error)
