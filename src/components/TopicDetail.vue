@@ -202,6 +202,7 @@
         }).then(response => {
           let res = response.data;
           if (res.status === this.$status.success) {
+            this.comments = this.comments.concat(res.data);
             this.$message.success('评论成功');
             this.commentNum++;
           } else {
@@ -252,7 +253,7 @@
             if (res.status === this.$status.success) {
               this.commentNum = res.count;
             } else {
-              this.$message.error(err.message);
+              this.$message.error(res.message);
             }
           })
           .catch(err => {

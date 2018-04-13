@@ -4,8 +4,7 @@
       <section class="group-header">
         <div class="mini-header">
           <div class="follow">
-            <p v-if="groupdetail.member.indexOf(userid) >= 0" @click="addlovegroup">{{joinmsg}}</p>
-            <p v-else @click="addlovegroup">{{joinmsg}}</p>
+            <p @click="addlovegroup">{{joinmsg}}</p>
           </div>
         </div>
         <div class="header-body">
@@ -54,7 +53,7 @@
             </div>
             <div class="article-title">
               <h2>
-                <router-link :to="{ name:'topicdetail', params:{t_id:topic._id}}" class="article-link">{{topic.title}}</router-link>
+                <router-link :to="{ name:'topicdetail', params:{t_id: topic._id}}" class="article-link">{{topic.title}}</router-link>
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'like', params: { uName: topic.user.nickname }}">{{topic.user.nickname}}</router-link>
@@ -63,8 +62,8 @@
               </div>
             </div>
             <div class="comment-num" >
-              <span class="number">{{topic.comments.length}}</span>
-              <i class="comment el-icon-fa el-icon-fa-comments-o" aria-hidden="true"></i>
+              <!--<span class="number">{{topic.comments.length}}</span>-->
+              <!--<i class="comment el-icon-fa el-icon-fa-comments-o" aria-hidden="true"></i>-->
             </div>
           </li>
         </ul>
@@ -114,13 +113,12 @@
           if (res.status === this.$status.success) {
             this.groupdetail = res.data[0];
             this.isjoin = this.groupdetail.users.indexOf(this.userid);
+            console.log(this.userid);
             if (this.isjoin >= 0) {
               this.joinmsg = '退出小组';
             } else {
               this.joinmsg = '加入小组';
             }
-          } else {
-            this.groupdetail = []
           }
         }).catch(error => {
           console.log(error)
@@ -159,14 +157,15 @@
           this.$message.error(`请先登录！`);
           return false;
         } else {
-          this.$http.post(this.$config.group.join.url, {_id: this.gid,})
+
+          let params = {group: this.gid, user: localStorage.getItem("userId")};
+          this.$http.get(this.$config.group.join.url, {params: params})
             .then(response => {
               let res = response.data;
               if (res.exit === 1) {
                 this.joinmsg = '退出小组';
                 this.isjoin = 0;
                 this.$message.success(res.message);
-
               } else if (res.exit === 0) {
                 this.joinmsg = "加入小组";
                 this.isjoin = -1;

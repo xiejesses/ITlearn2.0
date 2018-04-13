@@ -36,7 +36,7 @@
       </section>
       <nav class="navigation">
 
-        <router-link to="/" exact="true" class="ListItem">首页</router-link>
+        <router-link to="/" exact=true class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
         <router-link to="/share" class="LastItem">分享链接</router-link>
         <a href="javascript:void(0)" @click="isfocused = true">
@@ -48,7 +48,7 @@
       <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar :email="userEmail" size='40' :alt="userName"/>
+            <v-gravatar :email="userEmail" size=40 :alt="userName"/>
           </span>
           <el-dropdown-menu slot="dropdown">
             <router-link :to="{ name: 'user_article', params: { _id: userId }}">

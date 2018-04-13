@@ -60,8 +60,8 @@
           page: this.page,
           page_size: this.pageSize,
         };
-        this.$http.get(this.$config.group.url, {params: param}
-        ).then((response) => {
+        this.$http.get(this.$config.group.url, {params: param})
+          .then((response) => {
           let res = response.data;
           if (res.status === this.$status.success) {
 
@@ -75,25 +75,29 @@
               this.busy = false;
             }
           } else {
-            this.groups = [];
-          }
-        }).catch(error =>
-          this.$message.error(error.response.data.message)
-        );
+              this.groups = [];
+            }
+          }).catch(error =>
+            this.$message.error(error.response.data.message)
+          );
       },
 
+      // 添加喜爱的小组
       addlovegroup(group_id, index) {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
         }
-
-        this.$http.get(this.$config.group.join.url)
+        let params = {
+          user: localStorage.getItem('userId'),
+          group: group_id
+        };
+        this.$http.get(this.$config.group.join.url, {params: params})
           .then(response => {
             let res = response.data;
             if (res.status === this.$status.success) {
               if (res.exit === 0) {
-                this.lovegroupid.remove(group_id);
+                this.$units.remove(this.lovegroupid, group_id);
                 this.$message.success('退出成功');
               } else {
                 this.lovegroupid.push(group_id);
@@ -107,6 +111,8 @@
             err => this.$message.error(err.response.data.message)
           );
       },
+
+      // 收集
       fetchLovegroup() {
         if (localStorage.getItem('userName')) {
           let param = {

@@ -17,12 +17,12 @@
                 <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'user_article', params: { user: article.user._id }}">{{article.user.nickname}}</router-link>
+                <router-link :to="{ name: 'user_article', params: { userId: article.user._id }}">{{article.user.nickname}}</router-link>
                 <span class="separator"> • </span>
                 <abbr class="timeago" :title="new Date(article.createDateTime)">{{moment(new Date(article.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
-                <span v-for="(tag,tagindex) in article.tags" v-bind:key="tagindex">
-                  <router-link :to="{ name: 'tag_article', params: { tName: tag }}">{{tag}}</router-link>
+                <span v-for="(tag, tagindex) in article.tags" v-bind:key="tagindex">
+                  <router-link :to="{ name: 'tag_article', params: { tName: tag.name }}">{{tag.name}}</router-link>
                   <span class="separator"> • </span>
                 </span>
                 <span>
@@ -34,8 +34,8 @@
             </section>
             <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
             <section class="article-vote" @click="article.voteNumber++">
-              <span class="score" v-bind:class="{scored:article.voteActive == true}">{{article.voteNumber}}</span>
-              <span class="arrow up" v-bind:class="{upmod:article.voteActive == true}" @click="changeVote(article._id, index)"></span>
+              <span class="score" v-bind:class="{scored: article.voteActive == true}">{{article.upVotes.length}}</span>
+              <span class="arrow up" v-bind:class="{upmod: article.voteActive == true}" @click="changeVote(article._id, index)"></span>
             </section>
           </li>
         </ul>
@@ -70,7 +70,6 @@
     mounted() {
       this.fetchArticle();
       this.fetchLovelink();
-
     },
 
     computed: {
@@ -81,9 +80,9 @@
     },
     methods: {
       changeVote(id, index) {
-        let params = {recommend: id, user: this.localStorage.getItem("userId")};
+        let params = {recommend: id, user: localStorage.getItem("userId")};
         this.articles[index].voteActive = true;
-        this.$http.post(this.$config.recommend.vote.url, {params: params})
+        this.$http.get(this.$config.recommend.vote.url, {params: params})
           .then(response => {
             let res = response.data;
             if (res.status === 0) {
@@ -115,6 +114,7 @@
                 for (let collection of res.data) {
                   this.lovelinkid.push(collection.recommend._id);
                 }
+                console.log(this.lovelinkid);
               } else {
                 this.$message.error(response.message);
               }
@@ -125,6 +125,7 @@
         }
       },
 
+      // 添加收藏
       addlovelink(sharelink_id, index) {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
@@ -135,13 +136,15 @@
           recommend: sharelink_id,
           user: localStorage.getItem("userId")
         };
-
-        if(!this.lovelinkid.indexOf(sharelink_id)){
-          this.$http.post(this.$config.collection.url, {data: data})
+        console.log(!(this.lovelinkid.indexOf(sharelink_id) >= 0));
+        console.log(this.lovelinkid);
+        if(!(this.lovelinkid.indexOf(sharelink_id) >= 0)){
+          this.$http.post(this.$config.collection.url, data)
             .then(response => {
               let res = response.data;
               if (res.status === this.$status.success) {
                 this.lovelinkid.push(sharelink_id);
+
                 this.$message.success('成功收藏');
               } else {
                 this.$message.error('发生错误');
@@ -150,23 +153,22 @@
             .catch(err => {
                 this.$message.error(err.response.data.message);
             });
-        } else if(this.lovelinkid.indexOf(sharelink_id)){
+        } else {
           this.$http.delete(this.$config.collection.url, {params: data})
             .then(response => {
-              let res = reponse.data;
-              if (res.status === this.$status.success) {
-                this.lovelinkid.remove(sharelink_id);
-                this.$message.success('成功收藏');
+              if (response.status === 204) {
+                this.$message.success('取消收藏成功');
+                this.$units.remove(this.lovelinkid, sharelink_id);
               } else {
-                this.$message.error('发生错误');
+                // todo 删除失败操作
               }
             })
             .catch(err => {
                 this.$message.error(err.response.data.message);
             });
         }
-
       },
+
       fetchArticle(flag) {
         //取出
         this.loading = true;
@@ -192,11 +194,7 @@
               if (flag) {
                 this.articles = this.articles.concat(res.data);
                 //如果没有数据，停止滚动加载
-                if (res.data.length === 0) {
-                  this.busy = true;
-                } else {
-                  this.busy = false;
-                }
+                this.busy = res.data.length === 0;
               } else {
                 this.articles = res.data;
                 this.busy = false;
@@ -204,10 +202,12 @@
             } else {
               this.articles = [];
             }
-        }).catch(function (error) {
-          console.log(error)
-        });
-
+            this.articles.every(function (article) {
+              article.voteActive = localStorage.getItem("userId") in article.upVotes;
+            });
+          }).catch(function (error) {
+            console.log(error)
+          });
       },
 
       loadMore() {

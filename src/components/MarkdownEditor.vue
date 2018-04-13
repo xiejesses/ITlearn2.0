@@ -90,6 +90,8 @@
       if(to.query.isjoin >= 0) {
         next()
       } else {
+        console.log(to.query.isjoin);
+        console.log(from);
         from.$message.success('请先加入');
         next(false)
       }

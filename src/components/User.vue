@@ -26,14 +26,14 @@
             <ul>
               <li>
                 <router-link :to="{ name: 'following' ,params: { userId: userInfo._id }}">
-                  <div class="digits">{{following.length}}</div>
+                  <div class="digits">{{following}}</div>
                 正在关注
                 </router-link>
 
               </li>
               <li>
                  <router-link :to="{ name: 'follower', params: { userId: userInfo._id }}">
-                <div class="digits">{{follower.length}}</div>
+                <div class="digits">{{follower}}</div>
                 关注者
                  </router-link>
               </li>
@@ -44,7 +44,7 @@
             </ul>
           </div>
           <div class="follow">
-            <button v-show="userName !== currentUser" @click="follow">{{followmsg}}</button>
+            <button v-show="userName != currentUser" @click="follow">{{followmsg}}</button>
           </div>
         </div>
       </section>
@@ -80,20 +80,18 @@
       };
     },
     mounted() {
-      this.fetchUserInfo();
       this.currentUser = localStorage.getItem('userName');
+      this.userId = this.$route.params.userId;
+      this.fetchUserInfo();
     },
     methods: {
       saveEdit() {
         this.isEdit = false;
         this.isSave = false;
-        let params = {params:
-          {_id: localStorage.getItem('userId')}
-        };
-        let data = {data:
-          {desc: this.userInfo.desc}
-        };
-        this.$http.patch(this.$config.user.url, params, data)
+        let data = {desc: this.userInfo.desc};
+
+        let params = "?_id=" + localStorage.getItem('userId');
+        this.$http.patch(this.$config.user.url + params, data)
           .then(response => {
             let res = response.data;
             if (res.status === this.$status.success) {
@@ -116,12 +114,13 @@
       fetchUserInfo() {
 
         // 请求获取用户信息
-        this.$http.post(this.$config.user.url, {params: {_id: this.$route.params.userId}})
+        this.$http.get(this.$config.user.url, {params: {_id: this.userId}})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success){
               this.userInfo = res.data[0];
               this.userName = this.userInfo.nickname;
+              console.log(this.userName, this.currentUser);
             } else {
               this.$message.error(res.message);
             }
@@ -130,43 +129,9 @@
               this.$message.error(err.response.data.message);
           });
 
-
-        // 请求获取用户的关注者
-        this.$http.get(this.$config.relation.url, {params: {follower: this.$route.params.userId}})
-          .then(response => {
-            let res = response.data;
-            if(res.status === this.$status.success){
-              this.follower = res.data.length;
-              this.followmsg = "关注";
-
-              if (parseInt(this.$route.params.userId) !== this.localStorage.getItem("userId")){
-                // 判断当前用户是否关注 该用户
-                this.$http.get(this.$config.user.relation.url, {params: {user: this.localStorage.getItem("userId")}})
-                  .then(response => {
-                    let res = response.data;
-                    for (let i = 0; i < res.data.length; i++) {
-                      let relation = res.data[i];
-                      if (relation.follower._id === parseInt(this.$route.params.userId)){
-                        this.followmsg = "取消关注";
-                        break;
-                      }
-                    }
-                  })
-                  .catch(err => {
-                    this.$message.error(err.response.data.message);
-                  });
-              }
-
-            } else {
-              this.$message.error(res.message);
-            }
-          })
-          .catch(err => {
-              this.$message.error(err.response.data.message);
-          });
-
+        let params = {user: this.userId};
         // 请求获取用户的 正在关注用户数, 关注者用户
-        this.$http.get(this.$config.relation.count.url, {params: {user: this.$route.params.userId}})
+        this.$http.get(this.$config.relation.count.url, {params: params})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success){

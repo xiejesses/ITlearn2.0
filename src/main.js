@@ -49,23 +49,32 @@ String.prototype.format = function (args) {
 
 
 //   return Promise.reject(error);
-Array.prototype.remove=function(dx)
-{
-  if(isNaN(dx)||dx>this.length){return false;}
-  for(var i=0,n=0;i<this.length;i++)
-  {
-    if(this[i]!=this[dx])
-    {
-      this[n++]=this[i]
+Array.prototype.remove = function (dx) {
+  if (isNaN(dx) || dx > this.length) {
+    return false;
+  }
+  for (var i = 0, n = 0; i < this.length; i++) {
+    if (this[i] != this[dx]) {
+      this[n++] = this[i]
     }
   }
-  this.length-=1
-}
+  this.length -= 1
+};
 
 
 Vue.prototype.$http = axios;
 Vue.prototype.$config = config.urlConfig;
 Vue.prototype.$status = config.status;
+Vue.prototype.$units = {};
+Vue.prototype.$units.remove = function (array, ele) {
+  for (let i = 0; i < array.length; i++) {
+    let ele1 = array[i];
+    if (ele1 === ele) {
+      array.splice(i, 1);
+      break;
+    }
+  }
+};
 
 Vue.use(infiniteScroll);
 Vue.prototype.moment = moment;

@@ -51,7 +51,7 @@ const urlConfig ={
       url: `/${version}/recommends/count/`
     },
     vote: {
-      url: `/${version}/recommend/vote/`
+      url: `/${version}/recommends/vote/`
     },
   },
 
@@ -77,7 +77,11 @@ const urlConfig ={
 
   // 评论模块
   comment:{
-    url: `/${version}/comments/`
+    url: `/${version}/comments/`,
+
+    count: {
+      url: `/${version}/comments/count/`
+    }
   },
 
   // 话题模块
