@@ -112,7 +112,9 @@
           let res = response.data;
           if (res.status === this.$status.success) {
             this.groupdetail = res.data[0];
-            this.isjoin = this.groupdetail.users.indexOf(this.userid);
+            //this.userid保存的是字符串类型，进行indexOf时，需要先转化为整型
+            this.isjoin = this.groupdetail.users.indexOf(parseInt(this.userid));
+            console.log(`isjoin=${this.isjoin}`);
             console.log(this.userid);
             if (this.isjoin >= 0) {
               this.joinmsg = '退出小组';
