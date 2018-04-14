@@ -96,11 +96,9 @@
 
 <script>
   import axios from 'axios'
-  import {
-    mavonEditor
-  } from 'mavon-editor'
-  import 'mavon-editor/dist/css/index.css'
-  import '../../static/css/markdown.css'
+  import {mavonEditor} from 'mavon-editor';
+  import 'mavon-editor/dist/css/index.css';
+  import '../../static/css/markdown.css';
   export default {
     components: {
       mavonEditor
