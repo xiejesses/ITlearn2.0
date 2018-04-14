@@ -14,7 +14,7 @@
             </p>
             <p>
               <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
-                <el-option  v-for="item in options" :key="item.name" :label="item.name" :value="item._id">
+                <el-option  v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
                 </el-option>
               </el-select>
             </p>
