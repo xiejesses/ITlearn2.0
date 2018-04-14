@@ -57,7 +57,7 @@
             <router-link to="/">
               <el-dropdown-item>我的小组</el-dropdown-item>
             </router-link>
-            <router-link to="/">
+            <router-link to="/about">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
             <el-dropdown-item divided @click.native="loginOut">退出</el-dropdown-item>
