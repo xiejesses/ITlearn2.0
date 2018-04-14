@@ -22,7 +22,9 @@
                 <abbr class="timeago" :title="new Date(article.createDateTime)">{{moment(new Date(article.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
                 <span v-for="(tag, tagindex) in article.tags" v-bind:key="tagindex">
-                  <router-link :to="{ name: 'tag_article', params: { tName: tag.name }}">{{tag.name}}</router-link>
+                  <router-link :to="{ name: 'tag_article', params: { tName: tag.name }}" style="border-bottom:0">
+                    <el-tag  type="success">{{tag.name}}</el-tag>
+                  </router-link>
                   <span class="separator"> • </span>
                 </span>
                 <span>
@@ -53,6 +55,7 @@
     data() {
       return {
         i: -1,
+        userId: Number(localStorage.getItem("userId")),
         // loading: false,
         isupmod: false,
         isHeartClick: '',

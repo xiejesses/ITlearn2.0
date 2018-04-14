@@ -36,7 +36,7 @@
       </section>
       <nav class="navigation">
 
-        <router-link to="/" exact=true class="ListItem">首页</router-link>
+        <router-link to="/" :exact="True" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
         <router-link to="/share" class="LastItem">分享链接</router-link>
         <a href="javascript:void(0)" @click="isfocused = true">
@@ -113,6 +113,7 @@
     name: 'vindex',
     data() {
       return {
+        True: true,
         userName: '',
         userEmail: '',
         userId: '',
