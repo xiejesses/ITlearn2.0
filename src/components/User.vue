@@ -37,10 +37,14 @@
                 关注者
                  </router-link>
               </li>
-              <li>
+              <!-- <li>
                 <div class="digits">{{lovelink}}</div>
                 喜欢
               </li>
+              <li>
+                <div class="digits">{{lovelink}}</div>
+                我的小组
+              </li> -->
             </ul>
           </div>
           <div class="follow">
@@ -50,9 +54,14 @@
       </section>
       <section >
         <div class="tab">
-          <router-link :to="{ name: 'user_article'}" exact="true" class="ListItem">收藏({{lovelink}})</router-link>
+          <router-link :to="{ name: 'user_article'}" exact="true" class="ListItem">喜欢 {{lovelink}}</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'group'}" class="ListItem">小组({{lovegroup}})</router-link>
+          <!-- 这里的name要改 -->
+          <router-link :to="{ name: 'user_article'}" class="ListItem">分享 {{lovegroup}}</router-link>
+          <span class="separator"> / </span>
+          <router-link :to="{ name: 'mygroup'}" class="ListItem">加入的小组 {{lovegroup}}</router-link>
+          <span class="separator"> / </span>
+          <router-link :to="{ name: 'group'}" class="ListItem">创建的小组 {{lovegroup}}</router-link>
         </div>
         <router-view></router-view>
       </section>
@@ -114,7 +123,7 @@
 
       // 获取用户信息
       fetchUserInfo() {
-        // console.log(this.$route.params.userId)
+        console.log(this.$route.params)
         // 请求获取用户信息
         this.$http.get(this.$config.user.url, {params: {_id: this.userId}})
           .then(response => {

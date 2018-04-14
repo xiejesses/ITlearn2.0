@@ -104,8 +104,16 @@ const router = new Router({
           children: [
 
             {
-              path: 'mygroup',
+              path: 'group',
               name: 'group',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component: Group
+            },
+            {
+              path: 'mygroup',
+              name: 'mygroup',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
