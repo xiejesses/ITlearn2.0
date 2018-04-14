@@ -51,13 +51,17 @@
                     <section class="comment-content">
                       <div class="user-comment-right">
                         <div class="meta">
-                          <router-link :to="{ name: 'like', params: { uName: comment.user.nickname }}"> {{comment.user.nickname}}</router-link>
+                          <router-link :to="{ name: 'user_article', params: { userId: comment.user.nickname }}"> {{comment.user.nickname}}</router-link>
                           <span class="separator">• </span>
-                          <abbr class="timeago" :title="new Date(comment.createTime)"> {{ moment(new Date(comment.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                          <abbr class="timeago" :title="new Date(comment.createDateTime)"> {{ moment(new Date(comment.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                         </div>
                         <div v-html="comment.content" class="custom markdown-body"></div>
+                        <div v-if="comment.pid" class="child-comment meta">
+                          <router-link :to="{ name: 'user_article', params: { userId: comment.pid.user.nickname }}"> @{{comment.pid.user.nickname}}: </router-link>
+                          <div v-html="comment.pid.content" class="custom markdown-body" ></div>
+                        </div>
                         <div class="reply">
-                          <a href="javascript:void(0)" @click="showReplyLayout(index)">Reply</a>
+                          <a href="javascript:void(0)" @click="showReplyLayout(index)">回复</a>
                         </div>
                       </div>
                       <!-- 回复评论输入框 -->
@@ -72,7 +76,7 @@
                           </div>
                         </div>
                         <div class="reply-actions">
-                          <a href="javascript:;" @click="createReply(comment._id)">回复</a>
+                          <a href="javascript:;" @click="createComment(comment._id)">回复</a>
                           <a href="javascript:;" @click="cancelReply">取消</a>
                         </div>
                       </div>
@@ -164,6 +168,7 @@
 
       this.fetchTopicDetail();
       this.fetchComment();
+      this.getCommentCount();
     },
     methods: {
       getCommentContent(val, render) {
@@ -194,23 +199,32 @@
       },
 
       // 创建评论
-      createComment() {
-        this.$http.post(this.$config.comment.url, {
+      createComment(pid) {
+        let data = {
           content: this.commentContent,
           user: this.currentUserId,
           topic: this.tid,
-        }).then(response => {
-          let res = response.data;
-          if (res.status === this.$status.success) {
-            this.comments = this.comments.concat(res.data);
-            this.$message.success('评论成功');
-            this.commentNum++;
-          } else {
-            this.$message.error('评论失败！请重试');
-          }
-        }).catch(err => {
-          this.$message.error(`${err.message}`, 'ERROR!');
-        })
+        };
+        if(pid) {
+          data.pid = Number(pid);
+          data.content = this.replyContent;
+        }
+
+        this.$http.post(this.$config.comment.url, data)
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              let comments = [res.data];
+              this.comments = comments.concat(this.comments);
+              this.$message.success('回复成功');
+              this.commentNum++;
+              this.cancelReply();
+            } else {
+              this.$message.error('回复成功！请重试');
+            }})
+          .catch(err => {
+            this.$message.error(`${err.message}`, 'ERROR!');
+          })
       },
 
       // 获取评论列表
@@ -260,6 +274,7 @@
               this.$message.error(err.response.data.message);
           });
       },
+
       loadMore() {
         this.busy = true;
         setTimeout(() => {
@@ -470,4 +485,9 @@
     }
   }
 
+  .child-comment{
+    padding: 3px 20px;
+    margin-top: 5px;
+    background-color: #F2F6FC;
+  }
 </style>
