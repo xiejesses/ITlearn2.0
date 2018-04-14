@@ -38,11 +38,11 @@
                  </router-link>
               </li>
               <!-- <li>
-                <div class="digits">{{lovelink}}</div>
+                <div class="digits">{{loveLink}}</div>
                 喜欢
               </li>
               <li>
-                <div class="digits">{{lovelink}}</div>
+                <div class="digits">{{loveLink}}</div>
                 我的小组
               </li> -->
             </ul>
@@ -54,14 +54,14 @@
       </section>
       <section >
         <div class="tab">
-          <router-link :to="{ name: 'user_article'}" exact="true" class="ListItem">喜欢 {{lovelink}}</router-link>
+          <router-link :to="{ name: 'user_article'}" exact="true" class="ListItem">分享 {{shareLink}}</router-link>
           <span class="separator"> / </span>
           <!-- 这里的name要改 -->
-          <router-link :to="{ name: 'user_article'}" class="ListItem">分享 {{lovegroup}}</router-link>
+          <router-link :to="{ name: 'user_collection'}" class="ListItem">喜欢 {{loveLink}}</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'mygroup'}" class="ListItem">加入的小组 {{lovegroup}}</router-link>
+          <router-link :to="{ name: 'mygroup'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'group'}" class="ListItem">创建的小组 {{lovegroup}}</router-link>
+          <router-link :to="{ name: 'group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
         </div>
         <router-view></router-view>
       </section>
@@ -83,8 +83,12 @@
         followmsg: '关注',
         follower: 0,
         following: 0,
-        lovelink: 0,
-        lovegroup: 0,
+
+        loveLink: 0,
+        shareLink: 0,
+
+        joinGroup: 0,
+        createGroup: 0,
         isEdit: false,
         isSave: false,
         msg: 'Design & front end development. Also a back end engineer'
@@ -92,7 +96,7 @@
     },
     mounted() {
       this.currentUser = localStorage.getItem('userName');
-      this.userId = this.$route.params.userId;
+      this.userId = Number(this.$route.params.userId);
       this.fetchUserInfo();
     },
     methods: {
@@ -123,14 +127,13 @@
 
       // 获取用户信息
       fetchUserInfo() {
-        console.log(this.$route.params)
         // 请求获取用户信息
         this.$http.get(this.$config.user.url, {params: {_id: this.userId}})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success){
               this.userInfo = res.data[0];
-              console.log(`this.userInfo${this.userInfo}`)
+              console.log(`this.userInfo${this.userInfo}`);
               this.userName = this.userInfo.nickname;
               this.userEmail = this.userInfo.email;
               // console.log(this.userName, this.currentUser);
@@ -142,9 +145,8 @@
               this.$message.error(err.response.data.message);
           });
 
-        let params = {user: this.userId};
         // 请求获取用户的 正在关注用户数, 关注者用户
-        this.$http.get(this.$config.relation.count.url, {params: params})
+        this.$http.get(this.$config.relation.count.url, {params: {user: this.userId}})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success){
@@ -158,36 +160,49 @@
             this.$message.error(err.response.data.message);
           });
 
-        // 获取收藏数
-        this.$http.get(this.$config.collection.count.url, {params: {user: this.$route.params.userId}})
+        this.$http.get(this.$config.collection.count.url, {params: {user: this.userId}})
           .then(response => {
             let res = response.data;
             if (res.status === this.$status.success ) {
-              this.lovelink = res.count;
-            }
-          })
-          .catch(err => {
-              this.$message.error(err.response.data.message);
-          });
-
-        // 获取小组数
-        this.$http.get(this.$config.group.count.url, {params: {users: this.$route.params.userId}})
-          .then(response => {
-            let res = response.data;
-            if (res.status === this.$status.success ) {
-              this.lovegroup = res.count;
+              this.loveLink = res.count;
             }
           })
           .catch(err => {
             this.$message.error(err.response.data.message);
           });
 
-//        this.follower = res.doc.follower.length;
-//        if(res.currentuser.following.indexOf(res.doc._id) === -1) {
-//          this.followmsg = "关注"
-//        } else {
-//          this.followmsg = "取消关注"
-//        }
+        this.$http.get(this.$config.group.count.url, {params: {users: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success ) {
+              this.joinGroup = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        this.$http.get(this.$config.group.count.url, {params: {user: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success ) {
+              this.createGroup = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        this.$http.get(this.$config.recommend.count.url, {params: {user: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              this.shareLink = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
       },
       follow() {
         let params = {

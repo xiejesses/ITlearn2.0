@@ -101,11 +101,12 @@
             this.$message.error(err.response.data.message);
           });
       },
+
       clickheart() {
         this.clickheart = !this.clickheart
       },
 
-
+      // 获取用户喜欢链接
       fetchLovelink() {
         if (localStorage.getItem('userName')) {
           let format = {user_id: localStorage.getItem('userId')};
@@ -176,6 +177,7 @@
         }
       },
 
+      // 获取文章
       fetchArticle(flag) {
         //取出
         this.loading = true;
@@ -183,6 +185,7 @@
           page: this.page,
           page_size: this.pageSize,
         };
+        let url = this.$config.recommend.url;
 
         if (this.$route.params.userId) {
           params.user = this.$route.params.userId;
@@ -192,23 +195,30 @@
           params.tags = this.$route.params.tagId;
         }
 
-        this.$http.get(this.$config.recommend.url, {params: params})
+        if (this.$route.name === "user_collection"){
+          url = this.$config.collection.url;
+        }
+
+        this.$http.get(url, {params: params})
           .then((response) => {
             let res = response.data;
             this.loading = false;
-            if (res.status === 0) {
               // 不是第一次，需要拼接数据
-              if (flag) {
-                this.articles = this.articles.concat(res.data);
-                //如果没有数据，停止滚动加载
-                this.busy = res.data.length === 0;
-              } else {
-                this.articles = res.data;
-                this.busy = false;
+            if (this.$route.name === "user_collection") {
+              let temp = [];
+              for (let i = 0; i < res.data.length; i++) {
+                let collection = res.data[i];
+                temp.push(collection.recommend);
               }
+              this.articles = this.articles.concat(temp);
             } else {
-              this.articles = [];
+              this.articles = this.articles.concat(res.data);
             }
+
+            if (!flag) {
+              this.busy = false;
+            }
+            this.busy = res.data.length === 0;
             this.articles.forEach(function (article) {
               article.voteActive = article.upVotes.indexOf(localStorage.getItem("userId")) >= 0;
             });

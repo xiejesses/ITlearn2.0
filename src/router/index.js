@@ -128,6 +128,14 @@ const router = new Router({
               component: Article
             },
             {
+              path: 'collection',
+              name: 'user_collection',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component: Article
+            },
+            {
               path: 'following',
               name: 'following',
               // meta: {
