@@ -29,18 +29,8 @@
     name: 'about',
     data() {
       return {
-        
       }
     },
-    mounted() {
-      
-    },
-    computed: {
-      
-    },
-    methods: {
-      
-    }
   }
 
 </script>
@@ -58,20 +48,13 @@ h2,p {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 65vh;
+  height: 70vh;
   text-align: center;
-  /* background-color: #6bb756; */
   background: linear-gradient(to right, rgba(107,183,86,0.95), rgba(0,143,104,0.95));
-  /* background: linear-gradient(to right, var(--top1), var(--top2)); */
   clip-path: polygon(50% 0%, 100% 0, 100% 65%, 50% 100%, 0 65%, 0 0);
-  /* margin-bottom: 1em; */
-  /* padding-bottom: 1.5em; */
-}
-.head-bg article {
-
 }
 .author__image-wrapper {
-  height: 100vh;
+  height: 80vh;
   display:flex;
   justify-content: center;
   align-items: top;
@@ -81,7 +64,6 @@ h2,p {
     transition: transform .6s ease-out;
 }
 .author__image {
-  /* background: #d33a2c; */
     border: 7px solid #d33a2c;
     margin-right: 30px;
     box-shadow: 0px 14px 20px 0px #7e6f6f;
