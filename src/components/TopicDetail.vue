@@ -80,32 +80,6 @@
                           <a href="javascript:;" @click="cancelReply">取消</a>
                         </div>
                       </div>
-                      <!-- 回复评论显示 -->
-                      <!--<ul class="user-reply">-->
-                          <!--<li v-for="reply in comment.replys" v-bind:key="reply._id">-->
-                              <!--<el-row :gutter="10" class="replyTo">-->
-                        <!--<el-col :xs="3" :sm="2" :md="2" :lg="2" :xl="2">-->
-                          <!--<div class="grid-content bg-purple">-->
-                            <!--<div class="user-avatar">-->
-                              <!--<v-gravatar v-bind:email="reply.author.userEmail" size='40' :alt="reply.author.userName" align="right" />-->
-                            <!--</div>-->
-                          <!--</div>-->
-                        <!--</el-col>-->
-                        <!--<el-col :xs="21" :sm="22" :md="22" :lg="22" :xl="22">-->
-                          <!--<div class="grid-content bg-purple">-->
-                            <!--<div>-->
-                              <!--<div class="meta">-->
-                                <!--<router-link :to="{ name: 'like', params: { uName: reply.author.userName }}"> {{reply.author.userName}}</router-link>-->
-                                <!--<span class="separator">• </span>-->
-                                <!--<abbr class="timeago" :title="new Date(reply.createTime)"> {{ moment(new Date(reply.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>-->
-                              <!--</div>-->
-                              <!--<div v-html="reply.content" class="custom markdown-body"></div>-->
-                            <!--</div>-->
-                          <!--</div>-->
-                        <!--</el-col>-->
-                      <!--</el-row>-->
-                          <!--</li>-->
-                      <!--</ul>-->
                     </section>
                   </div>
                 </el-col>
@@ -240,7 +214,7 @@
             if (res.status === this.$status.success) {
               if (flag) {
                 this.comments = this.comments.concat(res.data);
-                this.busy = res.result.count === 0;
+                this.busy = res.data.length === 0;
               } else {
                 this.comments = res.data;
                 this.busy = false;
@@ -257,8 +231,6 @@
       // 获取评论数量
       getCommentCount() {
         let params = {
-          page: this.page,
-          page_size: this.pageSize,
           topic: this.tid
         };
         this.$http.get(this.$config.comment.count.url, {params: params})
@@ -279,13 +251,10 @@
         this.busy = true;
         setTimeout(() => {
           this.page++;
-          this.fetchGroup(true);
+          this.fetchComment(true);
         }, 500);
       },
-
     }
-
-
   }
 
 </script>
@@ -486,7 +455,7 @@
   }
 
   .child-comment{
-    padding: 3px 20px;
+    padding: 5px 20px;
     margin-top: 5px;
     background-color: #F2F6FC;
   }
