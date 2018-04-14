@@ -69,6 +69,9 @@ const urlConfig ={
   group:{
     url: `/${version}/groups/`,
 
+    count: {
+      url: `/${version}/groups/count/`
+    },
     // 加入小组功能
     join: {
       url: `/${version}/groups/join/`
