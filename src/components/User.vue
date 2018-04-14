@@ -5,7 +5,7 @@
         <div class="user-data">
           <div class="user-meta">
             <div class="user-avatar">
-              <v-gravatar :email="userInfo.email" size='40' />
+               <v-gravatar :email='userEmail' size='40' />
             </div>
             <div class="user-introduce">
               <span v-if="isSave" class="save">
@@ -67,8 +67,10 @@
     data() {
       return {
         userName: '',
+        userEmail:'',
         currentUser: '',
-        userInfo: {},
+        userId:'',
+        userInfo: '',
         followmsg: '关注',
         follower: 0,
         following: 0,
@@ -112,15 +114,17 @@
 
       // 获取用户信息
       fetchUserInfo() {
-
+        // console.log(this.$route.params.userId)
         // 请求获取用户信息
         this.$http.get(this.$config.user.url, {params: {_id: this.userId}})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success){
               this.userInfo = res.data[0];
+              console.log(`this.userInfo${this.userInfo}`)
               this.userName = this.userInfo.nickname;
-              console.log(this.userName, this.currentUser);
+              this.userEmail = this.userInfo.email;
+              // console.log(this.userName, this.currentUser);
             } else {
               this.$message.error(res.message);
             }

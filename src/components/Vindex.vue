@@ -51,7 +51,7 @@
             <v-gravatar :email="userEmail" size=40 :alt="userName"/>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <router-link :to="{ name: 'user_article', params: { _id: userId }}">
+            <router-link :to="{ name: 'user_article', params: { userId: userId }}">
               <el-dropdown-item>我的主页</el-dropdown-item>
             </router-link>
             <router-link to="/">
