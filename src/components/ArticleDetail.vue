@@ -1,47 +1,83 @@
 <template>
   <div class="share">
-
-
     <el-container>
       <el-main>
         <el-card>
-          <h1 class="cxy-h1">来自星星星的你</h1>
-          <div class="cxy-meta"> 几日前 </div>
-          <div class="content"></div>
+          <!--标题-->
+          <h1 class="cxy-h1">{{detail.title}}</h1>
+
+          <!--desc-->
+          <div>{{detail.desc}}</div>
+
+          <!--内容-->
+          <div v-if="!detail.url || detail.url === ''" v-html="detail.content" class="markdown-body"></div>
+
+          <!--链接按钮-->
+          <el-button v-if="detail.url && detail.url !== ''" type="primary" @click="openUrl">查看链接</el-button>
         </el-card>
       </el-main>
       <el-aside style="padding: 20px;">
         <el-card>
           <section class="user-avatar">
-            <v-gravatar v-bind:email="email" size='40' :alt="喵喵喵" />
-            <span class="cxy-nickname">好吃的汉堡</span>
+            <!--头像-->
+            <v-gravatar v-bind:email="detail.user.email" size='40' :alt="detail.user.nickname"/>
+            <!--昵称-->
+            <span class="cxy-nickname">{{detail.user.nickname}}</span>
           </section>
-
-          <div class="bottom clearfix">
-          </div>
-          <time class="time"></time>
-          <el-button type="text" class="button">操作按钮</el-button>
+          <!--时间-->
+          <abbr class="timeago" :title="new Date(detail.createDateTime)">
+            {{ moment(new Date(detail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}
+          </abbr>
         </el-card>
       </el-aside>
     </el-container>
 
-    <comment></comment>
+    <comment :topic="Number(recommend)"></comment>
   </div>
 </template>
 <script>
+  import 'mavon-editor/dist/css/index.css';
+  import 'mavon-editor/src/lib/font/css/fontello.css';
+  import '../../static/css/markdown.css';
+  import comment from './libs/Commment.vue';
+
   export default {
     name: 'ArticleDetail',
+    components: {
+      comment
+    },
     data() {
       return {
-        email: "123@qq.com",
-        nickname: "123@qq.com"
+        detail: {},
+        recommend: Number(this.$route.params.shareId)
       };
     },
     mounted() {
+      this.fetchRecommend();
     },
 
     methods: {
+      // 获取分享
+      fetchRecommend(){
+        let params = {recommend: this.recommend};
+        this.$http.get(this.$config.recommend.url, params)
+          .then(response => {
+            let res = response.data;
+            if(res.status === this.$status.success) {
+              this.detail = res.data[0];
+            } else {
+              this.$message.error(res.message);
+            }
+          })
+          .catch(err => {
+              this.$message.error(err.response.data.message);
+          });
+      },
 
+      // 打开链接
+      openUrl() {
+        window.open(this.detail.url);
+      }
     }
   }
 
@@ -58,10 +94,6 @@
     line-height: 12px;
   }
 
-  .button {
-    padding: 0;
-    float: right;
-  }
   .cxy-nickname{
     margin-left:5px;
   }

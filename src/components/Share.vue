@@ -32,7 +32,7 @@
               </el-input>
             </p>
             <div v-if="!isShare">
-              <mavon-editor v-model="formShare.content" v-on:save="getContent" v-on:change="getContent"
+              <mavon-editor v-on:save="getContent" v-on:change="getContent"
                             style="height: 100%" placeholder="markdown editor"
                             v-bind:toolbars="Toolbars"></mavon-editor>
             </div>
@@ -132,6 +132,7 @@
     methods: {
       getContent(val, render) {
         this.formShare.content = render;
+        console.log(render);
       },
       // 创建分享
       share() {
@@ -151,7 +152,12 @@
           desc: this.formShare.desc,
           content: this.formShare.content
         };
-
+        if (!this.isShare) {
+          data.url = "";
+        } else {
+          data.content = "";
+        }
+        console.log(data);
         this.$http.post(this.$config.recommend.url, data)
           .then(response => {
             let res = response.data;

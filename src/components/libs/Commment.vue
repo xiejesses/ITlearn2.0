@@ -144,11 +144,10 @@
           user: this.currentUserId,
           topic: this.topic,
         };
-        if(pid) {
+        if(typeof pid === "number") {
           data.pid = Number(pid);
           data.content = this.replyContent;
         }
-
         this.$http.post(this.$config.comment.url, data)
           .then(response => {
             let res = response.data;
