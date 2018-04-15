@@ -14,6 +14,7 @@ import Vindex from '@/components/Vindex';
 import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
 import ArticleDetail from '@/components/ArticleDetail';
+import About from '@/components/About';
 
 Vue.use(Router);
 
