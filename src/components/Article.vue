@@ -12,7 +12,6 @@
               <v-gravatar v-bind:email="article.user.email" size='40' :alt="article.user.nickname" />
             </section>
             <section class="article-title">
-              <div class="domain">{{ article.urlhostname }}</div>
               <h2>
                 <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
               </h2>
@@ -36,8 +35,8 @@
             </section>
             <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
             <section class="article-vote" @click="article.voteNumber++">
-              <span class="score" v-bind:class="{scored: article.upVotes.indexOf(userId) >= 0}">{{article.upVotes.length}}</span>
-              <span class="arrow up" v-bind:class="{upmod: article.upVotes.indexOf(userId) >= 0}" @click="changeVote(article._id, index)"></span>
+              <span class="score" v-bind:class="{scored: !(article.upVotes.indexOf(userId) >= 0)}">{{article.upVotes.length}}</span>
+              <span class="arrow up" v-bind:class="{upmod: !(article.upVotes.indexOf(userId) >= 0)}" @click="changeVote(article._id, index)"></span>
             </section>
           </li>
         </ul>

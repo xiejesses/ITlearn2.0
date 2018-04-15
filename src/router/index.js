@@ -13,7 +13,7 @@ import TopicDetail from '@/components/TopicDetail';
 import Vindex from '@/components/Vindex';
 import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
-import About from '@/components/About';
+import ArticleDetail from '@/components/ArticleDetail';
 
 Vue.use(Router);
 
@@ -26,6 +26,11 @@ const router = new Router({
       name: 'vindex',
       component: Vindex,
       children: [
+        {
+          path: '/share/:shareId',
+          name: "share_detail",
+          component: ArticleDetail
+        },
         {
           path: '/',
           name: 'home_article',

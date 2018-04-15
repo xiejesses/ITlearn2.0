@@ -4,27 +4,43 @@
       <section>
         <div class="share-form">
           <form name="shareform" :v-model="formShare" id="shareform" action="#" method="post">
-            <h1>分享链接</h1>
+            <h1>
+              <span :class="{veiled: !isShare}" @click="isShare=!isShare">分享链接</span>
+              •
+              <span :class="{veiled: isShare}" @click="isShare=!isShare">写文章</span>
+            </h1>
+
+
             <h4 class="errMessage"></h4>
             <p>
-              <input type="text" v-model="formShare.url" name="shareUrl"  placeholder="分享网址" value="">
-            </p>
-            <p>
-              <input type="text" v-model="formShare.title" name="shareTitle"  placeholder="标题" value="">
+              <input type="text" v-model="formShare.title" name="shareTitle" placeholder="标题" value="" required>
             </p>
             <p>
               <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
-                <el-option  v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
+                <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
                 </el-option>
               </el-select>
             </p>
-            <div class="actions">
-              <div class="buttons">
-                <p class="submit">
-                  <a class="user-submit" href="javascript:;" @click="share">发布</a>
-                  <a href="javascript:;" class="cancel" @click="cancel">取消</a>
-                </p>
-              </div>
+            <div v-if="isShare">
+              <p>
+                <input type="text" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
+              </p>
+            </div>
+
+            <p>
+              <el-input type="textarea" :rows="3" placeholder="请输入简介" v-model="formShare.desc">
+              </el-input>
+            </p>
+            <div v-if="!isShare">
+              <mavon-editor v-model="formShare.content" v-on:save="getContent" v-on:change="getContent"
+                            style="height: 100%" placeholder="markdown editor"
+                            v-bind:toolbars="Toolbars"></mavon-editor>
+            </div>
+            <div class="buttons">
+              <p class="submit">
+                <el-button type="primary" @click="share">发布</el-button>
+                <a href="javascript:;" class="cancel" @click="cancel">取消</a>
+              </p>
             </div>
           </form>
 
@@ -52,43 +68,107 @@
 </template>
 
 <script>
+  import {mavonEditor} from 'mavon-editor';
+  import 'mavon-editor/dist/css/index.css';
+  import 'mavon-editor/src/lib/font/css/fontello.css';
+  import '../../static/css/markdown.css';
+
   export default {
+    components: {
+      mavonEditor
+    },
     name: 'share',
     data() {
       return {
-        formShare:{
-          url:'',
-          title:'',
-          tags:[]
+        formShare: {
+          url: '',
+          title: '',
+          tags: [],
+          content: '',
+          desc: ''
         },
+        Toolbars: {
+          bold: true, // 粗体
+          italic: true, // 斜体
+          header: true, // 标题
+          underline: true, // 下划线
+          // strikethrough: true, // 中划线
+          // mark: true, // 标记
+          // superscript: true, // 上角标
+          // subscript: true, // 下角标
+          quote: true, // 引用
+          ol: true, // 有序列表
+          ul: true, // 无序列表
+          link: true, // 链接
+          imagelink: true, // 图片链接
+          code: true, // code
+          table: true, // 表格
+          fullscreen: true, // 全屏编辑
+          readmodel: true, // 沉浸式阅读
+          htmlcode: true, // 展示html源码
+          help: true, // 帮助
+          /* 1.3.5 */
+          undo: true, // 上一步
+          redo: true, // 下一步
+          trash: true, // 清空
+          save: true, // 保存（触发events中的save事件）
+          /* 1.4.2 */
+          navigation: true, // 导航目录
+          /* 2.1.8 */
+          alignleft: true, // 左对齐
+          aligncenter: true, // 居中
+          alignright: true, // 右对齐
+          /* 2.2.1 */
+          subfield: true, // 单双栏模式
+          preview: true, // 预览
+        },
+        isShare: true,
         options: [],
       }
     },
     mounted() {
-       this.fetchTags();
-
+      this.fetchTags();
     },
     methods: {
+      getContent(val, render) {
+        this.formShare.content = render;
+      },
+      // 创建分享
       share() {
-        this.$http.post(this.$config.recommend.url, {
+        if (this.title === '') {
+          this.$message.error("请输入标题");
+        }
+
+        if (this.isShare && this.url === '') {
+          this.$message.error("请输入链接");
+        }
+
+        let data = {
           url: this.formShare.url,
           title: this.formShare.title,
           tags: this.formShare.tags,
-          user: localStorage.getItem('userId')
-        }).then(response => {
-          let res = response.data;
-          if (res.status === 0) {
-            this.$message.success('添加成功');
-          } else {
-            this.$message.error(`${res.message}`);
-            return false;
-          }
-        }).catch(
-          err =>
-            this.$message.err(err.message)
-          // todo 状态码返回提示操作
-        );
+          user: Number(localStorage.getItem('userId')),
+          desc: this.formShare.desc,
+          content: this.formShare.content
+        };
+
+        this.$http.post(this.$config.recommend.url, data)
+          .then(response => {
+            let res = response.data;
+            if (res.status === 0) {
+              this.$message.success('添加成功');
+            } else {
+              this.$message.error(`${res.message}`);
+              return false;
+            }
+          }).catch(
+            err =>
+              this.$message.err(err.message)
+            // todo 状态码返回提示操作
+          );
       },
+
+      // 创建标签
       fetchTags() {
         this.$http.get(this.$config.tag.url).then(response => {
           let res = response.data;
@@ -109,6 +189,7 @@
         this.formShare.url = '';
         this.formShare.title = '';
         this.formShare.tags = '';
+        this.formShare.content = '';
       }
     }
 
@@ -121,6 +202,7 @@
   a {
     text-decoration: none;
   }
+
   h3 {
     color: #54595f;
   }
@@ -138,7 +220,7 @@
     margin: 40px 0 0 0;
   }
 
-  @media screen and (min-width:960px) {
+  @media screen and (min-width: 960px) {
     .main {
       width: 940px;
       margin: 0 auto;
@@ -150,21 +232,21 @@
     margin: 0 auto;
   }
 
-  @media screen and (min-width:500px) {
+  @media screen and (min-width: 500px) {
     section {
       width: 75%;
       margin: 0 auto;
     }
   }
 
-  @media screen and (min-width:768px) {
+  @media screen and (min-width: 768px) {
     section {
       width: 60%;
       margin: 0 auto;
     }
   }
 
-  @media screen and (min-width:960px) {
+  @media screen and (min-width: 960px) {
     section {
       width: 720px;
       margin: 0 auto;
@@ -181,7 +263,7 @@
   }
 
   .cancel {
-    color:gray;
+    color: gray;
     font-size: 15px;
     margin-left: 5px;
     text-decoration: underline;
@@ -192,9 +274,6 @@
     height: auto;
     margin-top: 20px;
   }
-
-
-
 
   input[type="text"] {
     display: block;
@@ -233,4 +312,12 @@
     cursor: pointer;
   }
 
+  /*标题*/
+  h1 {
+    cursor: pointer;
+  }
+
+  .veiled {
+    color: #6a737d;
+  }
 </style>
