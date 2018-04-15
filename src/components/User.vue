@@ -206,11 +206,11 @@
       },
       follow() {
         let params = {
-          user: this.localStorage.getItem("userId"),
-          follower: this.$route.params.userId
+          user: localStorage.getItem("userId"),
+          follower: Number(this.$route.params.userId)
         };
 
-        this.$http.get(this.$config.user.follow.url, {params: params})
+        this.$http.get(this.$config.relation.follow.url, {params: params})
           .then(response => {
             let res = response.data;
 
