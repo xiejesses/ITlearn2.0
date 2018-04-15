@@ -61,7 +61,10 @@
           .then(response => {
             let res = response.data;
             if (res.status === 0) {
-              this.userInfos = res.data;
+              for (let i = 0; i < res.data.length; i++) {
+                let relation = res.data[i];
+                this.userInfos.push(this.$route.name === "following" ? relation.follower : relation.user);
+              }
             } else {
               return false
             }
