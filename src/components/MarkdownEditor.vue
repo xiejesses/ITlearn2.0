@@ -1,21 +1,23 @@
 <template>
   <div id="editor">
     <main>
-      <form name="markdownform" :v-model="formMarkdown"  action="#" method="post">
+      <form name="markdownform" :v-model="formMarkdown" action="#" method="post">
         <div class="title-input">
           <p>
-            <input type="text" v-model="formMarkdown.topicTitle" name="shareTitle" class="input" placeholder="请输入标题" value="">
+            <input type="text" v-model="formMarkdown.topicTitle" name="shareTitle" class="input" placeholder="请输入标题"
+                   value="">
           </p>
         </div>
         <div class="mavon-editor">
-          <mavon-editor v-model="formMarkdown.topicContent" v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
+          <mavon-editor v-model="formMarkdown.topicContent" v-on:save="getContent" v-on:change="getContent"
+                        style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"></mavon-editor>
         </div>
 
         <div class="actions">
           <div class="buttons">
             <p class="submit">
               <a href="javascript:;" class="user-submit" @click="cretetopic">发布</a>
-            <a href="javascript:;" class="cancel" @click="cancel">取消</a>
+              <a href="javascript:;" class="cancel" @click="cancel">取消</a>
             </p>
           </div>
         </div>
@@ -25,9 +27,7 @@
   </div>
 </template>
 <script>
-  import {
-    mavonEditor
-  } from 'mavon-editor'
+  import {mavonEditor} from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
   import 'mavon-editor/src/lib/font/css/fontello.css'
   import '../../static/css/markdown.css'
