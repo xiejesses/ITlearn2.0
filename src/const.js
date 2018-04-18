@@ -7,13 +7,10 @@ let version = "v1";
 const urlRegex = "/v1";
 
 const urlConfig ={
+
   // 用户模块
   user: {
     url: `/${version}/users/`,
-    fields: {
-      _id: "_id",
-
-    },
 
     // 功能url
     login: {
@@ -91,7 +88,17 @@ const urlConfig ={
   topic:{
     url: `/${version}/topics/`
   }
+
 };
+
+// 创建count url
+for (let key in urlConfig) {
+  urlConfig[key].conut = {
+    url: urlConfig[key].url + "count/"
+  };
+}
+
+console.log(urlConfig);
 
 const status = {
   success: 0,

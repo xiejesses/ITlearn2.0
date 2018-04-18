@@ -1,28 +1,21 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import Gravatar from 'vue-gravatar'
-import moment, {locale} from 'moment'
-import './style.less'
-import infiniteScroll from 'vue-infinite-scroll'
-import './util/validate'
+import Vue from 'vue';
+import App from './App';
+import router from './router';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import Gravatar from 'vue-gravatar';
+import moment, {locale} from 'moment';
+import './style.less';
+import infiniteScroll from 'vue-infinite-scroll';
+import './util/validate';
 // import axios from 'axios'
-import axios from './util/interceptor.js'
-import store from './store/index.js'
-import config from './config';
+import axios from './util/interceptor.js';
+import store from './store/index.js';
+import config from './const';
 
 
-// axios.interceptors.response.use(function (response) {
-//   // 对响应数据做点什么
-//   Vue.$message("")
-//   return response;
-// }, function (error) {
-//   // 对响应错误做点什么
-// });
 String.prototype.format = function (args) {
   let result = this;
   if (arguments.length > 0) {

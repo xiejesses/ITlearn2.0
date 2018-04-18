@@ -15,6 +15,18 @@ import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
 import ArticleDetail from '@/components/ArticleDetail';
 import About from '@/components/About';
+import Notice from '@/components/Notice';
+
+// 后台
+import AdminApp from '@/components/admin/App';
+import AdminHome from '@/components/admin/Home';
+import AdminComment from '@/components/admin/Comments';
+import AdminGroup from '@/components/admin/Group';
+import AdminRecommend from '@/components/admin/Recommend';
+import AdminTag from '@/components/admin/Tag';
+import AdminTopic from '@/components/admin/Topic';
+import AdminUser from '@/components/admin/User';
+
 
 Vue.use(Router);
 
@@ -178,6 +190,52 @@ const router = new Router({
       name: 'about',
       component: About
     },
+    {
+      path: '/test',
+      name: 'notice',
+      component: Notice
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminApp,
+      children: [
+        {
+          path: '/',
+          name: 'admin_home',
+          component: AdminHome,
+        },
+        {
+          path: '/user',
+          name: 'admin_user',
+          component: AdminUser
+        },
+        {
+          path: '/recommend',
+          name: 'admin_recommend',
+          component: AdminRecommend
+        },
+        {
+          path: '/tag',
+          name: 'admin_tag',
+          component: AdminTag
+        },
+        {
+          path: '/group',
+          name: 'admin_group',
+          component: AdminGroup
+        },
+        {
+          path: '/topic',
+          name: 'admin_topic',
+          component: AdminTopic
+        },
+        {
+          path: '/comments',
+          name: 'admin_comments',
+          component: AdminComment
+        }]
+    }
   ]
 });
 
