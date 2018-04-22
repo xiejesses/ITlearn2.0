@@ -3,15 +3,14 @@
     <div class="head-bg">
       <article>
         <h2>为什么要开发这个网站？</h2>
-        <p>for 毕业设计</p>
+        <p>为了毕业</p>
         <h2>难吗？</h2>
-        <p>不难才怪</p>
+        <p>不容易</p>
         <h2>要两人完成?</h2>
         <p>人多力量大</p>
         <h2>整天敲代码不厌吗？</h2>
         <p>问得好</p>
       </article>
-      
     </div>
     <div class="author__image-wrapper">
         <div class="author__image">
@@ -36,7 +35,7 @@
 </script>
 
 <style scoped>
-html, body,* {
+* {
   padding: 0;
   margin: 0;
 }

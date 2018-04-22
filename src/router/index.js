@@ -15,7 +15,7 @@ import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
 import ArticleDetail from '@/components/ArticleDetail';
 import About from '@/components/About';
-import Notice from '@/components/Notice';
+// import Notice from '@/components/Notice';
 
 // 后台
 import AdminApp from '@/components/admin/App';
@@ -190,11 +190,11 @@ const router = new Router({
       name: 'about',
       component: About
     },
-    {
-      path: '/test',
-      name: 'notice',
-      component: Notice
-    },
+    // {
+    //   path: '/test',
+    //   name: 'notice',
+    //   component: Notice
+    // },
     {
       path: '/admin',
       name: 'admin',

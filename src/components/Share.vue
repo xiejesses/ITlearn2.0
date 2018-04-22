@@ -26,15 +26,12 @@
                 <input type="text" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
               </p>
             </div>
-
             <p>
               <el-input type="textarea" :rows="3" placeholder="请输入简介" v-model="formShare.desc">
               </el-input>
             </p>
             <div v-if="!isShare">
-              <mavon-editor v-on:save="getContent" v-on:change="getContent"
-                            style="height: 100%" placeholder="markdown editor"
-                            v-bind:toolbars="Toolbars"></mavon-editor>
+              <mavon-editor v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"></mavon-editor>
             </div>
             <div class="buttons">
               <p class="submit">
@@ -68,7 +65,9 @@
 </template>
 
 <script>
-  import {mavonEditor} from 'mavon-editor';
+  import {
+    mavonEditor
+  } from 'mavon-editor';
   import 'mavon-editor/dist/css/index.css';
   import 'mavon-editor/src/lib/font/css/fontello.css';
   import '../../static/css/markdown.css';
@@ -169,7 +168,7 @@
             }
           }).catch(
             err =>
-              this.$message.err(err.message)
+            this.$message.err(err.message)
             // todo 状态码返回提示操作
           );
       },
@@ -319,6 +318,7 @@
   }
 
   /*标题*/
+
   h1 {
     cursor: pointer;
   }
@@ -326,4 +326,5 @@
   .veiled {
     color: #6a737d;
   }
+
 </style>

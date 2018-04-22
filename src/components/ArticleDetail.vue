@@ -1,38 +1,27 @@
 <template>
   <div class="share">
-    <el-container>
-      <el-main>
-        <el-card>
-          <!--标题-->
-          <h1 class="cxy-h1">{{detail.title}}</h1>
+    <main>
+      <section class="topic-content">
+        <div class="user-info">
+          <div class="user-avatar">
+            <v-gravatar v-bind:email="detail.user.email" size='40' />
+          </div>
+          <div class="meta" style="margin-left:10px">
+            <router-link :to="{ name: 'like', params: { userId: detail.user._id }}">{{detail.user.nickname}}</router-link>
+            <span class="separator">• </span>
+            <abbr class="timeago" :title="new Date(detail.createDateTime)"> {{ moment(new Date(detail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
+          </div>
+        </div>
+        <p class="topic-name">{{detail.title}}</p>
+        <p class="desc">{{detail.desc}}</p>
+        <div v-html="detail.content" class="markdown-body"></div>
+      </section>
 
-          <!--desc-->
-          <div>{{detail.desc}}</div>
+      <comment :topic="Number(recommend)"></comment>
 
-          <!--内容-->
-          <div v-if="!detail.url || detail.url === ''" v-html="detail.content" class="markdown-body"></div>
+    </main>
 
-          <!--链接按钮-->
-          <el-button v-if="detail.url && detail.url !== ''" type="primary" @click="openUrl">查看链接</el-button>
-        </el-card>
-      </el-main>
-      <el-aside style="padding: 20px;">
-        <el-card>
-          <section class="user-avatar">
-            <!--头像-->
-            <v-gravatar v-bind:email="detail.user.email" size='40' :alt="detail.user.nickname"/>
-            <!--昵称-->
-            <span class="cxy-nickname">{{detail.user.nickname}}</span>
-          </section>
-          <!--时间-->
-          <abbr class="timeago" :title="new Date(detail.createDateTime)">
-            {{ moment(new Date(detail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}
-          </abbr>
-        </el-card>
-      </el-aside>
-    </el-container>
-
-    <comment :topic="Number(recommend)"></comment>
+    
   </div>
 </template>
 <script>
@@ -83,26 +72,95 @@
 
 </script>
 
-<style>
-  .time {
+<style scoped>
+    ul {
+    padding: 0;
+  }
+
+  main {
+    width: 100%;
+    margin: 5px auto;
+    height: auto;
+    padding: 0 15px;
+  }
+
+  .user-info {
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-box-align: center;
+    align-items: center;
+  }
+
+  .user-info img {
+    border-radius: 50%;
+  }
+
+  .meta {
+    color: #8f8f8f;
     font-size: 13px;
-    color: #999;
+    line-height: 18px;
+    position: relative;
   }
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
+  .meta a {
+    color: #8f8f8f;
+    padding: 3px 0 0 0;
+    text-decoration: none;
+    border-bottom: 2px solid #f3f3f3;
   }
 
-  .cxy-nickname{
-    margin-left:5px;
+  .topic-name {
+    font-size: 22px;
   }
-  .user-avatar{
-    float: left;
+  .desc {
+    /* width: 200px; */
+    padding: 15px 50px 15px 15px;
+    border-left: 4px solid #4b616a;
+    margin-bottom: 40px;
+    /* background-color: #edecef3d; */
   }
 
-  .clearfix{
-    clear: both
+  .user-avatar {
+    align-self: baseline;
   }
+
+  .user-avatar img {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+  }
+
+  .user-avatar-list img {
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+  }
+
+  @media screen and (min-width:960px) {
+    .user-avatar img {
+      height: 35px;
+      width: 35px;
+    }
+    .user-avatar-list img {
+      height: 28px;
+      width: 28px;
+    }
+  }
+
+  @media screen and (min-width:1200px) {
+    main {
+      width: 85%;
+      margin: 5px auto;
+      height: auto;
+    }
+  }
+  @media screen and (min-width:1600px) {
+    main {
+      width: 80%;
+      margin: 5px auto;
+      height: auto;
+    }
+  }
+
 
 </style>
