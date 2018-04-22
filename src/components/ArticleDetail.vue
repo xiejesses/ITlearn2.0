@@ -14,14 +14,15 @@
         </div>
         <p class="topic-name">{{detail.title}}</p>
         <p class="desc">{{detail.desc}}</p>
-        <div v-html="detail.content" class="markdown-body"></div>
+        <div v-if="!detail.url || detail.url == ''" v-html="detail.content" class="markdown-body"></div>
+        <a v-if="detail.url && detail.url !== ''" :href="detail.url"> 跳转</a>
       </section>
 
       <comment :topic="Number(recommend)"></comment>
 
     </main>
 
-    
+
   </div>
 </template>
 <script>
@@ -48,8 +49,8 @@
     methods: {
       // 获取分享
       fetchRecommend(){
-        let params = {recommend: this.recommend};
-        this.$http.get(this.$config.recommend.url, params)
+        let params = {_id: this.recommend};
+        this.$http.get(this.$config.recommend.url, {params: params})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success) {
