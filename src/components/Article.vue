@@ -1,10 +1,6 @@
 <template>
   <div class="index">
     <main>
-      <!-- <div class="sort">
-        <i class="el-icon-fa el-icon-fa-list-ul" aria-hidden="true" title="列表"></i>
-        <i class="el-icon-fa el-icon-fa-th" aria-hidden="true" title="分类"></i>
-      </div> -->
       <section class="articles">
         <ul class="articles-list">
           <li v-for="(article,index) in articles" v-bind:key="article._id">
@@ -13,7 +9,8 @@
             </section>
             <section class="article-title">
               <h2>
-                <a :href="article.url" target="_bank" class="article-link">{{article.title}}</a>
+                <router-link :to="{ name: 'share_detail', params: { shareId: article._id }}">{{article.title}}</router-link>
+                <a :href="article.url" target="_bank" class="article-link"></a>
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'user_article', params: { userId: article.user._id }}">{{article.user.nickname}}</router-link>
@@ -27,8 +24,8 @@
                   <span class="separator"> • </span>
                 </span>
                 <span>
-                  <a href="javascript:void(0)" class="heartvisited" @click="addlovelink(article._id, index)">
-                    <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:lovelinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
+                  <a href="javascript:void(0)" class="heartvisited" @click="addloveLink(article._id, index)">
+                    <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:loveLinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
                   </a>
                 </span>
               </div>
@@ -65,7 +62,7 @@
         page: 1,
         pageSize: 3,
 
-        lovelinkid: [],
+        loveLinkid: [],
 
       }
     },
@@ -122,9 +119,9 @@
               if (res.status === this.$status.success) {
                 // 添加收藏字段
                 for (let collection of res.data) {
-                  this.lovelinkid.push(collection.recommend._id);
+                  this.loveLinkid.push(collection.recommend._id);
                 }
-                console.log(this.lovelinkid);
+                console.log(this.loveLinkid);
               } else {
                 this.$message.error(response.message);
               }
@@ -136,7 +133,7 @@
       },
 
       // 添加收藏
-      addlovelink(sharelink_id, index) {
+      addloveLink(sharelink_id, index) {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
@@ -146,14 +143,14 @@
           recommend: sharelink_id,
           user: localStorage.getItem("userId")
         };
-        console.log(!(this.lovelinkid.indexOf(sharelink_id) >= 0));
-        console.log(this.lovelinkid);
-        if(!(this.lovelinkid.indexOf(sharelink_id) >= 0)){
+        console.log(!(this.loveLinkid.indexOf(sharelink_id) >= 0));
+        console.log(this.loveLinkid);
+        if(!(this.loveLinkid.indexOf(sharelink_id) >= 0)){
           this.$http.post(this.$config.collection.url, data)
             .then(response => {
               let res = response.data;
               if (res.status === this.$status.success) {
-                this.lovelinkid.push(sharelink_id);
+                this.loveLinkid.push(sharelink_id);
 
                 this.$message.success('成功收藏');
               } else {
@@ -168,7 +165,7 @@
             .then(response => {
               if (response.status === 204) {
                 this.$message.success('取消收藏成功');
-                this.$units.remove(this.lovelinkid, sharelink_id);
+                this.$units.remove(this.loveLinkid, sharelink_id);
               } else {
                 // todo 删除失败操作
               }
