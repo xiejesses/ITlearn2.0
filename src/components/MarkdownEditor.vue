@@ -105,7 +105,7 @@
           group: this.gid,
           title: this.formMarkdown.topicTitle,
           content: this.formMarkdown.topicContent,
-          user: localStorage.getItem('userName')
+          user: localStorage.getItem('userId')
         }).then(response => {
           let res = response.data;
           if(res.status === this.$status.success) {
