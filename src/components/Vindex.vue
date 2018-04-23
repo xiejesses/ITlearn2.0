@@ -39,10 +39,22 @@
         <router-link to="/" :exact="True" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
         <router-link to="/share" class="LastItem">分享链接</router-link>
-        <a href="javascript:void(0)" @click="isfocused = true">
-          <i class="el-icon-search"></i>
-        </a>
 
+        <div id="wrap">
+        <!-- <form action="" autocomplete="on"> -->
+        <input id="search"  v-model="search_condition"  name="search" type="text" placeholder="搜索...">
+        <router-link :to="{ name: 'search_article' ,query: { query: search_condition}}">
+                  <a href="javascript:void(0)" >
+                    <i class="el-icon-search"></i>
+                  </a>
+                </router-link>
+        <!-- <input id="search_submit" value="Rechercher" type="submit"> -->
+        <!-- </form> -->
+      </div>
+
+          <!-- <a href="javascript:void(0)" @click="isfocused = true">
+            <i class="el-icon-search"></i>
+          </a> -->
       </nav>
       <!-- 用户控制中心下拉菜单 -->
       <div class="user-action" v-if="userEmail">
@@ -68,12 +80,12 @@
         <router-link to="/login" class="">登录</router-link>
       </div>
       <!-- 搜索框 -->
-      <section class="search" v-bind:class="{focused: isfocused}" @click="closeModal">
+      <!-- <section class="search" v-bind:class="{focused: isfocused}" @click="closeModal">
         <form class="search-form" method="get" action="" role="search" v-on:click.stop>
           <input type="text" ref="input" class="search-input" name="s" placeholder="搜索文章..." autofocus>
         </form>
         <span class="search-close" @click="closeModal">x</span>
-      </section>
+      </section> -->
 
       <!-- 弹出菜单 -->
       <div class="hamburger" @click="isvisible=true" v-if="!userName"></div>
@@ -119,7 +131,7 @@
         userId: '',
         isvisible: false,
         isfocused: false,
-        msg: 'Welcome to Your Vue.js App'
+        search_condition:'',
       }
     },
     methods: {
@@ -140,6 +152,12 @@
           this.$message.success('登出失败');
         }
 
+      },
+      search() {
+        // router.push({ name: 'Search', query: { plan: 'private' }})
+      },
+      blur() {
+        this.search_condition = '';
       },
       closeModal() {
         this.isvisible = false;
@@ -490,6 +508,28 @@ main区
   /**************
       搜索框
 **************/
+#wrap a{
+  text-decoration: none;
+  background: none;
+}
+input[type="text"] {
+  height: 30px;
+  font-size: 17px;
+  width: 150px;
+  border: none;
+  border-bottom: 1px solid #BBB;
+  margin-left: 15px;
+  margin-right: -20px;
+  /* font-family: "Lato"; */
+  font-weight: 100;
+  outline: none;
+  color: #555;
+  background: none;
+  cursor: pointer;
+}
+
+
+
 
   .search {
     opacity: 0;

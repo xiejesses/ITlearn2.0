@@ -13,9 +13,9 @@
           </div>
         </div>
         <p class="topic-name">{{detail.title}}</p>
-        <p class="desc">{{detail.desc}}</p>
+        <p v-show="detail.desc" class="desc">{{detail.desc}}</p>
         <div v-if="!detail.url || detail.url == ''" v-html="detail.content" class="markdown-body"></div>
-        <a v-if="detail.url && detail.url !== ''" :href="detail.url"> 跳转</a>
+        <a class="linkto" target="_blank" v-if="detail.url && detail.url !== ''" :href="detail.url"><span>阅读原文</span></a>
       </section>
 
       <comment :topic="Number(recommend)"></comment>
@@ -120,7 +120,12 @@
     margin-bottom: 40px;
     /* background-color: #edecef3d; */
   }
-
+  .linkto{
+    color:white;
+    text-decoration: none;
+    padding: 8px 15px;
+    background-color: #66b1ff;
+  }
   .user-avatar {
     align-self: baseline;
   }

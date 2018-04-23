@@ -15,6 +15,8 @@ import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
 import ArticleDetail from '@/components/ArticleDetail';
 import About from '@/components/About';
+// import Search from '@/components/search';
+import search from '@/components/search';
 // import Notice from '@/components/Notice';
 
 // 后台
@@ -48,6 +50,29 @@ const router = new Router({
           path: '/',
           name: 'home_article',
           component: Article
+        },
+        {
+          path: '/search',
+          name: 'Search',
+          component: search,
+          children:[
+            {
+              path: '',
+              name: 'search_article',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component: Article
+            },
+            {
+              path: '/searchgroup',
+              name: 'search_group',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component: Group
+            },
+          ]
         },
         {
           path: '/share',
@@ -175,6 +200,7 @@ const router = new Router({
         }
       ]
     },
+    
     {
       path: '/login',
       name: 'login',
@@ -195,9 +221,14 @@ const router = new Router({
     //   name: 'notice',
     //   component: Notice
     // },
+
+    //后台路由
     {
       path: '/admin',
       name: 'admin',
+      meta: {
+        requireManager: true //表示进入该路由需要登录
+      },
       component: AdminApp,
       children: [
         {
