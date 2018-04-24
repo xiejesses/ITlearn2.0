@@ -81,8 +81,9 @@
               password: formData.userPwd
             })
             .then(response => {
-              let res = response.data.user;
+
               if (response.data.status === 0) {
+                let res = response.data.user;
                 this.userLogin(res);
                 this.$message.success("登录成功");
                 //登录成功，跳转到要到的页面
@@ -90,7 +91,7 @@
                   path: decodeURIComponent(this.$route.query.redirect || '/') //  你需要接受路由的参数再跳转
                 });
               } else {
-                this.$message.error(`${res.message}`);
+                this.$message.error(`${response.data.message}`);
                 return false;
               }
             })
