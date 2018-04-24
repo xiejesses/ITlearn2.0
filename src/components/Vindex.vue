@@ -69,6 +69,9 @@
             <router-link to="/">
               <el-dropdown-item>我的小组</el-dropdown-item>
             </router-link>
+            <router-link :to="{name: 'admin_home'}" v-if="isManager === 'true'">
+              <el-dropdown-item>管理员系统</el-dropdown-item>
+            </router-link>
             <router-link to="/about">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
@@ -178,6 +181,7 @@
       this.userName = localStorage.getItem('userName');
       this.userEmail = localStorage.getItem('userEmail');
       this.userId = localStorage.getItem('userId');
+      this.isManager = localStorage.getItem('isManager');
     },
 
     computed: {

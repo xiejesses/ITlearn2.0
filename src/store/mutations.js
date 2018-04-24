@@ -13,7 +13,8 @@ export const mutations = {
     state.token = data.token;
     localStorage.setItem('userName', data.nickname);
     state.userName = data.nickname;
-
+    localStorage.setItem('isManager', data.isManager);
+    state.isManager = data.isManager;
     localStorage.setItem('userEmail', data.email);
     state.userEmail = data.email;
 
