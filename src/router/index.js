@@ -85,7 +85,7 @@ const router = new Router({
           component: Share
         },
         {
-          path: '/tag/:tName',
+          path: '/tag/:tagId',
           name: 'tag',
           //添加路由元信息
           // meta: {

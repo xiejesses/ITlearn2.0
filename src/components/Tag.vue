@@ -1,12 +1,12 @@
 <template>
   <div id="tag">
     <div class="container">
-      <section class="tag-header" v-bind:style="styleObject">
+      <section class="tag-header" :style="styleObject">
         <div class="tag-content">
           <h1>{{tag}}</h1>
           <div class="tag-action-button">
             <span>
-              <button v-bind:style="{color:styleObject.background,background:styleObject.color}">关注</button>
+              <button :style="{color:styleObject.background,background:styleObject.color}">关注</button>
             </span>
           </div>
         </div>
@@ -30,7 +30,7 @@
       }
     },
     mounted() {
-      this.tag = this.$route.params.tName;
+      this.tag = "";
       this.fetchTag()
     },
     computed: {
@@ -40,15 +40,15 @@
     },
     methods: {
       fetchTag() {
-        let param = {
-          _id: this.$route.params._id
+        let params = {
+          _id: this.$route.params.tagId
         };
-        this.$http.get(this.$config.recommend.tag.url, {
-          params: param
+        this.$http.get(this.$config.tag.url, {
+          params: params
         }).then(response => {
           let res = response.data;
-          if (res.status === this.$status) {
-            this.styleObject = res.result.styleObject;
+          if (res.status === this.$status.success) {
+            this.tag = res.data[0].name;
           } else {
             return false
           }

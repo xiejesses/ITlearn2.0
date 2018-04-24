@@ -3,7 +3,7 @@
     <main>
       <section class="articles">
         <ul class="articles-list">
-          <li v-for="(article,index) in articles" v-bind:key="article._id">
+          <li v-for="(article,index) in articles" :key="article._id">
             <section class="user-avatar">
               <v-gravatar v-bind:email="article.user.email" size='40' :alt="article.user.nickname" />
             </section>
@@ -17,15 +17,15 @@
                 <span class="separator"> • </span>
                 <abbr class="timeago" :title="new Date(article.createDateTime)">{{moment(new Date(article.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
                 <span class="separator"> • </span>
-                <span v-for="(tag, tagindex) in article.tags" v-bind:key="tagindex">
-                  <router-link :to="{ name: 'tag_article', params: { tName: tag.name }}" style="border-bottom:0">
+                <span v-for="(tag, tagindex) in article.tags" :key="tagindex">
+                  <router-link :to="{ name: 'tag_article', params: { tagId: tag._id }}" style="border-bottom:0">
                     <el-tag  type="success">{{tag.name}}</el-tag>
                   </router-link>
                   <span class="separator"> • </span>
                 </span>
                 <span>
                   <a href="javascript:void(0)" class="heartvisited" @click="addloveLink(article._id, index)">
-                    <i class="heart el-icon-fa el-icon-fa-heart-o" v-bind:class="{heartclick:loveLinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
+                    <i class="heart el-icon-fa el-icon-fa-heart-o" :class="{heartclick:loveLinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
                   </a>
                 </span>
               </div>
