@@ -59,9 +59,9 @@
           <!-- 这里的name要改 -->
           <router-link :to="{ name: 'user_collection'}" class="ListItem">喜欢 {{loveLink}}</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'mygroup'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
+          <router-link :to="{ name: 'join_group'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
+          <router-link :to="{ name: 'my_group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
         </div>
         <router-view></router-view>
       </section>

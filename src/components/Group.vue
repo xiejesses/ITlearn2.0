@@ -56,11 +56,19 @@
     },
     methods: {
       fetchGroup(flag) {
-        let param = {
+        let params = {
           page: this.page,
           page_size: this.pageSize,
         };
-        this.$http.get(this.$config.group.url, {params: param})
+
+        if(this.$route.name === "my_group") {
+          params.user = Number(localStorage.getItem("userId"));
+        }
+
+        if(this.$route.name === "join_group") {
+          params.users = Number(localStorage.getItem("userId"));
+        }
+        this.$http.get(this.$config.group.url, {params: params})
           .then((response) => {
           let res = response.data;
           if (res.status === this.$status.success) {
