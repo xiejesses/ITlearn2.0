@@ -43,11 +43,11 @@
         <div id="wrap">
         <!-- <form action="" autocomplete="on"> -->
         <input id="search"  v-model="search_condition"  name="search" type="text" placeholder="搜索...">
-        <router-link :to="{ name: 'search_article' ,query: { query: search_condition}}">
-                  <a href="javascript:void(0)" >
-                    <i class="el-icon-search"></i>
-                  </a>
-                </router-link>
+          <router-link :to="{ name: search_name ,query: { query: search_condition}}">
+            <a href="javascript:void(0)">
+              <i class="el-icon-search"></i>
+            </a>
+          </router-link>
         <!-- <input id="search_submit" value="Rechercher" type="submit"> -->
         <!-- </form> -->
       </div>
@@ -135,6 +135,7 @@
         isvisible: false,
         isfocused: false,
         search_condition:'',
+        search_name: 'search_article'
       }
     },
     methods: {
@@ -182,6 +183,7 @@
       this.userEmail = localStorage.getItem('userEmail');
       this.userId = localStorage.getItem('userId');
       this.isManager = localStorage.getItem('isManager');
+      this.search_name = this.$route.name === 'search_group' ? 'search_group' : 'search_article';
     },
 
     computed: {

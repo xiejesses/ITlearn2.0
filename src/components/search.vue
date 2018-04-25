@@ -1,7 +1,7 @@
 <template>
   <div class="Search">
     <div class="tab">
-      <router-link :to="{ name: 'search_article'}" exact="true" class="ListItem">文章</router-link>
+      <router-link :to="{ name: 'search_article', query: {query: $route.query.query}}" exact="true" class="ListItem">文章</router-link>
       <router-link :to="{ name: 'search_group', query: {query: $route.query.query}}" class="ListItem">小组</router-link>
     </div>
 
