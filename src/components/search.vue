@@ -2,9 +2,9 @@
   <div class="Search">
     <div class="tab">
       <router-link :to="{ name: 'search_article'}" exact="true" class="ListItem">文章</router-link>
-      <router-link :to="{ name: 'search_group'}" class="ListItem">小组</router-link>
+      <router-link :to="{ name: 'search_group', query: {query: $route.query.query}}" class="ListItem">小组</router-link>
     </div>
-  
+
     <router-view :key="key"></router-view>
   </div>
 </template>
@@ -13,7 +13,7 @@
   export default {
       name:'Search',
     data() {
-      
+
       return {
          search_condition:'',
       }

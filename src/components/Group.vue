@@ -68,6 +68,11 @@
         if(this.$route.name === "join_group") {
           params.users = Number(localStorage.getItem("userId"));
         }
+
+        if (this.$route.name === "search_group") {
+          params.$ = JSON.stringify({name: {$regex: this.$route.query.query}, isPass: true});
+        }
+
         this.$http.get(this.$config.group.url, {params: params})
           .then((response) => {
           let res = response.data;

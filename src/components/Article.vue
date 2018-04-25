@@ -198,6 +198,11 @@
           url = this.$config.collection.url;
         }
 
+        // 添加查询规则
+        if (this.$route.name === "search_article"){
+          params.$ = JSON.stringify({title: {$regex: this.$route.query.query}});
+        }
+
         this.$http.get(url, {params: params})
           .then((response) => {
             let res = response.data;
