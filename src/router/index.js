@@ -15,9 +15,10 @@ import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
 import ArticleDetail from '@/components/ArticleDetail';
 import About from '@/components/About';
+import Setting from '@/components/Setting';
 
 import search from '@/components/search';
-import Notice from '@/components/Notice';
+// import Notice from '@/components/Notice';
 
 
 // 后台
@@ -196,6 +197,14 @@ const router = new Router({
               // },
               component: Follow
             },
+            {
+              path: 'setting',
+              name: 'setting',
+              // meta: {
+              //   requireAuth:true //表示进入该路由需要登录
+              // },
+              component: Setting
+            },
 
           ]
         }
@@ -217,11 +226,11 @@ const router = new Router({
       name: 'about',
       component: About
     },
-    {
-      path: '/test',
-      name: 'notice',
-      component: Notice
-    },
+    // {
+    //   path: '/test',
+    //   name: 'notice',
+    //   component: Notice
+    // },
     {
       path: '/admin',
       name: 'admin',

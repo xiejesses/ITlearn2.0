@@ -13,7 +13,7 @@
                 <i @click="cancleEdit" class="el-icon-close" title="取消"></i>
               </span>
               <span v-else v-show="userName == currentUser" class="edit">
-                <i @click="edit" class="el-icon-edit" title="设置"></i>
+                <i @click="edit" class="el-icon-edit" title="设置"></i>填写个人简介
               </span>
               <h2>{{userInfo.nickname}}</h2>
               <textarea v-if="isEdit" v-model="userInfo.desc" name="" id="" cols="30" rows="2"></textarea>
@@ -62,6 +62,7 @@
           <router-link :to="{ name: 'join_group'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
           <span class="separator"> / </span>
           <router-link :to="{ name: 'my_group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
+          <router-link :to="{ name: 'setting'}" style="float:right" class="ListItem">修改密码</router-link>
         </div>
         <router-view></router-view>
       </section>
@@ -281,6 +282,7 @@ pre {
   .user-introduce span {
     display: block;
     margin-top: 5px;
+    color:#fff;
   }
 
   .user-introduce i {
@@ -370,6 +372,9 @@ pre {
     font-size: 16px;
     color: #54595f;
     text-decoration: none;
+  }
+  .tab a:hover {
+    color: #71b899;
   }
   .separator {
     margin: 0 5px;
