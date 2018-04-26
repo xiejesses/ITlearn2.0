@@ -71,6 +71,7 @@
     overflow: hidden;
     width: 100%;
     height: 200px;
+    background-color: #54595f;
   }
 
   .tag-content {
@@ -80,6 +81,7 @@
   }
 
   .tag-content h1 {
+    color: #fff;
     font-size: calc(3vw + 23px);
     margin-top: 3vw;
     margin-bottom: 10px;

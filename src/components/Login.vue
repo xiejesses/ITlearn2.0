@@ -27,6 +27,7 @@
                 <p class="submit">
                   <a href="javascript:;" class="user-login" @click="login">登录</a>
                 </p>
+                  <router-link :to="{ name: 'resetPwd'}" style="float:right" class="ListItem">忘记密码？</router-link>
                 <!-- <p class="cancel">取消</p> -->
               </div>
               <div class="toRegister">
@@ -222,6 +223,11 @@
     margin-top: 10px;
     vertical-align: bottom;
     cursor: pointer;
+  }
+  .actions a:nth-child(2){
+    font-size: 16px;
+    color: #54595f;
+    text-decoration: none;
   }
 
 </style>

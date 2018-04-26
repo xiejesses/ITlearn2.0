@@ -62,8 +62,10 @@
           <router-link :to="{ name: 'join_group'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
           <span class="separator"> / </span>
           <router-link :to="{ name: 'my_group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
-          <router-link :to="{ name: 'setting'}" style="float:right" class="ListItem">修改密码</router-link>
+          <router-link :to="{ name: 'changePwd'}" style="float:right" class="ListItem">修改密码</router-link>
+          <!-- <a href="javascript:;" style="float:right" @click="isSettintgPwd=ture">修改密码</a> -->
         </div>
+        
         <router-view></router-view>
       </section>
 
@@ -92,7 +94,12 @@
         createGroup: 0,
         isEdit: false,
         isSave: false,
-        msg: 'Design & front end development. Also a back end engineer'
+        isSettintgPwd:false,
+        formSetting: {
+          oldPwd: '',
+          newPwd: '',
+          ensureNewPwd: '',
+        },
       };
     },
     mounted() {
@@ -134,10 +141,8 @@
             let res = response.data;
             if(res.status === this.$status.success){
               this.userInfo = res.data[0];
-              console.log(`this.userInfo${this.userInfo}`);
               this.userName = this.userInfo.nickname;
               this.userEmail = this.userInfo.email;
-              // console.log(this.userName, this.currentUser);
             } else {
               this.$message.error(res.message);
             }

@@ -1,8 +1,8 @@
 <template>
-  <div id="setting">
+  <div id="changePwd">
     <div class="setting-form">
       <!-- 修改密码表单 -->
-      <form v-if="isSettintgPwd" name="changePwdForm" :v-model="formSetting" id="changePwdForm" action="#" method="post">
+      <form name="changePwdForm" :v-model="formSetting" id="changePwdForm" action="#" method="post">
         <h2>
           修改密码
         </h2>
@@ -17,60 +17,36 @@
         </p>
         <p class="submit">
           <el-button type="primary" @click="changePwd">保存修改</el-button>
-          <a href="javascript:;" @click="isSettintgPwd=false">忘记密码？</a>
+          <router-link :to="{ name: 'resetPwd'}" style="float:right" class="ListItem">忘记密码？</router-link>
         </p>
       </form>
-      <!-- 重置密码表单 -->
-      <form v-else name="resetform" :v-model="formSetting" id="resetform" action="#" method="post">
-        <h2>
-          重置密码
-        </h2>
-        <p>
-          <input type="text" v-validate="'required|email'" v-model="formSetting.email" name="email" placeholder="请输入邮箱" value="" required>
-          <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
-        </p>
-        <p class="submit">
-          <el-button type="primary" @click="resetPwd">发送邮件</el-button>
-          <a href="javascript:;" @click="isSettintgPwd=true">返回</a>
-        </p>
-      </form>
-
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'setting',
+    name: 'changePwd',
     data() {
       return {
         formSetting: {
           oldPwd: '',
           newPwd: '',
           ensureNewPwd: '',
-          email:''
         },
-        isSettintgPwd: true,
       }
     },
     methods: {
       changePwd() {
 
       },
-      resetPwd() {
-
-      }
+      
     }
   }
 
 </script>
 
 <style scoped>
-  /* .setting {
-    display:flex;
-    justify-content: center;
-    align-content: center;
-} */
 
   .setting-form {
     margin-bottom: 100px;

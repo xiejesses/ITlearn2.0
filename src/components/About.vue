@@ -12,14 +12,14 @@
         <p>问得好</p>
       </article>
     </div>
-    <div class="author__image-wrapper">
+    <!-- <div class="author__image-wrapper">
         <div class="author__image">
             <img src="../../static/img/me.jpg" alt="">
         </div>
         <div class="author__image">
             <img src="../../static/img/me.jpg" alt="">
         </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

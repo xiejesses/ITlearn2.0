@@ -15,9 +15,10 @@ import Follow from '@/components/Follow';
 import Tag from '@/components/Tag';
 import ArticleDetail from '@/components/ArticleDetail';
 import About from '@/components/About';
-import Setting from '@/components/Setting';
-
 import search from '@/components/search';
+import resetPwd from '@/components/ResetPwd';
+import ChangePwd from '@/components/ChangePwd';
+import SetNewPwd from '@/components/SetNewPwd';
 // import Notice from '@/components/Notice';
 
 
@@ -198,13 +199,14 @@ const router = new Router({
               component: Follow
             },
             {
-              path: 'setting',
-              name: 'setting',
+              path: 'changePwd',
+              name: 'changePwd',
               // meta: {
               //   requireAuth:true //表示进入该路由需要登录
               // },
-              component: Setting
+              component: ChangePwd
             },
+            
 
           ]
         }
@@ -225,6 +227,22 @@ const router = new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/resetPwd',
+      name: 'resetPwd',
+      // meta: {
+      //   requireAuth:true //表示进入该路由需要登录
+      // },
+      component: resetPwd
+    },
+    {
+      path: '/set-new-Pwd',
+      name: 'setNewPwd',
+      // meta: {
+      //   requireAuth:true //表示进入该路由需要登录
+      // },
+      component: SetNewPwd
     },
     // {
     //   path: '/test',
