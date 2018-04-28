@@ -9,7 +9,7 @@
             </section>
             <section class="article-title">
               <h2>
-                <router-link :to="{ name: 'share_detail', params: { shareId: article._id }}">{{article.title}}</router-link>
+                <router-link :to="{ name: 'share_detail', params: { shareId: article._id }}">{{article.title}}<i v-if="!article.content" class="chain el-icon-fa el-icon-fa-link" aria-hidden="true"></i></router-link>
                 <a :href="article.url" target="_bank" class="article-link"></a>
               </h2>
               <div class="meta">
@@ -25,15 +25,16 @@
                 </span>
                 <span>
                   <a href="javascript:void(0)" class="heartvisited" @click="addloveLink(article._id, index)">
-                    <i class="heart el-icon-fa el-icon-fa-heart-o" :class="{heartclick:loveLinkid.indexOf(article._id) >= 0}" aria-hidden="true"></i>
+                    <i class="heart el-icon-fa el-icon-fa-heart" :class="{heartclick:loveLinkid.indexOf(article._id) >= 0,heartScale:loveLinkid.indexOf(article._id) < 0}" aria-hidden="true"></i>
                   </a>
                 </span>
               </div>
             </section>
-            <!-- 已解决 投票这里有个问题，点击当前文章的投票，其它的也改变了样式 -->
             <section class="article-vote" @click="article.voteNumber++">
               <span class="score" :class="{scored: !(article.upVotes.indexOf(userId) >= 0)}">{{article.upVotes.length}}</span>
-              <span class="arrow up" :class="{upmod: !(article.upVotes.indexOf(userId) >= 0)}" @click="changeVote(article._id, index)"></span>
+              <span :class="{thumbsUp: (article.upVotes.indexOf(userId) >= 0),thumbsHover:!(article.upVotes.indexOf(userId) >= 0)}" @click="changeVote(article._id, index)">
+                <i class="thumbs el-icon-fa el-icon-fa-thumbs-up"></i>
+              </span>
             </section>
           </li>
         </ul>
@@ -271,15 +272,12 @@
   *************/
 
   .load-wrapp {
-    /* float: left; */
     width: 80px;
     height: 80px;
-    /* margin: 0 10px 10px 0; */
     margin: 0 auto;
     padding: 20px 20px 20px;
     border-radius: 5px;
     text-align: center;
-    /* background-color: #d8d8d8; */
   }
 
   .load-5 .ball-holder {
@@ -362,6 +360,10 @@ main区
 
   .article-title h2 a:hover {
     color: #EC681B;
+  }
+
+  .chain {
+    margin-left: 5px;
   }
 
 
@@ -471,7 +473,10 @@ meta信息
   .meta a:last-child {
     border: 0 !important;
   }
-
+  
+.heart {
+  color: #4e4d4d4b;
+}
   .heart::before {
     font-size: 13px;
 
@@ -479,6 +484,14 @@ meta信息
 
   .heartclick {
     color: #EC681B;
+  }
+  .heartScale:hover.heart::before {
+    -webkit-animation: heartScale 0.5s linear;
+    animation: heartScale 0.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards
   }
 
   .heartvisited {
@@ -518,75 +531,63 @@ meta信息
   }
 
   /*********
-  箭头
+  点赞
 *********/
 
-  .up {
-    background: url(https://d22wsyl1zemnyu.cloudfront.net/images/visuals-1.7.min.gz.svg) no-repeat -300px -297px;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
+
+    .thumbsUp i{
+      color:#34e79a;
+      cursor: pointer;
+    }
+    .thumbsHover i:hover.el-icon-fa-thumbs-up:before {
+      /* color:red; */
+      -webkit-animation: thumbsScale 0.5s linear;
+    animation: thumbsScale 0.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards
+    }
+  .thumbs {
+    color:#e0e0e0;
     cursor: pointer;
-    outline: none;
-    position: relative;
+  }
+  .el-icon-fa-thumbs-up:before {
+    font-size: 20px;
   }
 
-  .upmod:hover {
-    -webkit-animation: none !important;
-    animation: none !important;
-  }
-
-  .upmod {
-    background: url("https://d22wsyl1zemnyu.cloudfront.net/images/visuals-1.7.min.gz.svg") no-repeat -400px -397px;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    outline: none
-  }
 
   .scored {
     color: #e0e0e0 !important;
   }
 
-
-  @-webkit-keyframes slideDown {
+@keyframes thumbsScale {
     0% {
-      background-position: -300px -297px
+      font-size: 20px;
     }
     25% {
-      background-position: -300px -300px
+      font-size: 24px;
     }
     75% {
-      background-position: -300px -294px
+      font-size: 26px;
     }
     100% {
-      background-position: -300px -297px
+      font-size: 20px;
     }
   }
-
-  @keyframes slideDown {
+@keyframes heartScale {
     0% {
-      background-position: -300px -297px
+      font-size: 13px;
     }
     25% {
-      background-position: -300px -300px
+      font-size: 16px;
     }
     75% {
-      background-position: -300px -294px
+      font-size: 18px;
     }
     100% {
-      background-position: -300px -297px
+      font-size: 13px;
     }
-  }
-
-  .up:hover {
-    -webkit-animation: slideDown 0.5s linear;
-    animation: slideDown 0.5s linear;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-fill-mode: forwards;
-    animation-fill-mode: forwards
   }
 
   .article-vote {

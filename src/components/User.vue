@@ -13,7 +13,7 @@
                 <i @click="cancleEdit" class="el-icon-close" title="取消"></i>
               </span>
               <span v-else v-show="userName == currentUser" class="edit">
-                <i @click="edit" class="el-icon-edit" title="设置"></i>填写个人简介
+                <i @click="edit" class="el-icon-edit" title="填写个人简介"></i>
               </span>
               <h2>{{userInfo.nickname}}</h2>
               <textarea v-if="isEdit" v-model="userInfo.desc" name="" id="" cols="30" rows="2"></textarea>
