@@ -9,6 +9,18 @@
       </el-table-column>
       <el-table-column prop="email" label="邮箱">
       </el-table-column>
+      <el-table-column label="审核">
+        <template slot-scope="scope">
+          <el-tooltip :content="'Switch value: ' + scope.row.isManager" placement="top" >
+            <el-switch
+              v-model="scope.row.isManager"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change="patchUser(scope.row.isManager, scope.row._id)">
+            </el-switch>
+          </el-tooltip>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination layout="prev, pager, next" :total="count" @current-change="handleCurrentChange">
     </el-pagination>
@@ -77,6 +89,21 @@
           );
       },
 
+      // 设置管理员
+      patchUser(isManager, _id){
+        this.$http.patch(this.$config.user.url + "?_id=" + _id, {isManager: isManager})
+          .then(response => {
+            let res = response.data;
+            if(res.status === this.$status.success) {
+              this.fetchUser();
+            } else {
+              this.$message.error(res.message);
+            }
+          })
+          .catch(
+            err => this.$message.error(err.response.data.message)
+          );
+      },
       // 跳转
       turnToUser() {
         window.open()
