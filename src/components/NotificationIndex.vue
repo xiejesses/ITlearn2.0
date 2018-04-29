@@ -4,7 +4,7 @@
         <router-link to="/notification" :exact="true" class="ListItem">消息</router-link>
         <router-link to="/notification/system" class="LastItem">系统通知</router-link>
     </div>
-        
+
         <router-view></router-view>
   </div>
 </template>

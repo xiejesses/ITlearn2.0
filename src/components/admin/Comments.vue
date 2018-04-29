@@ -5,7 +5,7 @@
       </el-table-column>
       <el-table-column prop="user.nickname" label="创建者" width="180">
       </el-table-column>
-      <el-table-column prop="content" label="评论" >
+      <el-table-column prop="content" label="评论" :formatter="formatText">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -78,6 +78,13 @@
       // 点击打开
       formatDate(row){
         return this.moment(new Date(row.createDateTime), 'YYYYMMDDHHmmss').fromNow();
+      },
+
+      //
+      formatText(row) {
+        let node = document.createElement("div");
+        node.innerHTML = row.content;
+        return node.innerText;
       },
 
       // 删除评论
