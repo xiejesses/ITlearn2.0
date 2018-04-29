@@ -54,15 +54,15 @@
       </section>
       <section >
         <div class="tab">
-          <router-link to="{ name: 'user_article'}" :exact="true" class="ListItem">分享 {{shareLink}}</router-link>
+          <router-link :to="{ name: 'user_article'}" :exact="true" class="ListItem">分享 {{shareLink}}</router-link>
           <span class="separator"> / </span>
           <!-- 这里的name要改 -->
-          <router-link to="{ name: 'user_collection'}" class="ListItem">喜欢 {{loveLink}}</router-link>
+          <router-link :to="{ name: 'user_collection'}" class="ListItem">喜欢 {{loveLink}}</router-link>
           <span class="separator"> / </span>
-          <router-link to="{ name: 'join_group'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
+          <router-link ：to="{ name: 'join_group'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
           <span class="separator"> / </span>
-          <router-link to="{ name: 'my_group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
-          <router-link to="{ name: 'changePwd'}" style="float:right" class="ListItem">修改密码</router-link>
+          <router-link ：to="{ name: 'my_group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
+          <router-link ：to="{ name: 'changePwd'}" style="float:right" class="ListItem">修改密码</router-link>
           <!-- <a href="javascript:;" style="float:right" @click="isSettintgPwd=ture">修改密码</a> -->
         </div>
 
