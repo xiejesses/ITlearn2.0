@@ -10,7 +10,7 @@
             <section class="article-title">
               <h2>
                 <router-link :to="{ name: 'share_detail', params: { shareId: article._id }}">{{article.title}}<i v-if="!article.content" class="chain el-icon-fa el-icon-fa-link" aria-hidden="true"></i></router-link>
-                <a :href="article.url" target="_bank" class="article-link"></a>
+                <!-- <a :href="article.url" target="_bank" class="article-link"></a> -->
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'user_article', params: { userId: article.user._id }}">{{article.user.nickname}}</router-link>
