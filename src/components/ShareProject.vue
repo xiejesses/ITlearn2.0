@@ -7,12 +7,9 @@
             <h1>
               <span class="veiled">分享 github</span>
             </h1>
-            <p>
-              <input type="text" v-model="form.name" name="name" placeholder="项目名" value="" required>
-            </p>
             <div>
               <p>
-                <input type="text" v-model="form.git" name="git" placeholder="输入项目 git账号" value="" required>
+                <input type="text" v-model="form.git" name="git" placeholder="输入项目 url" value="" required>
               </p>
             </div>
             <p>

@@ -4,20 +4,41 @@
       <section class="project-content">
         <div class="user-info">
           <div class="user-avatar">
-            <v-gravatar v-bind:email="detail.user.email" :size='40' />
+            <v-gravatar :email="detail.user.email" :size='40'/>
           </div>
           <div class="meta" style="margin-left:10px">
-            <router-link :to="{ name: 'like', params: { userId: detail.user._id }}">{{detail.user.nickname}}</router-link>
-            <span class="separator">• </span>
-            <abbr class="timeago" :title="new Date(detail.createDateTime)"> {{ moment(new Date(detail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
+            <router-link :to="{ name: 'User', params: { userId: detail.user._id }}">{{detail.user.nickname}}</router-link>
+            <span class="separator"> • </span>
+            <abbr class="timeago" :title="new Date(detail.date)">
+              {{ moment(new Date(detail.date), "YYYYMMDDHHmmss").fromNow() }}
+            </abbr>
+            <span class="separator"> • </span>
+            <el-tag size="mini" v-if="detail.state === 0">正在开发ing...</el-tag>
+            <el-tag size="mini" v-if="detail.state === 1">招募成员</el-tag>
+            <el-tag size="mini" v-if="detail.state === 2">维护ing</el-tag>
           </div>
         </div>
-        <p class="project-name">{{detail.title}}</p>
+
+        <!--项目名-->
+        <p class="project-name"><a :href="detail.git">{{detail.name}}</a></p>
+
+        <!--项目备注-->
         <p v-show="detail.desc" class="desc">{{detail.desc}}</p>
-        <div v-if="!detail.url || detail.url == ''" v-html="detail.content" class="markdown-body"></div>
-        <a class="linkto" target="_blank" v-if="detail.url && detail.url !== ''" :href="detail.url"><span>阅读原文</span></a>
+
+        <!--todo 格式修改部分 来自git的信息-->
+        <p></p>
+        <!--项目账号-->
+        <p>账号：　
+          <a :href="gitDetail.owner.html_url">{{gitDetail.owner.login}}</a>
+        </p>
+        <p>项目简介：　{{gitDetail.description}}</p>
+        <p>star：　{{gitDetail.watchers}}</p>
+        <p>fork：　{{gitDetail.forks_count}}</p>
+        <p>watch：　{{gitDetail.subscribers_count}}</p>
+        <p>date: {{moment(new Date(gitDetail.created_at), "YYYYMMDDHHmmss").fromNow()}}</p>
+
       </section>
-      <comment :project="Number(recommend)"></comment>
+      <comment :project="Number(project)"></comment>
     </main>
   </div>
 </template>
@@ -34,25 +55,31 @@
     },
     data() {
       return {
-        detail: {},
-        recommend: Number(this.$route.params.shareId)
+        detail: {
+          user: {email: ""}
+        },
+        gitDetail: {
+          owner: {login: "", html_url: ""}
+        },
+        project: Number(this.$route.params.projectId)
       };
     },
     mounted() {
-      this.fetchRecommend();
+      this.fetchProject();
     },
 
     methods: {
       // 获取分享
-      fetchRecommend(){
-        let params = {_id: this.recommend};
-        this.$http.get(this.$config.recommend.url, {params: params})
+      fetchProject(){
+        let params = {_id: this.project};
+        this.$http.get(this.$config.project.url, {params: params})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success) {
               this.detail = res.data[0];
+              this.getGitDetail(this.detail);
             } else {
-              this.$message.error(res.message);
+              console.log(res.message);
             }
           })
           .catch(err => {
@@ -60,9 +87,23 @@
           });
       },
 
+      // 获取git 信息
+      getGitDetail(detail){
+        let apiUrl = "https://api.github.com/repos/" + detail.owner + "/" + detail.name;
+        this.$http.get(apiUrl)
+          .then(response => {
+            this.gitDetail = response.data;
+          })
+          .catch(error => {
+            console.log(error.stack);
+            this.$message.error("网络异常");
+          })
+        ;
+      },
+
       // 打开链接
       openUrl() {
-        window.open(this.detail.url);
+        window.open(this.detail.git);
       }
     }
   }

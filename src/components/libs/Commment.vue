@@ -141,9 +141,18 @@
       createComment(pid) {
         let data = {
           content: this.commentContent,
-          user: this.currentUserId,
-          topic: this.topic,
+          user: this.currentUserId
         };
+
+        // 设置类型
+        if (this.topic) {
+          data.topic = this.topic;
+        } else if (this.recommend) {
+          data.recommend = this.recommend;
+        } else if (this.project) {
+          data.project = this.project;
+        }
+
         if(typeof pid === "number") {
           data.pid = Number(pid);
           data.content = this.replyContent;

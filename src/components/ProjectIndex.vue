@@ -10,7 +10,8 @@
             <section class="projects-meta">
               <div class="projects-name">
                 <h2>
-                  <router-link :to="{ name: 'projectDetail', params: { g_id: project._id }}">{{project.name }}
+                  <router-link :to="{ name: 'project_detail', params: { projectId: project._id }}">
+                    {{project.name }}
                   </router-link>
                 </h2>
               </div>
