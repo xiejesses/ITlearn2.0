@@ -3,9 +3,9 @@
     <main>
       <section class="groups">
         <ul class="groups-list">
-          <li v-for="(group, index) in groups" v-bind:key="group._id">
+          <li v-for="(group, index) in groups" :key="group._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="group.user.email" size='40' :alt="group.user.nickname" ></v-gravatar>
+              <v-gravatar :email="group.user.email" :size='40' :alt="group.user.nickname" ></v-gravatar>
             </section>
             <section class="groups-meta">
               <div class="groups-name">
