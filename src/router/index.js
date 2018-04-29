@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import Login from '@/components/Login';
 import Register from '@/components/Register';
 import Share from '@/components/Share';
+import ShareProject from '@/components/ShareProject';
+import ProjectIndex from '@/components/ProjectIndex'
 import User from '@/components/User';
 import Article from '@/components/Article';
 import GroupIndex from '@/components/GroupIndex';
@@ -76,6 +78,33 @@ const router = new Router({
               component: Group
             }
           ]
+        },
+        {
+          path: '/share',
+          name: 'share',
+          //添加路由元信息
+          meta: {
+            requireAuth: true //表示进入该路由需要登录
+          },
+          component: Share
+        },
+        {
+          path: '/shareProject',
+          name: 'share_project',
+          //添加路由元信息
+          meta: {
+            requireAuth: true //表示进入该路由需要登录
+          },
+          component: ShareProject
+        },
+        {
+          path: '/projectIndex',
+          name: 'project_index',
+          //添加路由元信息
+          meta: {
+            requireAuth: true //表示进入该路由需要登录
+          },
+          component: ProjectIndex
         },
         {
           path: '/share',
@@ -206,7 +235,7 @@ const router = new Router({
               // },
               component: ChangePwd
             },
-            
+
 
           ]
         }

@@ -18,6 +18,12 @@ const urlConfig ={
     },
     logout: {
       url: `/${version}/users/register/`
+    },
+    change: {
+      url: `/${version}/users/change/`
+    },
+    change2: {
+      url: `${version}/users/pwd/change/`
     }
   },
 
@@ -87,8 +93,12 @@ const urlConfig ={
   // 话题模块
   topic:{
     url: `/${version}/topics/`
-  }
+  },
 
+  // 系统url
+  system: {
+    email: {url: `/${version}/system/email/`}
+  }
 };
 
 // 创建count url

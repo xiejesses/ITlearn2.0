@@ -36,9 +36,12 @@
       </section>
       <nav class="navigation">
 
-        <router-link to="/" :exact="True" class="ListItem">首页</router-link>
-        <router-link to="/groupindex" class="ListItem">学习小组</router-link>
-        <router-link to="/share" class="LastItem">分享链接</router-link>
+        <router-link ：to="/" :exact="True" class="ListItem">首页</router-link>
+        <router-link ：to="/groupindex" class="ListItem">学习小组</router-link>
+        <router-link ：to="/projectIndex" class="ListItem">项目交流</router-link>
+
+        <router-link ：to="/share" class="LastItem">分享链接</router-link>
+        <router-link ：to="/shareProject" class="LastItem">分享项目</router-link>
 
         <div id="wrap">
         <!-- <form action="" autocomplete="on"> -->
@@ -60,7 +63,7 @@
       <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar :email="userEmail" size=40 :alt="userName"/>
+            <v-gravatar :email="userEmail" :size='40' :alt="userName"/>
           </span>
           <el-dropdown-menu slot="dropdown">
             <router-link :to="{ name: 'user_article', params: { userId: userId }}">
@@ -92,9 +95,9 @@
 
       <!-- 弹出菜单 -->
       <div class="hamburger" @click="isvisible=true" v-if="!userName"></div>
-      <section class="menu" v-bind:class="{visible:isvisible}" @click="isvisible=false">
+      <section class="menu" :class="{visible:isvisible}" @click="isvisible=false">
         <div class="menu-wrapper">
-          <ul v-on:click.stop @click="isvisible=false">
+          <ul @click.stop @click="isvisible=false">
             <li>
               <a href="#" class="search-link" @click="isfocused = true">搜索</a>
             </li>
@@ -103,6 +106,9 @@
             </li>
             <li>
               <router-link to="/share" class="">分享链接</router-link>
+            </li>1
+            <li>
+              <router-link to="/shareProject" class="">分享项目</router-link>
             </li>
             <li>
               <router-link to="/group" class="">项目交流</router-link>

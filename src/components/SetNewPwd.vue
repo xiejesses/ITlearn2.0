@@ -1,14 +1,14 @@
 <template>
   <div id="setNewPwd">
     <div class="setting-form">
-      
+
       <!-- 设置新密码表单 -->
       <form name="resetform" :v-model="formSetting" id="resetform" action="#" method="post">
         <h2>
           设置新密码
         </h2>
         <p>
-          <input type="text" v-model="formSetting.newPwd" name="newPwd" placeholder="请输入新密码" value="" required>
+          <input type="password" v-model="formSetting.password" name="password" placeholder="请输入新密码" value="" required>
         </p>
         <p class="submit">
           <el-button type="primary" @click="submit">确定</el-button>
@@ -26,13 +26,39 @@
     data() {
       return {
         formSetting: {
-          email:''
-        },
+          password: ''
+        }
       }
+    },
+    mounted() {
+      console.log(this.$route.query.email);
+      console.log(this.$route.query.token);
     },
     methods: {
       submit() {
+        let data = {
+          email: this.$route.query.email,
+          token: this.$route.query.token,
+          password: this.formSetting.password
+        };
 
+        // 修改密码
+        this.$http.post(this.$config.user.change2.url, data)
+          .then(response => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              this.$message.success(data.message);
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.stack);
+            if (err.response) {
+              this.$message.error(err.response.data.message);
+            }
+          });
       }
     }
   }
@@ -55,7 +81,7 @@
     cursor: pointer;
   }
 
-  input[type="text"] {
+  input[type="password"] {
     display: block;
     height: 40px;
     width: 40vw;

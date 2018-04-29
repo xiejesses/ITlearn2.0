@@ -5,7 +5,7 @@
         <ul class="articles-list">
           <li v-for="(article,index) in articles" :key="article._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="article.user.email" size='40' :alt="article.user.nickname" />
+              <v-gravatar :email="article.user.email" :size='40' :alt="article.user.nickname" />
             </section>
             <section class="article-title">
               <h2>

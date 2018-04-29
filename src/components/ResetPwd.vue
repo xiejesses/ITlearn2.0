@@ -1,7 +1,6 @@
 <template>
   <div id="setting">
     <div class="setting-form">
-      
       <!-- 重置密码表单 -->
       <form name="resetform" :v-model="formSetting" id="resetform" action="#" method="post">
         <h2>
@@ -27,13 +26,25 @@
     data() {
       return {
         formSetting: {
-          email:''
+          email:'',
         },
       }
     },
     methods: {
       resetPwd() {
-
+        // 发送邮件
+        this.$http.post(this.$config.system.email.url, {email: this.formSetting.email})
+          .then((response) => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              this.$message.success("发送成功");
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+              this.$message.error(err.response.data.message);
+          });
       }
     }
   }

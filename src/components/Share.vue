@@ -5,9 +5,11 @@
         <div class="share-form">
           <form name="shareform" :v-model="formShare" id="shareform" action="#" method="post">
             <h1>
-              <span :class="{veiled: !isShare}" @click="isShare=!isShare">分享链接</span>
+              <span :class="{veiled: showType === 1}" @click="showType=1">分享链接</span>
               •
-              <span :class="{veiled: isShare}" @click="isShare=!isShare">写文章</span>
+              <span :class="{veiled: showType === 2}" @click="showType=2">写文章</span>
+              •
+              <span :class="{veiled: showType === 3}" @click="showType=3">github</span>
             </h1>
 
 
@@ -121,7 +123,7 @@
           subfield: true, // 单双栏模式
           preview: true, // 预览
         },
-        isShare: true,
+        showType: 1,
         options: [],
       }
     },
@@ -139,7 +141,7 @@
           this.$message.error("请输入标题");
         }
 
-        if (this.isShare && this.url === '') {
+        if (this.showType === 1 && this.url === '') {
           this.$message.error("请输入链接");
         }
 

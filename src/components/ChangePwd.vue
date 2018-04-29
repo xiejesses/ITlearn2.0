@@ -7,13 +7,13 @@
           修改密码
         </h2>
         <p>
-          <input type="text" v-model="formSetting.oldPwd" name="oldPwd" placeholder="旧密码" value="" required>
+          <input type="password" v-model="formSetting.oldPwd" name="oldPwd" placeholder="旧密码" value="" required>
         </p>
         <p>
-          <input type="text" v-model="formSetting.newPwd" name="newPwd" placeholder="新密码" value="" required>
+          <input type="password" v-model="formSetting.newPwd" name="newPwd" placeholder="新密码" value="" required>
         </p>
         <p>
-          <input type="text" v-model="formSetting.ensureNewPwd" name="ensureNewPwd" placeholder="确认新密码" value="" required>
+          <input type="password" v-model="formSetting.ensureNewPwd" name="ensureNewPwd" placeholder="确认新密码" value="" required>
         </p>
         <p class="submit">
           <el-button type="primary" @click="changePwd">保存修改</el-button>
@@ -32,15 +32,45 @@
         formSetting: {
           oldPwd: '',
           newPwd: '',
-          ensureNewPwd: '',
+          ensureNewPwd: ''
         },
       }
     },
     methods: {
       changePwd() {
+        if(this.formSetting.ensureNewPwd === '' || this.formSetting.newPwd === '') {
+          this.$message.error("密码不得为空");
+          return;
+        }
+
+        // 密码不一致
+        if(this.formSetting.ensureNewPwd !== this.formSetting.newPwd) {
+          this.$message.error("密码不一致");
+          return;
+        }
+        let data = {
+          newPwd: this.formSetting.newPwd,
+          oldPwd: this.formSetting.oldPwd,
+          _id: localStorage.getItem("userId")
+        };
+
+        // 请求修改密码
+        this.$http.post(this.$config.user.change.url, data)
+          .then((response) => {
+            console.log(response);
+            let data = response.data;
+            if (data.status === 0) {
+              this.$message.success("密码修改成功");
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err.stack);
+            this.$message.error(err.response.data.message);
+          });
 
       },
-      
     }
   }
 
@@ -62,7 +92,7 @@
     cursor: pointer;
   }
 
-  input[type="text"] {
+  input[type="password"] {
     display: block;
     height: 40px;
     width: 40vw;
