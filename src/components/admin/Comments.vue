@@ -13,7 +13,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination layout="prev, pager, next" :total="count">
+    <el-pagination layout="prev, pager, next" :total="count" @current-change="handleCurrentChange">
     </el-pagination>
   </div>
 </template>
@@ -71,6 +71,7 @@
       // 处理当前页
       handleCurrentChange(page){
         this.page = Number(page);
+        console.log("调整页面");
         this.fetchComment();
       },
 
