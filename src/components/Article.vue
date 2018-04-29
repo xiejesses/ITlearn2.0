@@ -5,7 +5,7 @@
         <ul class="articles-list">
           <li v-for="(article,index) in articles" :key="article._id">
             <section class="user-avatar">
-              <v-gravatar :email="article.user.email" :size='40' :alt="article.user.nickname" />
+              <v-gravatar :email="article.user.email" ::size='40' :alt="article.user.nickname" />
             </section>
             <section class="article-title">
               <h2>
@@ -473,7 +473,7 @@ meta信息
   .meta a:last-child {
     border: 0 !important;
   }
-  
+
 .heart {
   color: #4e4d4d4b;
 }

@@ -6,7 +6,7 @@
               <div class="head-bg"></div>
               <div class="user-info">
                 <div class="user-avatar">
-                    <v-gravatar v-bind:email="userInfo.email" size='40' />
+                    <v-gravatar v-bind:email="userInfo.email" :size='40' />
                 </div>
                 <div class="username">
                     <router-link :to="{ name: 'user_article', params: { userId: userInfo._id }}">{{userInfo.nickname}}</router-link>

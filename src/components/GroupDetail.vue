@@ -49,7 +49,7 @@
         <ul class="articles-list">
           <li v-for="topic in topics" v-bind:key="topic._id">
             <div class="user-avatar">
-              <v-gravatar v-bind:email="topic.user.email" size='40' :alt="topic.user.nickname" />
+              <v-gravatar v-bind:email="topic.user.email" :size='40' :alt="topic.user.nickname" />
             </div>
             <div class="article-title">
               <h2>

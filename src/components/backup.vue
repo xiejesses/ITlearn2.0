@@ -1,5 +1,5 @@
 <template>
-  
+
 
 
 <el-container>
@@ -22,7 +22,7 @@
         <el-card>
           <section class="user-avatar">
             <!--头像-->
-            <v-gravatar v-bind:email="detail.user.email" size='40' :alt="detail.user.nickname"/>
+            <v-gravatar v-bind:email="detail.user.email" :size='40' :alt="detail.user.nickname"/>
             <!--昵称-->
             <span class="cxy-nickname">{{detail.user.nickname}}</span>
           </section>

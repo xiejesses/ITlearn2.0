@@ -5,7 +5,7 @@
         <div class="user-data">
           <div class="user-meta">
             <div class="user-avatar">
-               <v-gravatar :email='userEmail' :size='40' />
+               <v-gravatar :email='userEmail' ::size='40' />
             </div>
             <div class="user-introduce">
               <span v-if="isSave" class="save">

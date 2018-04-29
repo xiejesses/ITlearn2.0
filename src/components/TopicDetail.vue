@@ -4,7 +4,7 @@
       <section class="topic-content">
         <div class="user-info">
           <div class="user-avatar">
-            <v-gravatar v-bind:email="topicdetail.user.email" size='40' />
+            <v-gravatar v-bind:email="topicdetail.user.email" :size='40' />
           </div>
           <div class="meta" style="margin-left:10px">
             <router-link :to="{ name: 'like', params: { userId: topicdetail.user._id }}">{{topicdetail.user.nickname}}</router-link>

@@ -5,7 +5,7 @@
         <ul class="projects-list">
           <li v-for="(project, index) in projects" :key="project._id">
             <section class="user-avatar">
-              <v-gravatar :email="project.user.email" :size='40' :alt="project.user.nickname"></v-gravatar>
+              <v-gravatar :email="project.user.email" ::size='40' :alt="project.user.nickname"></v-gravatar>
             </section>
             <section class="projects-meta">
               <div class="projects-name">
