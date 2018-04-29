@@ -36,17 +36,17 @@
       </section>
       <nav class="navigation">
 
-        <router-link ：to="/" :exact="True" class="ListItem">首页</router-link>
-        <router-link ：to="/groupindex" class="ListItem">学习小组</router-link>
-        <router-link ：to="/projectIndex" class="ListItem">项目交流</router-link>
+        <router-link to="/" :exact="True" class="ListItem">首页</router-link>
+        <router-link to="/groupindex" class="ListItem">学习小组</router-link>
+        <router-link to="/projectIndex" class="ListItem">项目交流</router-link>
 
-        <router-link ：to="/share" class="LastItem">分享链接</router-link>
-        <router-link ：to="/shareProject" class="LastItem">分享项目</router-link>
+        <router-link to="/share" class="LastItem">分享链接</router-link>
+        <router-link to="/shareProject" class="LastItem">分享项目</router-link>
 
         <div id="wrap">
         <!-- <form action="" autocomplete="on"> -->
         <input id="search"  v-model="search_condition"  name="search" type="text" placeholder="搜索...">
-          <router-link :to="{ name: search_name ,query: { query: search_condition}}">
+          <router-link to="{ name: search_name ,query: { query: search_condition}}">
             <a href="javascript:void(0)">
               <i class="el-icon-search"></i>
             </a>
