@@ -36,12 +36,12 @@
       </section>
       <nav class="navigation">
 
-        <router-link to="/" :exact="True" class="ListItem">首页</router-link>
+        <router-link to="/" :exact="true" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
         <router-link to="/projectIndex" class="ListItem">项目交流</router-link>
-
-        <router-link to="/share" class="LastItem">分享链接</router-link>
-        <router-link to="/shareProject" class="LastItem">分享项目</router-link>
+        <router-link to="/shareProject" class="ListItem">分享项目</router-link>
+        <router-link to="/share" class="ListItem">分享</router-link>
+        <router-link to="/notification" class="LastItem"><i class="el-icon-fa el-icon-fa-bell" aria-hidden="true"></i></router-link>
 
         <div id="wrap">
         <!-- <form action="" autocomplete="on"> -->
@@ -389,7 +389,7 @@ main区
     color: white;
   }
 
-  .navigation a:nth-child(4) {
+  .navigation a:nth-child(6) {
     color: #2DBF80;
   }
 

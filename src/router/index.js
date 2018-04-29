@@ -21,6 +21,9 @@ import search from '@/components/search';
 import resetPwd from '@/components/ResetPwd';
 import ChangePwd from '@/components/ChangePwd';
 import SetNewPwd from '@/components/SetNewPwd';
+import NotificationIndex from '@/components/NotificationIndex';
+import Message from '@/components/Message';
+import SystemNotice from '@/components/SystemNotice';
 // import Notice from '@/components/Notice';
 
 
@@ -114,6 +117,27 @@ const router = new Router({
             requireAuth: true //表示进入该路由需要登录
           },
           component: Share
+        },
+        {
+          path: '/notification',
+          name: 'notification',
+          //添加路由元信息
+          meta: {
+            requireAuth: true //表示进入该路由需要登录
+          },
+          component: NotificationIndex,
+          children:[
+            {
+              path:'/',
+              name:'message',
+              component:Message
+            },
+            {
+              path:'/notification/system',
+              name:'systemNotice',
+              component:SystemNotice
+            },
+          ]
         },
         {
           path: '/tag/:tagId',

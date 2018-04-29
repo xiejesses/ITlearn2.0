@@ -3,7 +3,7 @@
     <main>
       <section class="projects">
         <ul class="projects-list">
-          <li v-for="(project, index) in projects" :key="project._id">
+          <li v-for="project in projects" :key="project._id">
             <section class="user-avatar">
               <v-gravatar :email="project.user.email" ::size='40' :alt="project.user.nickname"></v-gravatar>
             </section>
