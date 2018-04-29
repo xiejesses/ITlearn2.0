@@ -18,25 +18,16 @@
             <el-tag size="mini" v-if="detail.state === 2">维护ing</el-tag>
           </div>
         </div>
-
-        <!--项目名-->
         <p class="project-name"><a :href="detail.git">{{detail.name}}</a></p>
-
-        <!--项目备注-->
-        <p v-show="detail.desc" class="desc">{{detail.desc}}</p>
-
-        <!--todo 格式修改部分 来自git的信息-->
-        <p></p>
-        <!--项目账号-->
-        <p>账号：　
-          <a :href="gitDetail.owner.html_url">{{gitDetail.owner.login}}</a>
-        </p>
-        <p>项目简介：　{{gitDetail.description}}</p>
-        <p>star：　{{gitDetail.watchers}}</p>
-        <p>fork：　{{gitDetail.forks_count}}</p>
-        <p>watch：　{{gitDetail.subscribers_count}}</p>
-        <p>date: {{moment(new Date(gitDetail.created_at), "YYYYMMDDHHmmss").fromNow()}}</p>
-
+        <div class="tags">
+          <div><span class="left">Powered by</span><span class="right"><a :href="gitDetail.owner.html_url">{{gitDetail.owner.login}}</a></span></div>
+          <div><span class="left">star</span><span class="right blue">{{gitDetail.watchers}}</span></div>
+          <div><span class="left">fork</span><span class="right orange">{{gitDetail.forks_count}}</span></div>
+          <div><span class="left">watch</span><span class="right">{{gitDetail.subscribers_count}}</span></div>
+          <div><span class="left">date</span><span class="right gray">{{moment(new Date(gitDetail.created_at), "YYYYMMDDHHmmss").fromNow()}}</span></div>
+        </div>
+        <p class="desc">{{gitDetail.description}}</p>
+        <p v-show="detail.desc">{{detail.desc}}</p>
       </section>
       <comment :project="Number(project)"></comment>
     </main>
@@ -111,6 +102,10 @@
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+  color: #fff;
+}
   ul {
     padding: 0;
   }
@@ -147,15 +142,15 @@
     border-bottom: 2px solid #f3f3f3;
   }
 
-  .project-name {
-    font-size: 22px;
+  .project-name a {
+    text-decoration: none;
+    color:#2D2D2F;
+     font-size: 30px;
   }
   .desc {
-    /* width: 200px; */
     padding: 15px 50px 15px 15px;
     border-left: 4px solid #4b616a;
     margin-bottom: 40px;
-    /* background-color: #edecef3d; */
   }
   .linkto{
     color:white;
@@ -177,6 +172,36 @@
     border-radius: 50%;
     height: 20px;
     width: 20px;
+  }
+
+  .tags {
+    display:flex;
+  }
+  .tags div {
+    margin-right: 10px;
+  }
+  .left {
+    display:inline-block;
+    font-size: 13px;
+    padding: 1px 10px;
+    color:#fff;
+    background:#4f4f4f;
+  }
+  .right {
+    display:inline-block;
+    font-size: 13px;
+    padding: 1px 10px;
+    color:#fff;
+    background:#8ab932;
+  }
+  .blue {
+    background:#0b74b5
+  }
+  .orange {
+    background: #e07441;
+  }
+  .gray {
+    background: #959594;
   }
 
   @media screen and (min-width:960px) {

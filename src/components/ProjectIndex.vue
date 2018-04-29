@@ -24,8 +24,6 @@
                 </router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(project.date)">{{ moment(new Date(project.date), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                <span class="separator"> • </span>
-
               </div>
             </section>
           </li>
