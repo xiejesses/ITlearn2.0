@@ -14,29 +14,34 @@
               <i class="el-icon-document"></i><span>用户管理</span>
           </el-menu-item>
             </router-link>
-            <router-link to="/recommend">
+            <router-link :to="{name: 'admin_recommend'}">
           <el-menu-item index="2">
             <i class="el-icon-share"></i>推荐管理
           </el-menu-item>
           </router-link>
-          <router-link to="/tag">
+          <router-link :to="{name: 'admin_tag'}">
           <el-menu-item index="3">
             <i class="el-icon-star-on"></i>标签管理
           </el-menu-item>
           </router-link>
-          <router-link to="/group">
+          <router-link :to="{name: 'admin_group'}">
           <el-menu-item index="4">
             <i class="el-icon-menu"></i>小组管理
           </el-menu-item>
           </router-link>
-          <router-link to="/topic">
+          <router-link :to="{name: 'admin_topic'}">
           <el-menu-item index="5">
             <i class="el-icon-news"></i>话题管理
           </el-menu-item>
           </router-link>
-          <router-link to="/comments">
+          <router-link :to="{name: 'admin_projects'}">
           <el-menu-item index="6">
-            <i class="el-icon-tickets"></i>评论管理
+            <i class="el-icon-tickets"></i>项目管理
+          </el-menu-item>
+          </router-link>
+          <router-link :to="{name: 'admin_comments'}">
+          <el-menu-item index="7">
+            <i class="el-icon-document"></i>评论管理
           </el-menu-item>
           </router-link>
         </el-menu>
@@ -51,7 +56,7 @@
               <el-dropdown-item>退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          
+
         </el-header>
 
         <el-main>

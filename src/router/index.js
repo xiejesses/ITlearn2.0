@@ -38,7 +38,7 @@ import AdminRecommend from '@/components/admin/Recommend';
 import AdminTag from '@/components/admin/Tag';
 import AdminTopic from '@/components/admin/Topic';
 import AdminUser from '@/components/admin/User';
-
+import AdminProject from '@/components/admin/Project';
 
 Vue.use(Router);
 
@@ -137,16 +137,16 @@ const router = new Router({
             requireAuth: true //表示进入该路由需要登录
           },
           component: NotificationIndex,
-          children:[
+          children: [
             {
-              path:'/',
-              name:'message',
-              component:Message
+              path: '/',
+              name: 'message',
+              component: Message
             },
             {
-              path:'/notification/system',
-              name:'systemNotice',
-              component:SystemNotice
+              path: '/notification/system',
+              name: 'systemNotice',
+              component: SystemNotice
             },
           ]
         },
@@ -355,6 +355,11 @@ const router = new Router({
           path: '/comments',
           name: 'admin_comments',
           component: AdminComment
+        },
+        {
+          path: '/projects',
+          name: 'admin_projects',
+          component: AdminProject
         }]
     }
   ]
