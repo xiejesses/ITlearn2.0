@@ -117,6 +117,15 @@
         this.$http.delete(this.$config.topic.url, {params: params})
           .then(response => {
             if (response.status === 204) {
+              let data = this.tableData[index];
+              let new_ = {
+                newType: 7,
+                sender: Number(localStorage.getItem('userId')),
+                receiver: data.user._id,
+                content: data.title
+              };
+              this.$units.createSystemNews(new_);
+
               this.fetchTopic();
               this.$message.success("删除成功");
             } else {
