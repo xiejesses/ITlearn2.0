@@ -102,7 +102,7 @@ const urlConfig ={
 
   // 系统url
   new: {
-    url: {url: `/${version}/news/`}
+    url: `/${version}/news/`
   }
 };
 
