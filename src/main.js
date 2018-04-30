@@ -69,6 +69,27 @@ Vue.prototype.$units.remove = function (array, ele) {
   }
 };
 
+
+Vue.prototype.$units.createSystemNews = (doc, callback) => {
+  doc.type = 2;
+  axios.post(config.urlConfig.new.url, doc)
+    .then(response => {
+      let data = response.data;
+      if (data.status === this.$status.success) {
+        callback();
+      } else {
+        this.$message.error(data.message);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      console.log(err.stack);
+      if (err.response && err.response.data.message) {
+        this.$message.error(err.response.data.message);
+      }
+    });
+};
+
 Vue.use(infiniteScroll);
 Vue.prototype.moment = moment;
 moment.locale('zh-cn');
