@@ -48,18 +48,18 @@
         </router-link>
 
         <div id="wrap">
-        <!-- <form action="" autocomplete="on"> -->
-        <input id="search"  v-model="search_condition"  name="search" type="text" placeholder="搜索...">
+          <!-- <form action="" autocomplete="on"> -->
+          <input id="search" v-model="search_condition" name="search" type="text" placeholder="搜索...">
           <router-link :to="{ name: search_name ,query: { query: search_condition}}">
             <a href="javascript:void(0)">
               <i class="el-icon-search"></i>
             </a>
           </router-link>
-        <!-- <input id="search_submit" value="Rechercher" type="submit"> -->
-        <!-- </form> -->
-      </div>
+          <!-- <input id="search_submit" value="Rechercher" type="submit"> -->
+          <!-- </form> -->
+        </div>
 
-          <!-- <a href="javascript:void(0)" @click="isfocused = true">
+        <!-- <a href="javascript:void(0)" @click="isfocused = true">
             <i class="el-icon-search"></i>
           </a> -->
       </nav>
@@ -67,15 +67,15 @@
       <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar :email="userEmail" :size='40' :alt="userName"/>
+            <v-gravatar :email="userEmail" :size='40' :alt="userName" />
           </span>
           <el-dropdown-menu slot="dropdown">
             <router-link :to="{ name: 'user_article', params: { userId: userId }}">
               <el-dropdown-item>我的主页</el-dropdown-item>
             </router-link>
-            <router-link to="/">
+            <!-- <router-link to="/">
               <el-dropdown-item>我的小组</el-dropdown-item>
-            </router-link>
+            </router-link> -->
             <router-link :to="{name: 'admin_home'}" v-if="isManager === 'true'">
               <el-dropdown-item>管理员系统</el-dropdown-item>
             </router-link>
@@ -122,11 +122,24 @@
         <span class="menu-close" @click="isvisible=false">x</span>
       </section>
     </header>
+    <div class="backTotop" @click="toTop">
+      <i class="el-icon-fa-arrow-up"></i>
+    </div>
+    <!-- <transition name="fade"> -->
     <router-view :key="key"></router-view>
+    <!-- </transition> -->
+
   </div>
 </template>
 
 <script>
+  window.onscroll = function () {
+    if (document.documentElement.scrollTop + document.body.scrollTop > 200) {
+      document.querySelector(".backTotop").style.display = "block";
+    } else {
+      document.querySelector(".backTotop").style.display = "none";
+    }
+  }
   import {
     mapGetters
   } from 'vuex'
@@ -143,9 +156,10 @@
         userId: '',
         isvisible: false,
         isfocused: false,
-        search_condition:'',
+        search_condition: '',
         search_name: 'search_article',
-        isNew: false
+        isNew: false,
+        // showBackToTop:false
       }
     },
     methods: {
@@ -185,7 +199,12 @@
 
       getNew() {
         if (localStorage.getItem("userId"))
-        this.$http.get(this.$config.new.conut.url, {params: {isSee: false, reveicer: Number(localStorage.getItem("userId"))}})
+          this.$http.get(this.$config.new.conut.url, {
+            params: {
+              isSee: false,
+              reveicer: Number(localStorage.getItem("userId"))
+            }
+          })
           .then(response => {
             let data = response.data;
             if (data.status === this.$status.success) {
@@ -201,6 +220,44 @@
               this.$message.error(err.response.data.message);
             }
           });
+      },
+      toTop() {
+
+        let distance =
+          document.documentElement.scrollTop ||
+          document.body.scrollTop;
+        //获得当前高度
+
+        let step =
+          distance / 50;
+        //每步的距离
+
+        (function jump() {
+
+          if (distance >
+            0) {
+
+            distance -= step;
+
+            // document.documentElement.scrollTop = distance;
+
+            // document.body.scrollTop = distance;
+
+            window.scrollTo(0, distance);
+
+            setTimeout(jump, 10)
+
+          }
+
+        })();
+
+      },
+      showBackToTop() {
+        if (document.documentElement.scrollTop + document.body.scrollTop > 200) {
+          document.querySelector(".backTotop").style.display = "block";
+        } else {
+          document.querySelector(".backTotop").style.display = "none";
+        }
       }
 
     },
@@ -214,11 +271,12 @@
       this.isManager = localStorage.getItem('isManager');
       this.search_name = this.$route.name === 'search_group' ? 'search_group' : 'search_article';
       this.getNew();
+      this.showBackToTop();
     },
 
     computed: {
       key() {
-          return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+        return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
       }
     }
   }
@@ -242,7 +300,7 @@
     font-size: 16px;
   }
 
-   /**********
+  /**********
 main区
 **********/
 
@@ -266,6 +324,7 @@ main区
       height: auto;
     }
   }
+
   @media screen and (min-width:1600px) {
     .vindex {
       width: 65%;
@@ -544,25 +603,27 @@ main区
   /**************
       搜索框
 **************/
-#wrap a{
-  text-decoration: none;
-  background: none;
-}
-input[type="text"] {
-  height: 30px;
-  font-size: 17px;
-  width: 150px;
-  border: none;
-  border-bottom: 1px solid #BBB;
-  margin-left: 15px;
-  margin-right: -20px;
-  /* font-family: "Lato"; */
-  font-weight: 100;
-  outline: none;
-  color: #555;
-  background: none;
-  cursor: pointer;
-}
+
+  #wrap a {
+    text-decoration: none;
+    background: none;
+  }
+
+  input[type="text"] {
+    height: 30px;
+    font-size: 17px;
+    width: 150px;
+    border: none;
+    border-bottom: 1px solid #BBB;
+    margin-left: 15px;
+    margin-right: -20px;
+    /* font-family: "Lato"; */
+    font-weight: 100;
+    outline: none;
+    color: #555;
+    background: none;
+    cursor: pointer;
+  }
 
 
 
@@ -682,5 +743,25 @@ input[type="text"] {
       transform: scale(1);
     }
   }
+
+  /* 回到顶部 */
+
+  .backTotop {
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+  }
+  .backTotop i:hover{
+    color:#2DBF80;
+  }
+.el-icon-fa-arrow-up:before {
+    font-size: 30px;
+  }
+  .backTotop i {
+    color: #34e79a;
+    cursor: pointer;
+  }
+
+  
 
 </style>
