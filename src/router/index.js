@@ -145,8 +145,13 @@ const router = new Router({
             },
             {
               path: '/notification/system',
-              name: 'systemNotice',
-              component: SystemNotice
+              name: 'system_message',
+              component: Message
+            },
+            {
+              path: '/notification/userNew',
+              name: 'users_message',
+              component: Message
             },
           ]
         },
@@ -314,7 +319,7 @@ const router = new Router({
     //   component: Notice
     // },
     {
-      path: '/admin',
+      path: '/admin/',
       name: 'admin',
       meta: {
         requireManager: true //表示进入该路由需要登录
@@ -322,42 +327,42 @@ const router = new Router({
       component: AdminApp,
       children: [
         {
-          path: '/',
+          path: '/admin/',
           name: 'admin_home',
           component: AdminHome,
         },
         {
-          path: '/user',
+          path: '/admin/user',
           name: 'admin_user',
           component: AdminUser
         },
         {
-          path: '/recommend',
+          path: '/admin/recommend',
           name: 'admin_recommend',
           component: AdminRecommend
         },
         {
-          path: '/tag',
+          path: '/admin/tag',
           name: 'admin_tag',
           component: AdminTag
         },
         {
-          path: '/group',
+          path: '/admin/group',
           name: 'admin_group',
           component: AdminGroup
         },
         {
-          path: '/topic',
+          path: '/admin/topic',
           name: 'admin_topic',
           component: AdminTopic
         },
         {
-          path: '/comments',
+          path: '/admin/comments',
           name: 'admin_comments',
           component: AdminComment
         },
         {
-          path: '/projects',
+          path: '/admin/projects',
           name: 'admin_projects',
           component: AdminProject
         }]
