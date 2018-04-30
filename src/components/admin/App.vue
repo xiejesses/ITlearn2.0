@@ -4,12 +4,12 @@
       <el-aside width="200px" >
         <!-- <i class="el-icon-document"></i>首页 -->
         <el-menu :default-openeds="['0']">
-            <router-link to="/"  exact=true>
+            <router-link to="/admin"  :exact='true'>
           <el-menu-item index="0">
               <i class="el-icon-location"></i><span>首页</span>
           </el-menu-item>
             </router-link>
-            <router-link to="/user">
+            <router-link :to="{name: 'admin_user'}">
           <el-menu-item index="1">
               <i class="el-icon-document"></i><span>用户管理</span>
           </el-menu-item>
