@@ -119,7 +119,7 @@
             if (response.status === 204) {
               let data = this.tableData[index];
               let new_ = {
-                newType: 7,
+                newType: 10,
                 sender: Number(localStorage.getItem('userId')),
                 receiver: data.user._id,
                 content: data.title
