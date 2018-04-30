@@ -41,12 +41,16 @@
         <router-link to="/projectIndex" class="ListItem">项目交流</router-link>
         <router-link to="/shareProject" class="ListItem">分享项目</router-link>
         <router-link to="/share" class="ListItem">分享</router-link>
-        <router-link to="/notification" class="LastItem"><i class="el-icon-fa el-icon-fa-bell" aria-hidden="true"></i></router-link>
+        <router-link to="/notification" class="LastItem">
+          <el-badge :is-dot="isNew" class="item">
+            <i class="el-icon-fa el-icon-fa-bell" aria-hidden="true"></i>
+          </el-badge>
+        </router-link>
 
         <div id="wrap">
         <!-- <form action="" autocomplete="on"> -->
         <input id="search"  v-model="search_condition"  name="search" type="text" placeholder="搜索...">
-          <router-link to="{ name: search_name ,query: { query: search_condition}}">
+          <router-link :to="{ name: search_name ,query: { query: search_condition}}">
             <a href="javascript:void(0)">
               <i class="el-icon-search"></i>
             </a>
@@ -63,7 +67,7 @@
       <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar :email="userEmail" ::size='40' :alt="userName"/>
+            <v-gravatar :email="userEmail" :size='40' :alt="userName"/>
           </span>
           <el-dropdown-menu slot="dropdown">
             <router-link :to="{ name: 'user_article', params: { userId: userId }}">
@@ -140,7 +144,8 @@
         isvisible: false,
         isfocused: false,
         search_condition:'',
-        search_name: 'search_article'
+        search_name: 'search_article',
+        isNew: false
       }
     },
     methods: {
@@ -176,8 +181,27 @@
         this.userName = localStorage.getItem('userName');
         this.userEmail = localStorage.getItem('userEmail');
         this.userId = localStorage.getItem('userId');
-      }
+      },
 
+      getNew() {
+        if (localStorage.getItem("userId"))
+        this.$http.get(this.$config.new.conut.url, {params: {isSee: false, reveicer: Number(localStorage.getItem("userId"))}})
+          .then(response => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              this.isNew = data.count !== 0;
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.stack);
+            if (err.response) {
+              this.$message.error(err.response.data.message);
+            }
+          });
+      }
 
     },
     watch: {
@@ -189,6 +213,7 @@
       this.userId = localStorage.getItem('userId');
       this.isManager = localStorage.getItem('isManager');
       this.search_name = this.$route.name === 'search_group' ? 'search_group' : 'search_article';
+      this.getNew();
     },
 
     computed: {
