@@ -98,6 +98,11 @@ const urlConfig ={
   // 系统url
   system: {
     email: {url: `/${version}/system/email/`}
+  },
+
+  // 系统url
+  new: {
+    url: {url: `/${version}/news/`}
   }
 };
 
@@ -108,7 +113,6 @@ for (let key in urlConfig) {
   };
 }
 
-console.log(urlConfig);
 
 const status = {
   success: 0,
