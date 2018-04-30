@@ -38,7 +38,7 @@
               v-model="scope.row.isPass "
               active-color="#13ce66"
               inactive-color="#ff4949"
-              @change="patchRecommend(scope.row.isPass, scope.row._id)">
+              @change="patchRecommend(scope.row.isPass, scope.row._id, scope.$index)">
             </el-switch>
           </el-tooltip>
         </template>
@@ -114,7 +114,7 @@
       },
 
       // 审核
-      patchRecommend(isPass, _id) {
+      patchRecommend(isPass, _id, index) {
         this.$http.patch(this.$config.recommend.url + "?_id=" + _id, {isPass: isPass})
           .then(response => {
             let res = response.data;
@@ -135,7 +135,9 @@
             }
           })
           .catch(
-            err => this.$message.error(err.response.data.message)
+            (err) => {
+              console.log(err.stack);
+            }
           );
       },
 

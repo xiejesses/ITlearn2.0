@@ -18,7 +18,7 @@
               v-model="scope.row.isPass"
               active-color="#13ce66"
               inactive-color="#ff4949"
-              @change="patchProject(scope.row.isPass, scope.row._id)">
+              @change="patchProject(scope.row.isPass, scope.row._id, scope.$index)">
             </el-switch>
           </el-tooltip>
         </template>
@@ -90,7 +90,7 @@
       },
 
       // 审核
-      patchProject(isPass, _id) {
+      patchProject(isPass, _id, index) {
         this.$http.patch(this.$config.project.url + "?_id=" + _id, {isPass: isPass})
           .then(response => {
             let res = response.data;

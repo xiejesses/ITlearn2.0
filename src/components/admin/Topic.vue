@@ -14,7 +14,7 @@
               v-model="scope.row.isPass "
               active-color="#13ce66"
               inactive-color="#ff4949"
-              @change="patchTopic(scope.row.isPass, scope.row._id)">
+              @change="patchTopic(scope.row.isPass, scope.row._id, scope.$index)">
             </el-switch>
           </el-tooltip>
         </template>
@@ -97,7 +97,7 @@
       },
 
       // 审核
-      patchTopic(isPass, _id) {
+      patchTopic(isPass, _id, index) {
         this.$http.patch(this.$config.topic.url + "?_id=" + _id, {isPass: isPass})
           .then(response => {
             let res = response.data;

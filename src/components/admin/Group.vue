@@ -14,7 +14,7 @@
               v-model="scope.row.isPass "
               active-color="#13ce66"
               inactive-color="#ff4949"
-              @change="patchGroup(scope.row.isPass, scope.row._id)">
+              @change="patchGroup(scope.row.isPass, scope.row._id, scope.$index)">
             </el-switch>
           </el-tooltip>
         </template>
@@ -93,7 +93,7 @@
       },
 
       //
-      patchGroup(isPass, _id) {
+      patchGroup(isPass, _id, index) {
         this.$http.patch(this.$config.group.url + "?_id=" + _id, {isPass: isPass})
           .then(response => {
             let res = response.data;
