@@ -89,12 +89,23 @@
         return this.moment(new Date(row.date), 'YYYYMMDDHHmmss').fromNow();
       },
 
-      // 转向
+      // 审核
       patchProject(isPass, _id) {
         this.$http.patch(this.$config.project.url + "?_id=" + _id, {isPass: isPass})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success) {
+
+              let data = this.tableData[index];
+              let new_ = {
+                newType: 4,
+                sender: Number(localStorage.getItem('userId')),
+                receiver: data.user._id,
+                project: data._id,
+                isPass: isPass
+              };
+              this.$units.createSystemNews(new_);
+
               this.fetchProject();
             } else {
               this.$message.error(res.message);
