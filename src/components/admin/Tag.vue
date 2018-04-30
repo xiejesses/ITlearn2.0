@@ -8,6 +8,9 @@
       </el-table-column>
       <el-table-column prop="name" label="标签名" width="180">
       </el-table-column>
+      <el-table-column prop="color" label="颜色" width="180">
+        <!-- <el-color-picker v-model="color"></el-color-picker> -->
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="dialogVisible = true;modifyTag = scope.row.name;modifyTagId = scope.row._id">编辑</el-button>
@@ -23,6 +26,10 @@
         :visible.sync="dialogVisible"
         width="30%">
         <el-input v-model="modifyTag" placeholder="请输入标签名" style="width:180px"></el-input>
+        <p>
+         选取背景：
+        </p>
+        <p> <el-color-picker v-model="colorbg"></el-color-picker></p>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="dialogVisible = false;patchTag()">确 定</el-button>
@@ -45,7 +52,8 @@
         currentPage: 1,
         modifyTagId: -1,
         modifyTag: "",
-        dialogVisible: false
+        dialogVisible: false,
+        colorbg:null
       }
     },
     mounted() {
@@ -136,7 +144,7 @@
 
       // 修改标签
       patchTag() {
-        this.$http.patch(this.$config.tag.url + "?_id=" + this.modifyTagId, {name: this.modifyTag})
+        this.$http.patch(this.$config.tag.url + "?_id=" + this.modifyTagId, {name: this.modifyTag,color: this.colorbg})
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success) {

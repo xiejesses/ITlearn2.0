@@ -106,7 +106,7 @@
             </li>
             <li>
               <router-link to="/share" class="">分享链接</router-link>
-            </li>1
+            </li>
             <li>
               <router-link to="/shareProject" class="">分享项目</router-link>
             </li>
@@ -118,7 +118,6 @@
         <span class="menu-close" @click="isvisible=false">x</span>
       </section>
     </header>
-
     <router-view :key="key"></router-view>
   </div>
 </template>

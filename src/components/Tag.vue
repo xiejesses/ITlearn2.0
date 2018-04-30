@@ -1,14 +1,14 @@
 <template>
   <div id="tag">
     <div class="container">
-      <section class="tag-header" :style="styleObject">
-        <div class="tag-content">
+      <section class="tag-header" :style="{background:color}">
+        <div class="tag-content" >
           <h1>{{tag}}</h1>
-          <div class="tag-action-button">
+          <!-- <div class="tag-action-button">
             <span>
               <button :style="{color:styleObject.background,background:styleObject.color}">关注</button>
             </span>
-          </div>
+          </div> -->
         </div>
       </section>
       <main>
@@ -26,7 +26,8 @@
     data() {
       return {
         tag: '',
-        styleObject: '',
+        color:'',
+        // styleObject: '',
       }
     },
     mounted() {
@@ -49,6 +50,7 @@
           let res = response.data;
           if (res.status === this.$status.success) {
             this.tag = res.data[0].name;
+            this.color = res.data[0].color;
           } else {
             return false
           }
@@ -113,7 +115,7 @@
 
   @media screen and (min-width:760px) {
     .tag-header {
-      height: 300px;
+      height: 250px;
     }
   }
 

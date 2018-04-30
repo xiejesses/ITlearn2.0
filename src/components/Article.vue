@@ -1,6 +1,14 @@
 <template>
   <div class="index">
     <main>
+      <div class="tag_bg">
+      <span class="tagName" :style="{background:tag.color}"  v-for="(tag,tagindex) in tags" :key="tagindex">
+        <router-link :to="{ name: 'tag_article', params: { tagId: tag._id }}" style="border-bottom:0">
+                    {{tag.name}}
+                  </router-link>
+        </span>
+      <!-- <span class="tagName" :style="{background:tag.tagColor}" v-for="(tag,tagindex) in testTags" :key="tagindex">#{{tag.name}}</span> -->
+      </div>
       <section class="articles">
         <ul class="articles-list">
           <li v-for="(article,index) in articles" :key="article._id">
@@ -9,7 +17,9 @@
             </section>
             <section class="article-title">
               <h2>
-                <router-link :to="{ name: 'share_detail', params: { shareId: article._id }}">{{article.title}}<i v-if="!article.content" class="chain el-icon-fa el-icon-fa-link" aria-hidden="true"></i></router-link>
+                <router-link :to="{ name: 'share_detail', params: { shareId: article._id }}">{{article.title}}
+                  <i v-if="!article.content" class="chain el-icon-fa el-icon-fa-link" aria-hidden="true"></i>
+                </router-link>
                 <!-- <a :href="article.url" target="_bank" class="article-link"></a> -->
               </h2>
               <div class="meta">
@@ -19,13 +29,15 @@
                 <span class="separator"> • </span>
                 <span v-for="(tag, tagindex) in article.tags" :key="tagindex">
                   <router-link :to="{ name: 'tag_article', params: { tagId: tag._id }}" style="border-bottom:0">
-                    <el-tag  type="success">{{tag.name}}</el-tag>
+                    <el-tag :color="tag.color" size="mini" style="color:white" >{{tag.name}}</el-tag>
+                    <!-- <el-tag size="mini" type="success">{{tag.name}}</el-tag> -->
                   </router-link>
                   <span class="separator"> • </span>
                 </span>
                 <span>
                   <a href="javascript:void(0)" class="heartvisited" @click="addloveLink(article._id, index)">
-                    <i class="heart el-icon-fa el-icon-fa-heart" :class="{heartclick:loveLinkid.indexOf(article._id) >= 0,heartScale:loveLinkid.indexOf(article._id) < 0}" aria-hidden="true"></i>
+                    <i class="heart el-icon-fa el-icon-fa-heart" :class="{heartclick:loveLinkid.indexOf(article._id) >= 0,heartScale:loveLinkid.indexOf(article._id) < 0}"
+                      aria-hidden="true"></i>
                   </a>
                 </span>
               </div>
@@ -64,16 +76,16 @@
         pageSize: 3,
 
         loveLinkid: [],
-
+        tags: [],
       }
     },
     mounted() {
       this.fetchArticle();
       this.fetchLovelink();
+      this.fetchTags();
     },
 
-    computed: {
-    },
+    computed: {},
 
     watch: {
       '$route': 'fetchArticle'
@@ -82,9 +94,14 @@
 
       // 投票
       changeVote(id, index) {
-        let params = {recommend: id, user: localStorage.getItem("userId")};
+        let params = {
+          recommend: id,
+          user: localStorage.getItem("userId")
+        };
         this.articles[index].voteActive = true;
-        this.$http.get(this.$config.recommend.vote.url, {params: params})
+        this.$http.get(this.$config.recommend.vote.url, {
+            params: params
+          })
           .then(response => {
             let res = response.data;
             if (res.status === 0) {
@@ -109,12 +126,18 @@
       // 获取用户喜欢链接
       fetchLovelink() {
         if (localStorage.getItem('userName')) {
-          let format = {user_id: localStorage.getItem('userId')};
+          let format = {
+            user_id: localStorage.getItem('userId')
+          };
           let url = this.$config.collection.url;
-          let params = {user: localStorage.getItem('userId')};
+          let params = {
+            user: localStorage.getItem('userId')
+          };
 
           // todo 按照原生设定 获取的收藏recommend 有数量限制
-          this.$http.get(url, {params: params})
+          this.$http.get(url, {
+              params: params
+            })
             .then(response => {
               let res = response.data;
               if (res.status === this.$status.success) {
@@ -146,7 +169,7 @@
         };
         console.log(!(this.loveLinkid.indexOf(sharelink_id) >= 0));
         console.log(this.loveLinkid);
-        if(!(this.loveLinkid.indexOf(sharelink_id) >= 0)){
+        if (!(this.loveLinkid.indexOf(sharelink_id) >= 0)) {
           this.$http.post(this.$config.collection.url, data)
             .then(response => {
               let res = response.data;
@@ -159,10 +182,12 @@
               }
             })
             .catch(err => {
-                this.$message.error(err.response.data.message);
+              this.$message.error(err.response.data.message);
             });
         } else {
-          this.$http.delete(this.$config.collection.url, {params: data})
+          this.$http.delete(this.$config.collection.url, {
+              params: data
+            })
             .then(response => {
               if (response.status === 204) {
                 this.$message.success('取消收藏成功');
@@ -172,8 +197,26 @@
               }
             })
             .catch(err => {
-                this.$message.error(err.response.data.message);
+              this.$message.error(err.response.data.message);
             });
+        }
+      },
+
+      // 获取标签
+      fetchTags() {
+          if (this.$route.name === "home_article") {
+          this.$http.get(this.$config.tag.url).then(response => {
+          let res = response.data;
+          if (res.status === this.$status.success) {
+            this.tags = res.data;
+            console.log(this.tags)
+          } else {
+            console.log("获取标签失败");
+            return false;
+          }
+        }).catch(err =>
+          this.$message.error(err.response.data.message)
+        );
         }
       },
 
@@ -195,20 +238,26 @@
           params.tags = this.$route.params.tagId;
         }
 
-        if (this.$route.name === "user_collection"){
+        if (this.$route.name === "user_collection") {
           url = this.$config.collection.url;
         }
 
         // 添加查询规则
-        if (this.$route.name === "search_article"){
-          params.$ = JSON.stringify({title: {$regex: this.$route.query.query}});
+        if (this.$route.name === "search_article") {
+          params.$ = JSON.stringify({
+            title: {
+              $regex: this.$route.query.query
+            }
+          });
         }
 
-        this.$http.get(url, {params: params})
+        this.$http.get(url, {
+            params: params
+          })
           .then((response) => {
             let res = response.data;
             this.loading = false;
-              // 不是第一次，需要拼接数据
+            // 不是第一次，需要拼接数据
             if (this.$route.name === "user_collection") {
               let temp = [];
               for (let i = 0; i < res.data.length; i++) {
@@ -320,6 +369,23 @@
     }
   }
 
+/* 首页标签 */
+.tag_bg {
+  display:flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+.tagName {
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 7px;
+}
+.tagName a {
+  text-decoration: none;
+  color:#fff;
+  font-size: 14px;
+}
   /**********
 main区
 **********/
@@ -342,6 +408,7 @@ main区
     -webkit-box-align: center;
     align-items: center;
   }
+
   .articles li:hover {
     background: #fafafa63;
 
@@ -474,9 +541,10 @@ meta信息
     border: 0 !important;
   }
 
-.heart {
-  color: #4e4d4d4b;
-}
+  .heart {
+    color: #4e4d4d4b;
+  }
+
   .heart::before {
     font-size: 13px;
 
@@ -485,6 +553,7 @@ meta信息
   .heartclick {
     color: #EC681B;
   }
+
   .heartScale:hover.heart::before {
     -webkit-animation: heartScale 0.5s linear;
     animation: heartScale 0.5s linear;
@@ -534,24 +603,26 @@ meta信息
   点赞
 *********/
 
+  .thumbsUp i {
+    color: #34e79a;
+    cursor: pointer;
+  }
 
-    .thumbsUp i{
-      color:#34e79a;
-      cursor: pointer;
-    }
-    .thumbsHover i:hover.el-icon-fa-thumbs-up:before {
-      /* color:red; */
-      -webkit-animation: thumbsScale 0.5s linear;
+  .thumbsHover i:hover.el-icon-fa-thumbs-up:before {
+    /* color:red; */
+    -webkit-animation: thumbsScale 0.5s linear;
     animation: thumbsScale 0.5s linear;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards
-    }
+  }
+
   .thumbs {
-    color:#e0e0e0;
+    color: #e0e0e0;
     cursor: pointer;
   }
+
   .el-icon-fa-thumbs-up:before {
     font-size: 20px;
   }
@@ -561,7 +632,7 @@ meta信息
     color: #e0e0e0 !important;
   }
 
-@keyframes thumbsScale {
+  @keyframes thumbsScale {
     0% {
       font-size: 20px;
     }
@@ -575,7 +646,8 @@ meta信息
       font-size: 20px;
     }
   }
-@keyframes heartScale {
+
+  @keyframes heartScale {
     0% {
       font-size: 13px;
     }
