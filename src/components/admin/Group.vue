@@ -113,6 +113,14 @@
         this.$http.delete(this.$config.group.url, {params: params})
           .then(response => {
             if (response.status === 204) {
+              let data = this.tableData[index];
+              let new_ = {
+                newType: 8,
+                sender: Number(localStorage.getItem('userId')),
+                receiver: data.user._id,
+                content: data.name
+              };
+              this.$units.createSystemNews(new_);
               this.fetchGroup();
               this.$message.success("删除成功");
             } else {

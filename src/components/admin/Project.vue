@@ -15,7 +15,7 @@
         <template slot-scope="scope">
           <el-tooltip :content="'Switch value: ' + scope.row.isPass" placement="top">
             <el-switch
-              v-model="scope.row.isPass "
+              v-model="scope.row.isPass"
               active-color="#13ce66"
               inactive-color="#ff4949"
               @change="patchProject(scope.row.isPass, scope.row._id)">
@@ -117,6 +117,15 @@
         this.$http.delete(this.$config.project.url, {params: params})
           .then(response => {
             if (response.status === 204) {
+              let data = this.tableData[index];
+              let new_ = {
+                newType: 7,
+                sender: Number(localStorage.getItem('userId')),
+                receiver: data.user._id,
+                content: data.git
+              };
+              this.$units.createSystemNews(new_);
+
               this.fetchProject();
               this.$message.success("删除成功");
             } else {

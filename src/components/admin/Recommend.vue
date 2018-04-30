@@ -1,5 +1,21 @@
 <template>
   <div>
+    <el-form :inline="true" :model="search" class="demo-form-inline">
+
+      <el-form-item label="属性">
+        <el-select v-model="search.meta" placeholder="属性">
+          <el-option label="_id" value="_id"></el-option>
+          <el-option label="content" value="content"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="输入搜索内容">
+        <el-input v-model="search.content" placeholder="输入搜索内容"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form>
+
     <el-table :data="tableData" style="width: 100%">
 
       <el-table-column prop="createDateTime" label="发表日期" sortable width="100" :formatter="formatDate">
@@ -48,6 +64,10 @@
         tableData: [],
         pageSum: 1,
         count: 0,
+        search: {
+          meta: '_id',
+          content: ''
+        }
       }
     },
     mounted() {
@@ -109,6 +129,11 @@
           );
       },
 
+      // 搜索
+      onSubmit() {
+        console.log('submit!');
+      },
+
       // 处理当前页
       handleCurrentChange(page){
         this.page = Number(page);
@@ -121,8 +146,16 @@
         this.$http.delete(this.$config.recommend.url, {params: params})
           .then(response => {
             if (response.status === 204) {
-              this.fetchRecommend();
               this.$message.success("删除成功");
+              let data = this.tableData[index];
+              let new_ = {
+                newType: 6,
+                sender: Number(localStorage.getItem('userId')),
+                receiver: data.user._id,
+                content: data.title
+              };
+              this.$units.createSystemNews(new_);
+              this.fetchRecommend();
             } else {
               this.$message.error("删除失败");
             }

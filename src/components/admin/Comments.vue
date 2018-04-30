@@ -93,6 +93,14 @@
         this.$http.delete(this.$config.comment.url, {params: params})
           .then(response => {
             if (response.status === 204) {
+              let data = this.tableData[index];
+              let new_ = {
+                newType: 9,
+                sender: Number(localStorage.getItem('userId')),
+                receiver: data.user._id,
+                content: this.formatText(data)
+              };
+              this.$units.createSystemNews(new_);
               this.fetchComment();
               this.$message.success("删除成功");
             } else {
