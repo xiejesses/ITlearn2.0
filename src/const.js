@@ -23,7 +23,7 @@ const urlConfig ={
       url: `/${version}/users/change/`
     },
     change2: {
-      url: `${version}/users/pwd/change/`
+      url: `/${version}/users/pwd/change/`
     }
   },
 
