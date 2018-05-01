@@ -354,7 +354,7 @@ const router = new Router({
           path: '/admin/',
           name: 'admin_home',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminHome,
         },
@@ -362,7 +362,7 @@ const router = new Router({
           path: '/admin/user',
           name: 'admin_user',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminUser
         },
@@ -370,7 +370,7 @@ const router = new Router({
           path: '/admin/recommend',
           name: 'admin_recommend',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminRecommend
         },
@@ -378,7 +378,7 @@ const router = new Router({
           path: '/admin/tag',
           name: 'admin_tag',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminTag
         },
@@ -386,7 +386,7 @@ const router = new Router({
           path: '/admin/group',
           name: 'admin_group',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminGroup
         },
@@ -394,7 +394,7 @@ const router = new Router({
           path: '/admin/topic',
           name: 'admin_topic',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminTopic
         },
@@ -402,7 +402,7 @@ const router = new Router({
           path: '/admin/comments',
           name: 'admin_comments',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminComment
         },
@@ -410,7 +410,7 @@ const router = new Router({
           path: '/admin/projects',
           name: 'admin_projects',
           meta: {
-            requireAuth:true //表示进入该路由需要登录
+            requireManager:true //表示进入该路由需要登录
           },
           component: AdminProject
         }]
@@ -442,7 +442,7 @@ router.beforeEach((to, from, next) => {
 });
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('Manager');
-  if (to.meta.requireAuth) {
+  if (to.meta.requireManager) {
     if (token) {
       next();
     } else {
