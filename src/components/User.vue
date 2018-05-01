@@ -84,11 +84,12 @@
         userName: '',
         userEmail:'',
         currentUser: '',
+        currentUserId:'',
         userId:'',
         userInfo: '',
         followmsg: '关注',
-        follower: 0,
-        following: 0,
+        follower:0,
+        following:0,
 
         loveLink: 0,
         shareLink: 0,
@@ -107,10 +108,12 @@
     },
     mounted() {
       this.currentUser = localStorage.getItem('userName');
+      this.currentUserId = Number(localStorage.getItem('userId'));
       this.userId = Number(this.$route.params.userId);
       this.fetchUserInfo();
     },
     methods: {
+      
       saveEdit() {
         this.isEdit = false;
         this.isSave = false;
@@ -159,6 +162,14 @@
           .then(response => {
             let res = response.data;
             if(res.status === this.$status.success){
+
+              for(let i = 0; i < res.follower.length; i++) {
+                if(this.currentUserId === res.follower[i].user) {
+                  this.followmsg = '取消关注';
+                } else {
+                  this.followmsg = '关注';
+                }
+              }
               this.following = res.following.length;
               this.follower = res.follower.length;
             } else {

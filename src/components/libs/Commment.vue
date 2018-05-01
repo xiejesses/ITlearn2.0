@@ -35,13 +35,13 @@
                 <section class="comment-content">
                   <div class="user-comment-right">
                     <div class="meta">
-                      <router-link :to="{ name: 'user_article', params: { userId: comment.user.nickname }}"> {{comment.user.nickname}}</router-link>
+                      <router-link :to="{ name: 'user_article', params: { userId: comment.user._id }}"> {{comment.user.nickname}}</router-link>
                       <span class="separator">• </span>
                       <abbr class="timeago" :title="new Date(comment.createDateTime)"> {{ moment(new Date(comment.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                     </div>
                     <div v-html="comment.content" class="custom markdown-body"></div>
                     <div v-if="comment.pid" class="child-comment meta">
-                      <router-link :to="{ name: 'user_article', params: { userId: comment.pid.user.nickname }}"> @{{comment.pid.user.nickname}}: </router-link>
+                      <router-link :to="{ name: 'user_article', params: { userId: comment.pid.user._id }}"> @{{comment.pid.user.nickname}}: </router-link>
                       <div v-html="comment.pid.content" class="custom markdown-body" ></div>
                     </div>
                     <div class="reply">

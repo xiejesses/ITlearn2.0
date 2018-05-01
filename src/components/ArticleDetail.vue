@@ -7,7 +7,7 @@
             <v-gravatar v-bind:email="detail.user.email" :size='40' />
           </div>
           <div class="meta" style="margin-left:10px">
-            <router-link :to="{ name: 'like', params: { userId: detail.user._id }}">{{detail.user.nickname}}</router-link>
+            <router-link :to="{ name: 'user_article', params: { userId: detail.user._id }}">{{detail.user.nickname}}</router-link>
             <span class="separator">• </span>
             <abbr class="timeago" :title="new Date(detail.createDateTime)"> {{ moment(new Date(detail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
           </div>

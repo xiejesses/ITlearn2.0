@@ -15,7 +15,7 @@
                   {{ group.desc }}
               </div>
               <div class="author-meta">
-                <router-link :to="{ name: 'article', params: { uName: group.user._id }}"> {{ group.user.nickname }}</router-link>
+                <router-link :to="{ name: 'user_article', params: { userId: group.user._id }}"> {{ group.user.nickname }}</router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                 <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.users.length}}</span>

@@ -19,7 +19,7 @@
                 {{ project.desc }}
               </div>
               <div class="author-meta">
-                <router-link :to="{ name: 'p', params: { uName: project.user._id }}"> {{ project.user.nickname
+                <router-link :to="{ name: 'user_article', params: { userId: project.user._id }}"> {{ project.user.nickname
                   }}
                 </router-link>
                 <span class="separator">• </span>

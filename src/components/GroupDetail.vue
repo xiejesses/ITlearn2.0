@@ -56,7 +56,7 @@
                 <router-link :to="{ name:'topicdetail', params:{t_id: topic._id}}" class="article-link">{{topic.title}}</router-link>
               </h2>
               <div class="meta">
-                <router-link :to="{ name: 'like', params: { uName: topic.user.nickname }}">{{topic.user.nickname}}</router-link>
+                <router-link :to="{ name: 'user_article', params: { userId: topic.user._id }}">{{topic.user.nickname}}</router-link>
                 <span class="separator"> • </span>
                 <abbr class="timeago" :title="new Date(topic.createDateTime)">{{moment(new Date(topic.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
               </div>
