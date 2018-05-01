@@ -75,7 +75,7 @@ Vue.prototype.$units.createSystemNews = (doc, callback) => {
   axios.post(config.urlConfig.new.url, doc)
     .then(response => {
       let data = response.data;
-      if (data.status === this.$status.success) {
+      if (data.status === 0) {
         callback();
       } else {
         this.$message.error(data.message);

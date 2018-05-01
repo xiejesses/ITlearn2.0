@@ -1,17 +1,18 @@
 <template>
-  <div class="groupdetail">
+  <div class="detail">
     <main>
       <section class="group-header">
         <div class="mini-header">
           <div class="follow">
-            <p @click="addlovegroup">{{joinmsg}}</p>
+            <p v-if="detail.user._id !== userId" @click="addLoveGroup">{{joinmsg}}</p>
+            <p  @click="addLoveGroup">{{joinmsg}}</p>
           </div>
         </div>
         <div class="header-body">
-          <h2 class="group-name">{{groupdetail.name}}</h2>
-          <p class="author">by. {{groupdetail.user.nickname}}</p>
-          <p class="description">{{groupdetail.desc}}</p>
-          <p class="">成员：{{groupdetail.users.length}}</p>
+          <h2 class="group-name">{{ detail.name }}</h2>
+          <p class="author">by. {{ detail.user.nickname }}</p>
+          <p class="description">{{ detail.desc }}</p>
+          <p class="">成员：{{ detail.users.length }}</p>
         </div>
       </section>
 
@@ -29,7 +30,7 @@
           </el-dropdown>
         </div>
         <div class="publish-topic">
-          <router-link :to="{name: 'markdowneditor', query:{g_id:this.gid, isjoin:this.isjoin}}" class="LastItem">发表话题</router-link>
+          <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isJoin: this.isJoin}}" class="LastItem">发表话题</router-link>
         </div>
         <div>
           <el-dropdown>
@@ -47,9 +48,9 @@
 
       <section class="articles">
         <ul class="articles-list">
-          <li v-for="topic in topics" v-bind:key="topic._id">
+          <li v-for="topic in topics" :key="topic._id">
             <div class="user-avatar">
-              <v-gravatar v-bind:email="topic.user.email" :size='40' :alt="topic.user.nickname" />
+              <v-gravatar :email="topic.user.email" :size='40' :alt="topic.user.nickname" />
             </div>
             <div class="article-title">
               <h2>
@@ -79,15 +80,15 @@
 
 <script>
   export default {
-    name: 'groupdetail',
+    name: 'detail',
     data() {
       return {
         //   gName:'',
         gid:'',
-        userid:'',
-        groupdetail:[],
+        userId:'',
+        detail:[],
         joinmsg:'',
-        isjoin:'',
+        isJoin:'',
         topics:[],
         busy:true,
         page:1,
@@ -99,7 +100,7 @@
     },
     mounted() {
       this.gid = this.$route.params.g_id;
-      this.userid = localStorage.getItem('userId');
+      this.userId = Number(localStorage.getItem('userId'));
       this.fetchGroupDetail();
       this.fetchTopic();
     },
@@ -108,15 +109,15 @@
         let params = {
           _id: this.gid,
         };
-        this.$http.get(this.$config.group.url, {params: params}).then(response => {
+        this.$http.get(this.$config.group.url, {params: params}).then((response) => {
           let res = response.data;
           if (res.status === this.$status.success) {
-            this.groupdetail = res.data[0];
-            //this.userid保存的是字符串类型，进行indexOf时，需要先转化为整型
-            this.isjoin = this.groupdetail.users.indexOf(parseInt(this.userid));
-            console.log(`isjoin=${this.isjoin}`);
-            console.log(this.userid);
-            if (this.isjoin >= 0) {
+            this.detail = res.data[0];
+            //this.userId保存的是字符串类型，进行indexOf时，需要先转化为整型
+            this.isJoin = this.detail.users.indexOf(parseInt(this.userId));
+            console.log(`isJoin=${this.isJoin}`);
+            console.log(this.userId);
+            if (this.isJoin >= 0) {
               this.joinmsg = '退出小组';
             } else {
               this.joinmsg = '加入小组';
@@ -154,7 +155,7 @@
           );
       },
 
-      addlovegroup() {
+      addLoveGroup() {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
@@ -166,11 +167,11 @@
               let res = response.data;
               if (res.exit === 1) {
                 this.joinmsg = '退出小组';
-                this.isjoin = 0;
+                this.isJoin = 0;
                 this.$message.success(res.message);
               } else if (res.exit === 0) {
                 this.joinmsg = "加入小组";
-                this.isjoin = -1;
+                this.isJoin = -1;
                 this.$message.success(res.message);
 
               } else {

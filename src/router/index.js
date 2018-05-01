@@ -196,7 +196,7 @@ const router = new Router({
         },
         {
           path: '/g/:g_id',
-          name: 'groupdetail',
+          name: 'group_detail',
           meta: {
             requireAuth: true //表示进入该路由需要登录
           },
