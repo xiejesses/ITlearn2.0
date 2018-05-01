@@ -49,7 +49,7 @@
 
         <div id="wrap">
           <!-- <form action="" autocomplete="on"> -->
-          <input id="search" v-model="search_condition" name="search" type="text" placeholder="搜索...">
+          <input id="search" v-validate="'required'" v-model="search_condition" name="search" type="text" placeholder="搜索...">
           <router-link :to="{ name: search_name ,query: { query: search_condition}}">
             <a href="javascript:void(0)">
               <i class="el-icon-search"></i>

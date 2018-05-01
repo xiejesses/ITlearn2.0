@@ -18,6 +18,17 @@
          search_condition:'',
       }
     },
+    beforeRouteEnter (to, from, next) {
+
+      if(to.query.query != '') {
+        next()
+      } else {
+        console.log(from);
+        window.alert('请输入搜索内容！')
+        // this.$message.success('请输入搜索内容！');
+        next(false)
+      }
+    },
     mounted() {
       this.search_condition = this.$route.query.query;
       console.log(this.$route.query.query)

@@ -39,6 +39,7 @@
                   <router-link :to="{ name: 'login'}" >点击登录</router-link>
                 </h3>
               </div>
+              <div class="backtoindex"><span><router-link to="/" :exact="true" class="ListItem">返回首页</router-link></span></div>
             </div>
           </form>
         </section>
@@ -91,7 +92,7 @@
                 this.$message.error(err.response.data.message);
               });
           } else {
-              this.$message.error(`邮箱或密码有误，请重新填写！`);
+              this.$message.error(`请填写完整信息！`);
               return false;
           }
 
@@ -215,6 +216,19 @@
     margin-top: 10px;
     vertical-align: bottom;
     cursor: pointer;
+  }
+
+  .backtoindex {
+    display: flex;
+    justify-content: center;
+    background: #335680;
+  }
+  .backtoindex span {
+    padding: 8px 12px;
+  }
+  .backtoindex a {
+    text-decoration: none;
+    color: #fff;
   }
 
 </style>

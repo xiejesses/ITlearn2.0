@@ -9,11 +9,11 @@
             </h1>
             <div>
               <p>
-                <input type="text" v-model="form.git" name="git" placeholder="输入项目 url" value="" required>
+                <input type="text" v-validate="'required'" v-model="form.git" name="git" placeholder="输入项目 url" value="" required>
               </p>
             </div>
             <p>
-              <el-select v-model="form.state" placeholder="请选择">
+              <el-select v-validate="'required'" v-model="form.state" placeholder="请选择">
                 <el-option :key="0" :label="'正在开发ing...'" :value="0">
                 </el-option>
                 <el-option :key="1" :label="'招募成员'" :value="1">
@@ -127,8 +127,11 @@
       // 创建分享
       share() {
         let data = this.form;
-        console.log(data);
-        this.$http.post(this.$config.project.url, data)
+        // console.log(data);
+
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.$http.post(this.$config.project.url, data)
           .then(response => {
             let res = response.data;
             if (res.status === 0) {
@@ -142,6 +145,11 @@
             this.$message.err(err.response.data.message)
           // todo 状态码返回提示操作
         );
+          } else {
+              this.$message.error(`请填写完整信息！`);
+              return false;
+          }
+        });
       },
 
       cancel() {

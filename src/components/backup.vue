@@ -34,3 +34,18 @@
       </el-aside>
     </el-container>
     </template>
+    <script>
+    export default {
+      
+      // this.$validator.validateAll().then((result) => {
+      //     if (result) {
+            
+      //     } else {
+      //         this.$message.error(`请填写完整信息！`);
+      //         return false;
+      //     }
+      //   });
+
+    }
+    </script>
+    

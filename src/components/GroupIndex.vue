@@ -7,10 +7,11 @@
           <form name="buildform" :v-model="formGroup" id="buildform" action="#" method="post">
             <h4 class="errMessage"></h4>
             <p>
-              <el-input  class="inputstyle" v-model="formGroup.groupName" placeholder="小组名"></el-input>
+              <el-input v-validate="'required'" name="groupname"  class="inputstyle" v-model="formGroup.groupName" placeholder="小组名"></el-input>
+              <!-- <p v-show="errors.has('groupname')"  >{{ errors.first('groupname') }}</p> -->
             </p>
             <p>
-              <el-input class="inputstyle" v-model="formGroup.groupIntro" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" >
+              <el-input v-validate="'required'" class="inputstyle" v-model="formGroup.groupIntro" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" >
               </el-input>
             </p>
 
@@ -50,7 +51,9 @@
     methods:{
       createGroup() {
 
-        this.$http.post(this.$config.group.url, {
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.$http.post(this.$config.group.url, {
             name: this.formGroup.groupName,
             desc: this.formGroup.groupIntro,
             user: Number(localStorage.getItem('userId'))
@@ -68,6 +71,14 @@
         }).catch((err) => {
           this.$message.error(`请先登录！`);
         });
+          } else {
+              this.$message.error(`请填写完整信息！`);
+              return false;
+          }
+        });
+
+
+        
       },
 
       cancel() {

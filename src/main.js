@@ -16,6 +16,7 @@ import store from './store/index.js';
 import config from './const';
 
 
+
 String.prototype.format = function (args) {
   let result = this;
   if (arguments.length > 0) {

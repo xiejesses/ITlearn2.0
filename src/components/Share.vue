@@ -3,7 +3,7 @@
     <div class="main">
       <section>
         <div class="share-form">
-          <form name="shareform" :v-model="formShare" id="shareform" action="#" method="post">
+          <form name="shareform"  :v-model="formShare" id="shareform" action="#" method="post">
             <h1>
               <span :class="{veiled: isShare}" @click="isShare=true">分享链接</span>
               <!-- <span :class="{veiled: showType === 1}" @click="showType=1">分享链接</span> -->
@@ -17,17 +17,17 @@
 
             <h4 class="errMessage"></h4>
             <p>
-              <input type="text" v-model="formShare.title" name="shareTitle" placeholder="标题" value="" required>
+              <input type="text" v-validate="'required'" v-model="formShare.title" name="shareTitle" placeholder="标题" value="" required>
             </p>
             <p>
-              <el-select v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
+              <el-select v-validate="'required'" v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
                 <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
                 </el-option>
               </el-select>
             </p>
             <div v-if="isShare">
               <p>
-                <input type="text" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
+                <input type="text" v-validate="'required'" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
               </p>
             </div>
             <p>
@@ -161,8 +161,10 @@
         } else {
           data.content = "";
         }
-        console.log(data);
-        this.$http.post(this.$config.recommend.url, data)
+        // console.log(data);
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.$http.post(this.$config.recommend.url, data)
           .then(response => {
             let res = response.data;
             if (res.status === 0) {
@@ -176,6 +178,12 @@
             this.$message.err(err.message)
             // todo 状态码返回提示操作
           );
+          } else {
+              this.$message.error(`请填写完整信息！`);
+              return false;
+          }
+        });
+        
       },
 
       // 创建标签

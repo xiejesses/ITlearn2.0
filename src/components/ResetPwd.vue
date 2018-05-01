@@ -33,7 +33,9 @@
     methods: {
       resetPwd() {
         // 发送邮件
-        this.$http.post(this.$config.system.email.url, {email: this.formSetting.email})
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.$http.post(this.$config.system.email.url, {email: this.formSetting.email})
           .then((response) => {
             let data = response.data;
             if (data.status === this.$status.success) {
@@ -45,6 +47,12 @@
           .catch(err => {
               this.$message.error(err.response.data.message);
           });
+          } else {
+              this.$message.error(`请填写邮箱！`);
+              return false;
+          }
+        });
+        
       }
     }
   }

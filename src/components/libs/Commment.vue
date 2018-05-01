@@ -11,7 +11,7 @@
           <v-gravatar :email="currentUserEmail" ></v-gravatar>
         </div>
         <div class="mavon-editor">
-          <mavon-editor v-on:change="getCommentContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
+          <mavon-editor  v-on:change="getCommentContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
                         v-bind:default_open="edit"></mavon-editor>
         </div>
       </div>
@@ -55,7 +55,7 @@
                         <v-gravatar v-bind:email="currentUserEmail"  :size='40' />
                       </div>
                       <div class="mavon-editor">
-                        <mavon-editor  v-on:change="getReplyContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
+                        <mavon-editor v-validate="'required'" v-on:change="getReplyContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"
                                        v-bind:default_open="edit"></mavon-editor>
                       </div>
                     </div>
@@ -101,6 +101,7 @@
         replyContent: '',
         comments: [],
         commentNum: 0,
+        // NullContent:true,
         busy: true,
         page: 1,
         pageSize: 5,
@@ -126,9 +127,15 @@
     methods: {
       getCommentContent(val, render) {
         this.commentContent = render;
+        // if(this.commentContent === '') {
+        //   this.NullContent = false;
+        // }
       },
       getReplyContent(val, render) {
         this.replyContent = render;
+        // if(this.replyContent === '') {
+        //   this.NullContent = false;
+        // }
       },
       showReplyLayout(index) {
         this.i = index;
@@ -157,7 +164,10 @@
           data.pid = Number(pid);
           data.content = this.replyContent;
         }
-        this.$http.post(this.$config.comment.url, data)
+
+        // this.$validator.validateAll().then((result) => {
+          if (this.commentContent !== '' || this.replyContent !== '') {
+            this.$http.post(this.$config.comment.url, data)
           .then(response => {
             let res = response.data;
             if (res.status === this.$status.success) {
@@ -172,6 +182,13 @@
           .catch(err => {
             this.$message.error(`${err.message}`, 'ERROR!');
           })
+          } else {
+              this.$message.error(`还没有输入内容呢！`);
+              return false;
+          }
+        // });
+
+        
       },
 
       // 获取评论列表
