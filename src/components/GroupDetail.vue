@@ -11,7 +11,7 @@
           <h2 class="group-name">{{ detail.name }}</h2>
           <p class="author">by. {{ detail.user.nickname }}</p>
           <p class="description">{{ detail.desc }}</p>
-          <p class="">成员：{{ detail.users.length + 1 }} </p>
+          <p class="">成员：{{ detail.users.length }} </p>
         </div>
       </section>
       <section class="user-action">

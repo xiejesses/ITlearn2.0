@@ -28,7 +28,7 @@
                 <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                 <span class="separator"> • </span>
                 <i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i>
-                <span class="users-number">{{ group.users.length + 1 }}</span>
+                <span class="users-number">{{ group.users.length }}</span>
 
               </div>
             </section>

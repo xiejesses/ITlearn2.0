@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <section class="data-body">
-      <h2>数据统计</h2>
-      <div class="today-data">
+      <h2>欢迎来到 ITlearn 后台管理系统</h2>
+      <!-- <div class="today-data">
         <div>当日数据</div>
         <div><span>12</span> 新增用户</div>
         <div><span>23</span> 新增推荐</div>
@@ -13,7 +13,7 @@
         <div><span>6</span> 所有用户</div>
         <div><span>6</span> 所有推荐</div>
         <div><span>6</span> 所有小组</div>
-      </div>
+      </div> -->
     </section>
   </div>
 </template>
@@ -24,6 +24,11 @@
     data() {
 
       return {
+      }
+    },
+    methods: {
+      fetAllData() {
+        
       }
     }
   };

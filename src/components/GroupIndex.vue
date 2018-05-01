@@ -45,7 +45,8 @@
           groupIntro:''
         },
         isbuilding:false,
-        msg: '学习小组'
+        buildGroupUser:'',
+        gid:'',
       }
     },
     methods:{
@@ -60,6 +61,9 @@
           }).then(response => {
           let res = response.data;
           if (res.status === this.$status.success) {
+            this.buildGroupUser = res.data.user;
+            this.gid = res.data._id;
+            this.joinOwn();
             this.$router.push('/groupindex');
             this.$message.success('创建成功');
             this.isbuilding = false;
@@ -76,9 +80,17 @@
               return false;
           }
         });
+      },
 
-
-        
+      joinOwn() {
+        let params = {group: this.gid, user: this.buildGroupUser};
+        this.$http.get(this.$config.group.join.url, {params: params})
+            .then(response => {
+              
+            })
+            .catch(err => {
+              this.$message.error(err.response.data.message);
+            });
       },
 
       cancel() {
