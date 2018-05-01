@@ -14,7 +14,35 @@
           <p class="">成员：{{ detail.users.length + 1 }} </p>
         </div>
       </section>
-
+      <section class="user-action">
+        <div>
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              选项
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>全部</el-dropdown-item>
+              <el-dropdown-item>我的话题</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <div class="publish-topic">
+          <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isJoin: this.isJoin}}" class="LastItem">发表话题</router-link>
+        </div>
+        <div>
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              排序
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>最新</el-dropdown-item>
+              <el-dropdown-item>最热</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </section>
       <topic-index :group="gid"></topic-index>
 
     </main>
