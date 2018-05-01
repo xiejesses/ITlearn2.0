@@ -2,11 +2,13 @@
   <div class="index">
     <main>
       <div class="tag_bg">
-      <span class="tagName" :style="{background:tag.color}"  v-for="(tag,tagindex) in tags" :key="tagindex">
+
+        <span class="tagName" :style="{background:tag.color}"  v-for="(tag,tagindex) in tags" :key="tagindex">
         <router-link :to="{ name: 'tag_article', params: { tagId: tag._id }}" style="border-bottom:0">
-                    {{tag.name}}
-                  </router-link>
-        </span>
+          {{tag.name}}
+        </router-link>
+      </span>
+
       <!-- <span class="tagName" :style="{background:tag.tagColor}" v-for="(tag,tagindex) in testTags" :key="tagindex">#{{tag.name}}</span> -->
       </div>
       <section class="articles">
