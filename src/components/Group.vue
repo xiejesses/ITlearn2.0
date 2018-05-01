@@ -8,17 +8,22 @@
               <v-gravatar :email="group.user.email" :size='40' :alt="group.user.nickname" ></v-gravatar>
             </section>
             <section class="groups-meta">
+
               <div class="groups-name">
-                  <h2>
-                    <router-link :to="{ name: 'group_detail', params: { g_id: group._id }}">{{group.name }}</router-link>
-                    <el-tag type="danger" size="small" v-if="!group.isPass">审核未通过</el-tag>
-                  </h2>
-                  </div>
+                <h2>
+                  <router-link :to="{ name: 'group_detail', params: { g_id: group._id }}">{{group.name }}</router-link>
+                  <el-tag type="danger" size="small" v-if="!group.isPass">审核未通过</el-tag>
+                </h2>
+              </div>
+
               <div class="groups-intro">
                   {{ group.desc }}
               </div>
+
               <div class="author-meta">
-                <router-link :to="{ name: 'user_article', params: { userId: group.user._id }}"> {{ group.user.nickname }}</router-link>
+                <router-link :to="{ name: 'user_article', params: { userId: group.user._id }}">
+                  {{ group.user.nickname }}
+                </router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                 <span class="separator"> • </span>
@@ -28,7 +33,7 @@
               </div>
             </section>
             <section class="join-group">
-              <button v-if="group.user._id === userId " @click="deleteGroup(group._id,index)"> 解散 </button>
+              <span v-if="group.user._id === userId " @click="deleteGroup(group._id,index)">  </span>
               <button v-else-if="joinGroupId.indexOf(group._id) >= 0" @click="addLoveGroup(group._id,index)">退出</button>
               <button v-else @click="addLoveGroup(group._id,index)">加入</button>
               </section>
