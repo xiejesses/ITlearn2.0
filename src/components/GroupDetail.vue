@@ -28,7 +28,7 @@
           </el-dropdown>
         </div>
         <div class="publish-topic">
-          <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isJoin: this.isJoin}}" class="LastItem">发表话题</router-link>
+          <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isjoin: this.isJoin}}" class="LastItem">发表话题</router-link>
         </div>
         <div>
           <el-dropdown>
