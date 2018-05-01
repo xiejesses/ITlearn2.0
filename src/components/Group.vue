@@ -5,11 +5,11 @@
         <ul class="groups-list">
           <li v-for="(group, index) in groups" :key="group._id">
             <section class="user-avatar">
-              <v-gravatar :email="group.user.email" ::size='40' :alt="group.user.nickname" ></v-gravatar>
+              <v-gravatar :email="group.user.email" :size='40' :alt="group.user.nickname" ></v-gravatar>
             </section>
             <section class="groups-meta">
               <div class="groups-name">
-                  <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.name }}</router-link></h2>
+                  <h2><router-link :to="{ name: 'group_detail', params: { g_id: group._id }}">{{group.name }}</router-link></h2>
                   </div>
               <div class="groups-intro">
                   {{ group.desc }}
@@ -18,13 +18,16 @@
                 <router-link :to="{ name: 'user_article', params: { userId: group.user._id }}"> {{ group.user.nickname }}</router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.users.length}}</span>
+                <span class="separator"> • </span>
+                <i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i>
+                <span class="users-number">{{ group.users.length + 1 }}</span>
 
               </div>
             </section>
             <section class="join-group">
-              <button v-if="lovegroupid.indexOf(group._id) >= 0" @click="addlovegroup(group._id,index)">退出</button>
-              <button v-else @click="addlovegroup(group._id,index)">加入</button>
+              <button v-if="group.user._id === userId " @click="deleteGroup(group._id,index)"> 解散 </button>
+              <button v-else-if="joinGroupId.indexOf(group._id) >= 0" @click="addLoveGroup(group._id,index)">退出</button>
+              <button v-else @click="addLoveGroup(group._id,index)">加入</button>
               </section>
           </li>
         </ul>
@@ -46,8 +49,9 @@
         busy:true,
         page:1,
         pageSize:5,
-        lovegroupid: [],
-        member:''
+        joinGroupId: [],
+        member:'',
+        userId: Number(localStorage.getItem('userId'))
       }
     },
     mounted() {
@@ -55,6 +59,13 @@
        this.fetchLovegroup()
     },
     methods: {
+
+      // 删除小组
+      deleteGroup(_id) {
+        this.$http.delete({});
+      },
+
+      //
       fetchGroup(flag) {
         let params = {
           page: this.page,
@@ -96,7 +107,7 @@
       },
 
       // 添加喜爱的小组
-      addlovegroup(group_id, index) {
+      addLoveGroup(group_id, index) {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
@@ -110,10 +121,10 @@
             let res = response.data;
             if (res.status === this.$status.success) {
               if (res.exit === 0) {
-                this.$units.remove(this.lovegroupid, group_id);
+                this.$units.remove(this.joinGroupId, group_id);
                 this.$message.success('退出成功');
               } else {
-                this.lovegroupid.push(group_id);
+                this.joinGroupId.push(group_id);
                 this.$message.success('加入成功');
               }
             } else {
@@ -135,9 +146,9 @@
             .then(response => {
               let res = response.data;
               if (res.status === this.$status.success) {
-                this.lovegroupid = [];
+                this.joinGroupId = [];
                 for (let group of res.data) {
-                  this.lovegroupid.push(group._id);
+                  this.joinGroupId.push(group._id);
                 }
               } else {
                 // todo 获取当前用户喜爱小组失败
