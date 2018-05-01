@@ -54,7 +54,10 @@
             </div>
             <div class="article-title">
               <h2>
-                <router-link :to="{ name:'topicdetail', params:{t_id: topic._id}}" class="article-link">{{topic.title}}</router-link>
+                <router-link :to="{ name:'topicdetail', params:{t_id: topic._id}}" class="article-link">
+                  {{topic.title}}
+                </router-link>
+                <el-tag type="danger" size="small" v-if="!topic.isPass">审核未通过</el-tag>
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'user_article', params: { userId: topic.user._id }}">{{topic.user.nickname}}</router-link>
@@ -132,7 +135,8 @@
         let params = {
           page: this.page,
           page_size: this.pageSize,
-          group: this.gid
+          group: this.gid,
+          isPass: true
         };
         this.$http.get(this.$config.topic.url, {params: params})
           .then(response => {

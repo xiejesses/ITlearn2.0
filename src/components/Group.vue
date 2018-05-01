@@ -9,7 +9,10 @@
             </section>
             <section class="groups-meta">
               <div class="groups-name">
-                  <h2><router-link :to="{ name: 'group_detail', params: { g_id: group._id }}">{{group.name }}</router-link></h2>
+                  <h2>
+                    <router-link :to="{ name: 'group_detail', params: { g_id: group._id }}">{{group.name }}</router-link>
+                    <el-tag type="danger" size="small" v-if="!group.isPass">审核未通过</el-tag>
+                  </h2>
                   </div>
               <div class="groups-intro">
                   {{ group.desc }}
@@ -70,10 +73,12 @@
         let params = {
           page: this.page,
           page_size: this.pageSize,
+          isPass: true
         };
 
         if(this.$route.name === "my_group") {
           params.user = Number(localStorage.getItem("userId"));
+          delete params.isPass;
         }
 
         if(this.$route.name === "join_group") {
