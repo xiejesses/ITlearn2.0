@@ -88,7 +88,7 @@
 
             <router-link v-else-if="'topic' in message && message.newType === 4 && message.topic"
                          :to="{ name: 'topicdetail', params: { t_id: message.topic._id }}">
-              <span v-if="message.recommend">{{ message.topic.title }}</span>
+              <span v-if="message.topic">{{ message.topic.title }}</span>
               <span v-else> 话题已被删除 </span>
             </router-link>
 
