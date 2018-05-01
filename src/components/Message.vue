@@ -34,21 +34,22 @@
         <router-link class="username" :to="{ name: 'user_article', params: { userId: message.sender.user_id }}">
           {{message.sender.nickname}}
         </router-link>
-        <div v-if="message.newType === 5">发表了</div>
         <article class="message-body">
           <div class="message-content">
-            <router-link v-if="'recommend' in message" :to="{name: 'share_detail', params: {shareId: message.recommend._id}}">
-              <span v-if="message.recommend">{{ message.recommend.title }}</span>
-              <span v-else-if="message.recommend"> 推荐已被删除 </span>
+            <span v-if="message.newType === 5">发表了</span>
+            <router-link v-if="'recommend' in message && message.recommend" :to="{name: 'share_detail', params: {shareId: message.recommend._id}}">
+              {{ message.recommend.title }}
             </router-link>
-            <router-link v-else-if="'topic' in message" :to="{name: 'topicdetail', params: {t_id: message.topic._id}}">
-              <span v-if="message.topic">{{ message.topic.title }}</span>
-              <span v-else-if="message.topic"> 话题已被删除 </span>
+            <el-tag v-else-if="!message.recommend" :color="'#F56C6C'" size="mini" style="color:white" >推荐已被删除</el-tag>
+
+            <router-link v-else-if="'topic' in message && message.topic" :to="{name: 'topicdetail', params: {t_id: message.topic._id}}">
+              {{ message.topic.title }}
             </router-link>
-            <router-link v-else-if="'project' in message" :to="{ name: 'project_detail', params: { projectId: message.project._id }}">
-              <span v-if="message.project">{{ message.project.name }}</span>
-              <span v-else-if="message.project"> 项目已被删除 </span>
+            <el-tag v-else-if="!message.topic" :color="'#F56C6C'" size="mini" style="color:white" >话题已被删除</el-tag>
+
+            <router-link v-else-if="'project' in message && message.project" :to="{ name: 'project_detail', params: { projectId: message.project._id }}">
             </router-link>
+            <el-tag v-else-if="!message.project" :color="'#F56C6C'" size="mini" style="color:white" >项目已被删除</el-tag>
           </div>
           <div class="time">
             <abbr class="timeago" :title="new Date(message.date)"> {{ moment(new Date(message.date), "YYYYMMDDHHmmss").fromNow() }}</abbr>
@@ -250,7 +251,7 @@
   }
 
   .time {
-    margin-top: 20px;
+    margin-top: 10px;
     color: #C7C7C7;
   }
 
