@@ -60,6 +60,18 @@
           group: this.gid,
           isPass: true
         };
+
+        // 添加查询规则
+        if (this.$route.name === "search_topic") {
+          params.$ = JSON.stringify({
+            title: {
+              $regex: this.$route.query.query
+            },
+            group: this.gid,
+            isPass: true
+          });
+        }
+
         this.$http.get(this.$config.topic.url, {params: params})
           .then(response => {
             let res = response.data;

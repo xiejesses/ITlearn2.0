@@ -70,18 +70,20 @@ const router = new Router({
             {
               path: '',
               name: 'search_article',
-              // meta: {
-              //   requireAuth:true //表示进入该路由需要登录
-              // },
               component: Article
             },
             {
               path: '/search_group',
               name: 'search_group',
-              // meta: {
-              //   requireAuth:true //表示进入该路由需要登录
-              // },
               component: Group
+            }, {
+              path: '/search_topic',
+              name: 'search_topic',
+              component: TopicIndex
+            }, {
+              path: '/search_project',
+              name: 'search_project',
+              component: ProjectIndex
             }
           ]
         },

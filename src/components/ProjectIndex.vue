@@ -64,6 +64,17 @@
           isPass: true
         };
 
+        // 添加查询规则
+        if (this.$route.name === "search_project") {
+          params.$ = JSON.stringify({
+            name: {
+              $regex: this.$route.query.query
+            },
+            group: this.gid,
+            isPass: true
+          });
+        }
+
         this.$http.get(this.$config.project.url, {params: params})
           .then((response) => {
             let res = response.data;

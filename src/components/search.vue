@@ -3,6 +3,8 @@
     <div class="tab">
       <router-link :to="{ name: 'search_article', query: {query: $route.query.query}}" :exact="true" class="ListItem">文章</router-link>
       <router-link :to="{ name: 'search_group', query: {query: $route.query.query}}" class="ListItem">小组</router-link>
+      <router-link :to="{ name: 'search_topic', query: {query: $route.query.query}}" class="ListItem">话题</router-link>
+      <router-link :to="{ name: 'search_project', query: {query: $route.query.query}}" class="ListItem">项目</router-link>
     </div>
 
     <router-view :key="key"></router-view>
@@ -20,11 +22,11 @@
     },
     beforeRouteEnter (to, from, next) {
 
-      if(to.query.query != '') {
+      if(to.query.query !== '') {
         next()
       } else {
         console.log(from);
-        window.alert('请输入搜索内容！')
+        window.alert('请输入搜索内容！');
         // this.$message.success('请输入搜索内容！');
         next(false)
       }
