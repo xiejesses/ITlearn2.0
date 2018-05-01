@@ -9,7 +9,8 @@
             </h1>
             <div>
               <p>
-                <input type="text" v-validate="'required'" v-model="form.git" name="git" placeholder="输入项目 url" value="" required>
+                <input type="text" v-validate="'required|url'" v-model="form.git" name="git" placeholder="输入项目 url" value="" required>
+                <span v-show="errors.has('git')" style="font-size:15px">{{ errors.first('git') }}</span>
               </p>
             </div>
             <p>
@@ -146,7 +147,7 @@
           // todo 状态码返回提示操作
         );
           } else {
-              this.$message.error(`请填写完整信息！`);
+              this.$message.error(`请检查或填写完整信息！`);
               return false;
           }
         });

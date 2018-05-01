@@ -27,7 +27,8 @@
             </p>
             <div v-if="isShare">
               <p>
-                <input type="text" v-validate="'required'" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
+                <input type="text" v-validate="'required|url'" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
+                <span v-show="errors.has('shareUrl')" style="font-size:15px">{{ errors.first('shareUrl') }}</span>
               </p>
             </div>
             <p>
@@ -179,7 +180,7 @@
             // todo 状态码返回提示操作
           );
           } else {
-              this.$message.error(`请填写完整信息！`);
+              this.$message.error(`请检查或填写完整信息！`);
               return false;
           }
         });
