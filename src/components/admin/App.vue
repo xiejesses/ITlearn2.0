@@ -52,8 +52,8 @@
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"><span> 管理员</span></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>我的首页</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+              <!-- <el-dropdown-item>我的首页</el-dropdown-item> -->
+              <el-dropdown-item @click.native="ManagerLoginOut">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
 
@@ -77,7 +77,14 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+
+  methods:{
+    ManagerLoginOut() {
+      localStorage.removeItem('Manager');
+      this.$router.go(0);
+    }
+  }
 }
 </script>
 

@@ -22,7 +22,7 @@
       </el-table-column>
       <el-table-column prop="createDateTime" label="注册时间" width="180" :formatter="formatDate">
       </el-table-column>
-      <el-table-column prop="nickname" label="用户昵称" width="180" @click="">
+      <el-table-column prop="nickname" label="用户昵称" width="180">
       </el-table-column>
       <el-table-column prop="email" label="邮箱">
       </el-table-column>

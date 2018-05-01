@@ -128,9 +128,9 @@ const router = new Router({
           path: '/share',
           name: 'share',
           //添加路由元信息
-          meta: {
-            requireAuth: true //表示进入该路由需要登录
-          },
+          // meta: {
+          //   requireAuth: true //表示进入该路由需要登录
+          // },
           component: Share
         },
         {
@@ -340,51 +340,78 @@ const router = new Router({
 
 
     {
-      path: '/admin/',
+      path: '/admin',
       name: 'admin',
       meta: {
-        requireManager: true //表示进入该路由需要登录
+        requireAuth:true //表示进入该路由需要登录
       },
+      // meta: {
+      //   requireManager: true //表示进入该路由需要登录
+      // },
       component: AdminApp,
       children: [
         {
           path: '/admin/',
           name: 'admin_home',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminHome,
         },
         {
           path: '/admin/user',
           name: 'admin_user',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminUser
         },
         {
           path: '/admin/recommend',
           name: 'admin_recommend',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminRecommend
         },
         {
           path: '/admin/tag',
           name: 'admin_tag',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminTag
         },
         {
           path: '/admin/group',
           name: 'admin_group',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminGroup
         },
         {
           path: '/admin/topic',
           name: 'admin_topic',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminTopic
         },
         {
           path: '/admin/comments',
           name: 'admin_comments',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminComment
         },
         {
           path: '/admin/projects',
           name: 'admin_projects',
+          meta: {
+            requireAuth:true //表示进入该路由需要登录
+          },
           component: AdminProject
         }]
     }
@@ -397,13 +424,30 @@ const router = new Router({
 // 每个路由皆会的钩子函数
 // to 进入 from 离开 next 传递
 router.beforeEach((to, from, next) => {
-  let token = localStorage.getItem('token');
+  let token = localStorage.getItem('userName');
   if (to.meta.requireAuth) {
     if (token) {
       next();
     } else {
       next({
         path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  } else {
+    next()
+  }
+});
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('Manager');
+  if (to.meta.requireAuth) {
+    if (token) {
+      next();
+    } else {
+      next({
+        path: '/admin_login',
         query: {
           redirect: to.fullPath
         }
