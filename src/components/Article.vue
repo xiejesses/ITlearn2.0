@@ -21,6 +21,7 @@
                   <i v-if="!article.content" class="chain el-icon-fa el-icon-fa-link" aria-hidden="true"></i>
                 </router-link>
                 <!-- <a :href="article.url" target="_bank" class="article-link"></a> -->
+                <el-tag type="danger" size="small" v-if="!article.isPass">审核未通过</el-tag>
               </h2>
               <div class="meta">
                 <router-link :to="{ name: 'user_article', params: { userId: article.user._id }}">{{article.user.nickname}}</router-link>
@@ -227,11 +228,13 @@
         let params = {
           page: this.page,
           page_size: this.pageSize,
+          isPass: true
         };
         let url = this.$config.recommend.url;
 
         if (this.$route.params.userId) {
           params.user = this.$route.params.userId;
+          delete params.isPass
         }
 
         if (this.$route.params.tagId) {

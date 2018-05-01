@@ -13,6 +13,7 @@
                   <router-link :to="{ name: 'project_detail', params: { projectId: project._id }}">
                     {{project.name }}
                   </router-link>
+                  <el-tag type="danger" size="small" v-if="!project.isPass">审核未通过</el-tag>
                 </h2>
               </div>
               <div class="projects-intro">
