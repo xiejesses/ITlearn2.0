@@ -80,9 +80,9 @@
               .then(response => {
                 let res = response.data.data;
                 if (response.data.status === 0) {
-                  this.userLogin(res);
-                  this.$message.success("注册成功");
-                  this.$router.push('/');
+//                  this.userLogin(res);
+                  this.$message.success("注册成功, 已发送邮件");
+//                  this.$router.push('/');
                 } else {
                   this.$message.error("注册异常");
                   return false;

@@ -27,6 +27,7 @@ import NotificationIndex from '@/components/NotificationIndex';
 import Message from '@/components/Message';
 import SystemNotice from '@/components/SystemNotice';
 import TopicIndex from '@/components/TopicIndex';
+import TurnToPage from '@/components/TurnToPage';
 // import Notice from '@/components/Notice';
 
 
@@ -294,6 +295,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/turn_page',
+      name: 'turn_to_page',
+      component: TurnToPage
     },
     {
       path: '/admin_login',
