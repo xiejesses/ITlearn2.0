@@ -48,7 +48,10 @@
             </ul>
           </div>
           <div class="follow">
-            <button v-show="userName != currentUser" @click="follow">{{followmsg}}</button>
+            <button v-show="userName != currentUser" @click="follow">
+              <span v-if="isFollow">取消关注</span>
+              <span v-else>关注</span>
+            </button>
           </div>
         </div>
       </section>
@@ -96,6 +99,8 @@
 
         joinGroup: 0,
         createGroup: 0,
+
+        isFollow: false,
         isEdit: false,
         isSave: false,
         isSettintgPwd:false,
@@ -113,7 +118,7 @@
       this.fetchUserInfo();
     },
     methods: {
-      
+
       saveEdit() {
         this.isEdit = false;
         this.isSave = false;
@@ -157,21 +162,12 @@
               this.$message.error(err.response.data.message);
           });
 
-        // 请求获取用户的 正在关注用户数, 关注者用户
+        // 请求获取用户的 正在关注用户数
         this.$http.get(this.$config.relation.count.url, {params: {user: this.userId}})
-          .then(response => {
+          .then((response) => {
             let res = response.data;
             if(res.status === this.$status.success){
-
-              for(let i = 0; i < res.follower.length; i++) {
-                if(this.currentUserId === res.follower[i].user) {
-                  this.followmsg = '取消关注';
-                } else {
-                  this.followmsg = '关注';
-                }
-              }
-              this.following = res.following.length;
-              this.follower = res.follower.length;
+              this.following = res.count;
             } else {
               this.$message.error(res.message);
             }
@@ -179,6 +175,39 @@
           .catch(err => {
             this.$message.error(err.response.data.message);
           });
+
+        // 获取被关注数
+        this.$http.get(this.$config.relation.count.url, {params: {follower: this.userId}})
+          .then((response) => {
+            let res = response.data;
+            if(res.status === this.$status.success){
+              this.follower = res.count;
+            } else {
+              this.$message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        if(this.userId !== this.currentUserId)
+          this.$http.get(this.$config.relation.url, {params: {user: this.currentUserId, follower: this.userId}})
+            .then(response => {
+              let data = response.data;
+              if (data.status === this.$status.success) {
+                this.isFollow = data.data.length !== 0;
+              } else {
+                this.$message.error(data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              console.log(err.stack);
+              if (err.response) {
+                this.$message.error(err.response.data.message);
+              }
+            });
+
 
         this.$http.get(this.$config.collection.count.url, {params: {user: this.userId}})
           .then(response => {
@@ -236,11 +265,11 @@
 
             //todo 此处的响应结果需要重新定制
             if (res.message === "关注成功") {
-              this.followmsg = "取消关注";
+              this.isFollow = true;
               this.follower++;
               this.$message.success(res.message);
             } else if (res.message === "取消关注成功") {
-              this.followmsg = "关注";
+              this.isFollow = false;
               this.follower--;
               this.$message.success(`${res.message}`)
             } else {
