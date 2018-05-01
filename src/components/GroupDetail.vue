@@ -4,8 +4,7 @@
       <section class="group-header">
         <div class="mini-header">
           <div class="follow">
-            <p v-if="detail.user._id !== userId" @click="addLoveGroup">{{joinmsg}}</p>
-            <p  @click="addLoveGroup">{{joinmsg}}</p>
+            <p v-if="detail.user._id !== userId" @click="addLoveGroup"> {{ joinmsg }}</p>
           </div>
         </div>
         <div class="header-body">
@@ -20,7 +19,7 @@
         <div>
           <el-dropdown>
             <span class="el-dropdown-link">
-              选项
+                选项
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
