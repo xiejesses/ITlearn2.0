@@ -3,51 +3,71 @@
     <div class="main">
       <section>
         <div class="share-form">
-          <form name="shareform"  :v-model="formShare" id="shareform" action="#" method="post">
-            <h1>
+          <form name="shareform" :v-model="formShare" id="shareform" action="#" method="post">
+
+            <h1 v-if="!isModify">
               <span :class="{veiled: !isShare}" @click="isShare=!isShare">分享链接</span>
-              <!-- <span :class="{veiled: showType === 1}" @click="showType=1">分享链接</span> -->
               •
               <span :class="{veiled: isShare}" @click="isShare=!isShare">写文章</span>
-              <!-- <span :class="{veiled: showType === 2}" @click="showType=2">写文章</span> -->
-              <!-- •
-              <span :class="{veiled: showType === 3}" @click="showType=3">github</span> -->
             </h1>
 
+            <h1 v-else>
+              <span class="veiled" >修改推荐</span>
+            </h1>
 
-            <h4 class="errMessage"></h4>
             <p>
-              <input type="text" v-validate="'required'" v-model="formShare.title" name="shareTitle" placeholder="标题" value="" required>
+              <input type="text" :v-validate="'required'" v-model="formShare.title" name="shareTitle" placeholder="标题" value="" required>
             </p>
-            <p>
-              <el-select v-validate="'required'" v-model="formShare.tags" multiple filterable="" allow-create="false" default-first-option placeholder="请选择标签">
-                <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name">
-                </el-option>
+
+            <p v-if="!isModify">
+              <el-select :v-validate="'required'" v-model="formShare.tags" multiple :allow-create="false"
+                         placeholder="请选择标签"  filterable	>
+                <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </p>
-            <div v-if="isShare">
+            <p v-if="isModify">
+              <el-select :v-validate="'required'" :v-model="formShare.tags" multiple :allow-create="false"
+                         placeholder="请选择标签"  :value="formShare.tags"  filterable	>
+                <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name"></el-option>
+              </el-select>
+            </p>
+
+            <div v-if="!isModify && isShare">
+              <p>
+                <input type="text" v-validate="'required'" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
+              </p>
+            </div>
+            <div v-else-if="isModify && formShare.url">
               <p>
                 <input type="text" v-validate="'required|url'" v-model="formShare.url" name="shareUrl" placeholder="分享网址" value="" required>
                 <span v-show="errors.has('shareUrl')" style="font-size:15px">{{ errors.first('shareUrl') }}</span>
               </p>
             </div>
+
             <p>
               <el-input type="textarea" :rows="3" placeholder="请输入简介" v-model="formShare.desc">
               </el-input>
             </p>
-            <div v-if="!isShare">
-              <mavon-editor v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor" v-bind:toolbars="Toolbars"></mavon-editor>
+
+            <!--编辑器-->
+            <div v-if="!isModify && !isShare">
+              <mavon-editor @save="getContent" @change="getContent" style="height: 100%" placeholder="markdown editor" :toolbars="Toolbars"></mavon-editor>
             </div>
+            <div v-else-if="isModify && !formShare.url" >
+              <mavon-editor @save="getContent" @change="getContent" v-model="formShare.render" style="height: 100%" placeholder="markdown editor" :toolbars="Toolbars"></mavon-editor>
+            </div>
+
             <div class="buttons">
               <p class="submit">
-                <el-button type="primary" @click="share">发布</el-button>
+                <el-button type="primary" @click="share" v-if="!isModify">发布</el-button>
+                <el-button type="primary" @click="modify" v-if="isModify">修改</el-button>
                 <a href="javascript:;" class="cancel" @click="cancel">取消</a>
               </p>
             </div>
           </form>
 
         </div>
-        <div class="tips">
+        <div class="tips" v-if="!isModify">
           <h2>Tips:</h2>
           <h3>什么值得分享 ?</h3>
 
@@ -89,9 +109,12 @@
           title: '',
           tags: [],
           content: '',
-          desc: ''
+          desc: '',
+          render: ''
         },
+        isModify: this.$route.name === 'modify_recommend',
         isShare: true,
+
         Toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
@@ -133,12 +156,42 @@
     },
     mounted() {
       this.fetchTags();
+
+      if (this.isModify)
+        this.$http.get(this.$config.recommend.url, {params: {_id: Number(this.$route.params.recommendId)}})
+          .then(response => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              let formShare = data.data[0];
+              this.formShare.url = formShare.url;
+              this.formShare.title = formShare.title;
+              this.formShare.render = formShare.render;
+              formShare.tags.forEach((tag) => {
+                this.formShare.tags.push(tag.name);
+              });
+              this.formShare.desc = formShare.desc;
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.stack);
+            if (err.response) {
+              this.$message.error(err.response.data.message);
+            }
+          });
     },
     methods: {
+      getName(row) {
+        return row.name;
+      },
       getContent(val, render) {
         this.formShare.content = render;
-        console.log(render);
+        this.formShare.render = val;
+        console.log(val, render);
       },
+
       // 创建分享
       share() {
         if (this.title === '') {
@@ -187,13 +240,12 @@
 
       },
 
-      // 创建标签
+      // 获取标签
       fetchTags() {
         this.$http.get(this.$config.tag.url).then(response => {
           let res = response.data;
           if (res.status === this.$status.success) {
             this.options = res.data;
-            console.log(this.options)
           } else {
             console.log("获取标签失败");
             return false;
@@ -203,6 +255,28 @@
         );
 
       },
+
+      // 修改
+      modify() {
+        this.$http.patch(this.$config.recommend.url + "?_id=" + Number(this.$route.params.recommendId), this.formShare)
+          .then(response => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              this.$message.success("修改成功");
+              this.$router.push({name: "share_detail", params: {shareId: Number(this.$route.params.recommendId)}})
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.stack);
+            if (err.response) {
+              this.$message.error(err.response.data.message);
+            }
+          });
+      },
+
 
       cancel() {
         this.formShare.url = '';

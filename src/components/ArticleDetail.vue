@@ -12,15 +12,19 @@
             <abbr class="timeago" :title="new Date(detail.createDateTime)"> {{ moment(new Date(detail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
           </div>
         </div>
-          <div v-show="detail.user._id === currentUserId" style="float:right">
-            <el-dropdown size="mini" split-button type="primary">
-              选项
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>修改</el-dropdown-item>
-                <el-dropdown-item>删除</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
+        <div v-show="detail.user._id === currentUserId" style="float:right">
+          <el-dropdown size="mini" split-button type="primary">
+            选项
+            <el-dropdown-menu slot="dropdown">
+              <router-link :to="{name: 'modify_recommend', params: {recommendId: detail._id}}" style="{text-decoration:none}">
+                <el-dropdown-item>
+                 修改
+                </el-dropdown-item>
+              </router-link>
+              <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <p class="topic-name">{{detail.title}}</p>
         <p v-show="detail.desc" class="desc">{{detail.desc}}</p>
         <div v-if="!detail.url || detail.url == ''" v-html="detail.content" class="markdown-body"></div>

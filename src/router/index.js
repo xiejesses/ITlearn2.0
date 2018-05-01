@@ -98,6 +98,21 @@ const router = new Router({
           component: Share
         },
         {
+          path: '/modify_recommend/:recommendId',
+          name: 'modify_recommend',
+          component: Share
+        },
+        {
+          path: '/modify_topic/:topicId',
+          name: 'modify_topic',
+          component: MarkdownEditor
+        },
+        {
+          path: '/modify_project/:projectId',
+          name: 'modify_project',
+          component: ShareProject
+        },
+        {
           path: '/shareProject',
           name: 'share_project',
           //添加路由元信息

@@ -18,6 +18,18 @@
             <el-tag size="mini" v-if="detail.state === 2">维护ing</el-tag>
           </div>
         </div>
+        <div v-show="detail.user._id === currentUserId" style="float:right">
+          <el-dropdown size="mini" split-button type="primary">
+            选项
+            <el-dropdown-menu slot="dropdown">
+              <router-link :to="{name: 'modify_project', params: {projectId: detail._id}}" style="{text-decoration:none}">
+                <el-dropdown-item>
+                  修改  </el-dropdown-item>
+              </router-link>
+              <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <p class="project-name"><a :href="detail.git">{{detail.name}}</a></p>
         <div class="tags">
           <div><span class="left">Powered by</span><span class="right"><a :href="gitDetail.owner.html_url">{{gitDetail.owner.login}}</a></span></div>
@@ -49,6 +61,7 @@
         detail: {
           user: {email: ""}
         },
+        currentUserId: Number(localStorage.getItem("userId")),
         gitDetail: {
           owner: {login: "", html_url: ""}
         },

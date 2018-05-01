@@ -12,6 +12,19 @@
             <abbr class="timeago" :title="new Date(topicdetail.createDateTime)"> {{ moment(new Date(topicdetail.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
           </div>
         </div>
+        <div v-show="topicdetail.user._id === Number(currentUserId)" style="float:right">
+          <el-dropdown size="mini" split-button type="primary">
+            选项
+            <el-dropdown-menu slot="dropdown">
+              <router-link :to="{name: 'modify_topic', params: {topicId: topicdetail._id}}" style="{text-decoration:none}">
+                <el-dropdown-item>
+                  修改
+                </el-dropdown-item>
+              </router-link>
+              <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <p class="topic-name">{{topicdetail.title}}</p>
         <div v-html="topicdetail.content" class="markdown-body"></div>
       </section>
@@ -34,8 +47,11 @@
     name: 'topicdetail',
     data() {
       return {
+        currentUserId: Number(localStorage.getItem("userId")),
         tid: '',
-        topicdetail: [],
+        topicdetail: {
+
+        },
         currentUserEmail: '',
         commentContent: ''
       }
@@ -45,8 +61,8 @@
       this.currentUserName = localStorage.getItem('userName');
       this.currentUserEmail = localStorage.getItem('userEmail');
       this.currentUserId = localStorage.getItem('userId');
-
       this.fetchTopicDetail();
+
     },
     methods: {
 
@@ -57,6 +73,7 @@
             let res = response.data;
             if (res.status === this.$status.success) {
               this.topicdetail = res.data[0];
+              console.log(this.currentUserId, this.topicdetail.user._id)
             } else {
               this.topicdetail = []
             }
