@@ -2,11 +2,10 @@
   <div class="login">
     <div class="main">
       <section class="log-in">
-
         <section class="traditional-auth">
-
           <form name="loginform" :v-model="formLogin" id="loginform" action="#" method="post" v-if="isloginfrom">
-            <h2>登录</h2>
+            <h2 v-if="isAdmin">管理员登录</h2>
+            <h2 v-else>登录</h2>
             <h4 class="errMessage"></h4>
             <p :class="{ 'control': true }">
               <input v-validate="'required|email'" v-model="formLogin.userEmail" :class="{'input': true, 'is-danger': errors.has('userEmail') }"
@@ -27,10 +26,10 @@
                 <p class="submit">
                   <a href="javascript:;" class="user-login" @click="login">登录</a>
                 </p>
-                  <router-link :to="{ name: 'resetPwd'}" style="float:right" class="ListItem">忘记密码？</router-link>
+                  <router-link v-if="!isAdmin" :to="{ name: 'resetPwd'}" style="float:right" class="ListItem">忘记密码？</router-link>
                 <!-- <p class="cancel">取消</p> -->
               </div>
-              <div class="toRegister">
+              <div class="toRegister" v-if="!isAdmin">
                 <h3 class="message">还没有帐户？
                   <router-link :to="{ name: 'register'}" >点击注册</router-link>
                 </h3>
@@ -41,7 +40,6 @@
         </section>
       </section>
     </div>
-
   </div>
 </template>
 
@@ -55,6 +53,7 @@
     data() {
       return {
         isloginfrom: true,
+        isAdmin: this.$route.name === 'admin_login',
         emailError: '',
         formLogin: {
           userEmail: '',
@@ -87,11 +86,18 @@
               if (response.data.status === 0) {
                 let res = response.data.user;
                 this.userLogin(res);
-                this.$message.success("登录成功");
+
+
                 //登录成功，跳转到要到的页面
-                this.$router.push({
-                  path: decodeURIComponent(this.$route.query.redirect || '/') //  你需要接受路由的参数再跳转
-                });
+                  if(!this.isAdmin) {
+                    this.$message.success("登录成功");
+                    this.$router.push({
+                      path: decodeURIComponent(this.$route.query.redirect || '/') //  你需要接受路由的参数再跳转
+                    });
+                  } else if (res.isManager){
+                    this.$message.success("管理员登录成功");
+                    this.$router.push({name: 'admin_home'});
+                  }
               } else {
                 this.$message.error(`${response.data.message}`);
                 return false;

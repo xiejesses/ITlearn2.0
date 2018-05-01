@@ -296,6 +296,11 @@ const router = new Router({
       component: Login
     },
     {
+      path: '/admin_login',
+      name: 'admin_login',
+      component: Login
+    },
+    {
       path: '/register',
       name: 'register',
       component: Register
