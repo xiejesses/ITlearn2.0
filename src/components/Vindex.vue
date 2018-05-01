@@ -202,7 +202,7 @@
           this.$http.get(this.$config.new.conut.url, {
             params: {
               isSee: false,
-              reveicer: Number(localStorage.getItem("userId"))
+              receiver: Number(localStorage.getItem("userId"))
             }
           })
           .then(response => {
@@ -762,6 +762,6 @@ main区
     cursor: pointer;
   }
 
-  
+
 
 </style>
