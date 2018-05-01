@@ -252,7 +252,8 @@
           params.$ = JSON.stringify({
             title: {
               $regex: this.$route.query.query
-            }
+            },
+            isPass: true
           });
         }
 
