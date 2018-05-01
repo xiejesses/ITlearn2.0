@@ -318,6 +318,8 @@ const router = new Router({
     //   name: 'notice',
     //   component: Notice
     // },
+
+    
     {
       path: '/admin/',
       name: 'admin',

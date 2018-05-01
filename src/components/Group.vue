@@ -33,7 +33,7 @@
               </div>
             </section>
             <section class="join-group">
-              <span v-if="group.user._id === userId " @click="deleteGroup(group._id,index)">  </span>
+              <span v-if="group.user._id === userId " @click="deleteGroup(group._id,index)"></span>
               <button v-else-if="joinGroupId.indexOf(group._id) >= 0" @click="addLoveGroup(group._id,index)">退出</button>
               <button v-else @click="addLoveGroup(group._id,index)">加入</button>
               </section>
