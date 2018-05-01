@@ -78,7 +78,7 @@
     methods: {
       // 获取用户
       fetchRecommend(){
-        let params = {page: this.page, page_size: this.pageSize, isPass: true};
+        let params = {page: this.page, page_size: this.pageSize};
         this.$http.get(this.$config.recommend.url, {params: params})
           .then(response => {
             let res = response.data;
