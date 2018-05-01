@@ -1,5 +1,22 @@
 <template>
   <div>
+
+    <el-form :inline="true" :model="search" class="demo-form-inline">
+      <el-form-item label="属性">
+        <el-select v-model="search.meta" placeholder="属性">
+          <el-option label="id" value="_id"></el-option>
+          <el-option label="项目名" value="name"></el-option>
+          <el-option label="项目url" value="git"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="输入搜索内容">
+        <el-input v-model="search.content" placeholder="输入搜索内容" ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form>
+
     <el-table :data="tableData" style="width: 100%">
 
       <el-table-column prop="date" label="发表日期" sortable width="120" :formatter="formatDate">
@@ -44,6 +61,10 @@
         tableData: [],
         pageSum: 1,
         count: 0,
+        search: {
+          meta: '_id',
+          content: ''
+        }
       }
     },
     mounted() {
@@ -146,7 +167,44 @@
           .catch(
             err => this.$message.error(err.response.data.message)
           );
-      }
+      },
+
+      // 搜索
+      onSubmit() {
+        let params = {};
+        if (this.search.content === "") {
+          this.$message.error("不得为空");
+          return;
+        }
+
+        if (this.search.meta in ["_id", "user", "group", "project", "recommend"]) {
+          params[this.search.meta] = Number(this.search.content);
+          if(isNaN(params._id)) {
+            this.$message.error("id为数字");
+            return;
+          }
+        } else {
+          params[this.search.meta] = {$regex: this.search.content};
+        }
+
+        this.$http.get(this.$config.project.url, {params: {$: JSON.stringify(params)}})
+          .then(response => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              this.tableData = data.data;
+              this.count = data.data.length;
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.stack);
+            if (err.response) {
+              this.$message.error(err.response.data.message);
+            }
+          });
+      },
     }
   }
 
