@@ -5,10 +5,10 @@
         <div class="share-form">
           <form name="shareform"  :v-model="formShare" id="shareform" action="#" method="post">
             <h1>
-              <span :class="{veiled: isShare}" @click="isShare=true">分享链接</span>
+              <span :class="{veiled: !isShare}" @click="isShare=!isShare">分享链接</span>
               <!-- <span :class="{veiled: showType === 1}" @click="showType=1">分享链接</span> -->
               •
-              <span :class="{veiled: !isShare}" @click="isShare=false">写文章</span>
+              <span :class="{veiled: isShare}" @click="isShare=!isShare">写文章</span>
               <!-- <span :class="{veiled: showType === 2}" @click="showType=2">写文章</span> -->
               <!-- •
               <span :class="{veiled: showType === 3}" @click="showType=3">github</span> -->
@@ -90,7 +90,7 @@
           content: '',
           desc: ''
         },
-        isShare:true,
+        isShare: true,
         Toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
@@ -183,7 +183,7 @@
               return false;
           }
         });
-        
+
       },
 
       // 创建标签
