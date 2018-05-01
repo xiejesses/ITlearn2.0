@@ -97,6 +97,8 @@
                   } else if (res.isManager){
                     this.$message.success("管理员登录成功");
                     this.$router.push({name: 'admin_home'});
+                  } else {
+                    this.$message.success("你不是管理员");
                   }
               } else {
                 this.$message.error(`${response.data.message}`);
