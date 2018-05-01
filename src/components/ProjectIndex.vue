@@ -25,9 +25,9 @@
                 </router-link>
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(project.date)">{{ moment(new Date(project.date), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                <el-tag size="mini" v-if="detail.state === 0">正在开发ing...</el-tag>
-                <el-tag size="mini" v-if="detail.state === 1">招募成员</el-tag>
-                <el-tag size="mini" v-if="detail.state === 2">维护ing</el-tag>
+                <el-tag size="mini" v-if="project.state === 0">正在开发ing...</el-tag>
+                <el-tag size="mini" v-if="project.state === 1">招募成员</el-tag>
+                <el-tag size="mini" v-if="project.state === 2">维护ing</el-tag>
               </div>
             </section>
           </li>
