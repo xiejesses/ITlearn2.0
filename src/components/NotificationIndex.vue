@@ -33,7 +33,7 @@ export default {
         type: 0,
         isSee: false
       };
-      this.$http.get(this.$config.new.conut.url, {params: params})
+      this.$http.get(this.$config.new.count.url, {params: params})
         .then(response => {
           let data = response.data;
           if (data.status === this.$status.success) {
@@ -56,7 +56,7 @@ export default {
         type: 1,
         isSee: false
       };
-      this.$http.get(this.$config.new.conut.url, {params: params})
+      this.$http.get(this.$config.new.count.url, {params: params})
         .then(response => {
           let data = response.data;
           if (data.status === this.$status.success) {
@@ -79,7 +79,7 @@ export default {
         type: 2,
         isSee: false
       };
-      this.$http.get(this.$config.new.conut.url, {params: params})
+      this.$http.get(this.$config.new.count.url, {params: params})
         .then(response => {
           let data = response.data;
           if (data.status === this.$status.success) {

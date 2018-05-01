@@ -199,7 +199,7 @@
 
       getNew() {
         if (localStorage.getItem("userId"))
-          this.$http.get(this.$config.new.conut.url, {
+          this.$http.get(this.$config.new.count.url, {
             params: {
               isSee: false,
               receiver: Number(localStorage.getItem("userId"))

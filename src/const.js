@@ -108,7 +108,7 @@ const urlConfig ={
 
 // 创建count url
 for (let key in urlConfig) {
-  urlConfig[key].conut = {
+  urlConfig[key].count = {
     url: urlConfig[key].url + "count/"
   };
 }
