@@ -26,6 +26,7 @@ import SetNewPwd from '@/components/SetNewPwd';
 import NotificationIndex from '@/components/NotificationIndex';
 import Message from '@/components/Message';
 import SystemNotice from '@/components/SystemNotice';
+import TopicIndex from '@/components/TopicIndex';
 // import Notice from '@/components/Notice';
 
 
@@ -211,6 +212,11 @@ const router = new Router({
           component: TopicDetail
         },
         {
+          path: '/topicIndex/:group',
+          name: 'topic_index',
+          component: TopicIndex
+        },
+        {
           path: '/user/:userId',
           name: 'user',
           // meta: {
@@ -319,7 +325,7 @@ const router = new Router({
     //   component: Notice
     // },
 
-    
+
     {
       path: '/admin/',
       name: 'admin',
