@@ -28,7 +28,9 @@
           <!--</el-dropdown>-->
         <!--</div>-->
         <div class="publish-topic">
-          <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isjoin: this.isJoin}}" class="LastItem">发表话题</router-link>
+          <div>
+            <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isjoin: this.isJoin}}" class="LastItem">发表话题</router-link>
+          </div>
         </div>
         <div>
           <!--<el-dropdown>-->
@@ -241,11 +243,12 @@
 
   .user-action {
     display: flex;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
+    /* -webkit-box-pack: justify; */
+    /* justify-content: space-between; */
+    justify-content: center;
+    /* -webkit-box-align: center; */
     align-items: center;
-    align-self: flex-start;
+    /* align-self: flex-start; */
     height: 45px;
     margin-top: 10px;
     box-shadow: 0 0px 5px #9ba09f;
@@ -254,8 +257,10 @@
     display: flex;
     height: 45px;
     align-items: center;
+    justify-content: center;
     padding: 0px 10px;
     background:#2DBF80;
+    text-align: center;
   }
   .publish-topic a {
     color:#fff;
