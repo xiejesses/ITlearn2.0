@@ -20,13 +20,13 @@
             </p>
 
             <p v-if="!isModify">
-              <el-select :v-validate="'required'" v-model="formShare.tags" multiple :allow-create="false"
+              <el-select :v-validate="'required'" v-model="formShare.tags" multiple :allow-create="true"
                          placeholder="请选择标签"  filterable	>
                 <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name"></el-option>
               </el-select>
             </p>
             <p v-if="isModify">
-              <el-select :v-validate="'required'" :v-model="formShare.tags" multiple :allow-create="false"
+              <el-select :v-validate="'required'" :v-model="formShare.tags" multiple :allow-create="true"
                          placeholder="请选择标签"  :value="formShare.tags"  filterable	>
                 <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.name"></el-option>
               </el-select>
