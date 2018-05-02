@@ -64,8 +64,8 @@
             this.buildGroupUser = res.data.user;
             this.gid = res.data._id;
             this.joinOwn();
-            this.$router.push('/groupindex');
             this.$message.success('创建成功');
+            this.$router.push({name: 'group_detail', params:{g_id: this.gid}});
             this.isbuilding = false;
             this.formGroup.groupName = '';
             this.formGroup.groupIntro = '';
@@ -73,7 +73,8 @@
             this.$message.error('创建失败！请重试');
           }
         }).catch((err) => {
-          this.$message.error(`请先登录！`);
+          this.$message.error(`系统异常！`);
+              console.log(err.stack);
         });
           } else {
               this.$message.error(`请填写完整信息！`);
@@ -86,7 +87,7 @@
         let params = {group: this.gid, user: this.buildGroupUser};
         this.$http.get(this.$config.group.join.url, {params: params})
             .then(response => {
-              
+
             })
             .catch(err => {
               this.$message.error(err.response.data.message);

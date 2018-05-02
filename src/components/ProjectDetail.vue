@@ -26,7 +26,7 @@
                 <el-dropdown-item>
                   修改  </el-dropdown-item>
               </router-link>
-              <el-dropdown-item>删除</el-dropdown-item>
+              <span @click="deleteObj"><el-dropdown-item>删除</el-dropdown-item></span>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -73,6 +73,25 @@
     },
 
     methods: {
+      deleteObj(){
+        this.$confirm('确认删除？')
+          .then((res) => {
+            console.log(res);
+            let params = {_id: Number(this.$route.params.projectId)};
+            this.$http.delete(this.$config.project.url, {params: params})
+              .then(response => {
+                if (response.status === 204) {
+                  this.$router.push({path: '/projectIndex'});
+                  this.$message.success("删除成功");
+                } else {
+                  this.$message.error("删除失败");
+                }
+              })
+              .catch(
+                err => this.$message.error(err.stack)
+              );
+          });
+      },
       // 获取分享
       fetchProject(){
         let params = {_id: this.project};

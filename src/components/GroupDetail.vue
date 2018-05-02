@@ -15,32 +15,32 @@
         </div>
       </section>
       <section class="user-action">
-        <div>
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              选项
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>全部</el-dropdown-item>
-              <el-dropdown-item>我的话题</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
+        <!--<div>-->
+          <!--<el-dropdown>-->
+            <!--<span class="el-dropdown-link">-->
+              <!--选项-->
+              <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+            <!--</span>-->
+            <!--<el-dropdown-menu slot="dropdown">-->
+              <!--<el-dropdown-item>全部</el-dropdown-item>-->
+              <!--<el-dropdown-item>我的话题</el-dropdown-item>-->
+            <!--</el-dropdown-menu>-->
+          <!--</el-dropdown>-->
+        <!--</div>-->
         <div class="publish-topic">
           <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isjoin: this.isJoin}}" class="LastItem">发表话题</router-link>
         </div>
         <div>
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              排序
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>最新</el-dropdown-item>
-              <el-dropdown-item>最热</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          <!--<el-dropdown>-->
+            <!--<span class="el-dropdown-link">-->
+              <!--排序-->
+              <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+            <!--</span>-->
+            <!--<el-dropdown-menu slot="dropdown">-->
+              <!--<el-dropdown-item>最新</el-dropdown-item>-->
+              <!--<el-dropdown-item>最热</el-dropdown-item>-->
+            <!--</el-dropdown-menu>-->
+          <!--</el-dropdown>-->
         </div>
       </section>
       <topic-index :group="gid"></topic-index>
