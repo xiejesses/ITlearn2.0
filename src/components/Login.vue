@@ -98,7 +98,7 @@
                     this.$message.success("管理员登录成功");
                     localStorage.setItem('Manager', res.nickname);
                     this.$router.push({
-                      path: decodeURIComponent(this.$route.query.redirect || '/') //  你需要接受路由的参数再跳转
+                      path: decodeURIComponent(this.$route.query.redirect || '/admin/') //  你需要接受路由的参数再跳转
                     });
                   } else {
                     this.$message.success("你不是管理员");
