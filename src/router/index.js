@@ -1,24 +1,3 @@
-<<<<<<< HEAD
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import Register from '@/components/Register'
-import Share from '@/components/Share'
-import User from '@/components/User'
-import Article from '@/components/Article'
-
-import GroupIndex from '@/components/GroupIndex'
-import Group from '@/components/Group'
-import GroupDetail from '@/components/GroupDetail'
-import MarkdownEditor from '@/components/MarkdownEditor'
-import TopicDetail from '@/components/TopicDetail'
-import Vindex from '@/components/Vindex'
-import Tag from '@/components/Tag'
-import Follow from '@/components/Follow'
-import Search from '@/components/Search'
-
-Vue.use(Router)
-=======
 import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '@/components/Login';
@@ -64,7 +43,6 @@ import AdminUser from '@/components/admin/User';
 import AdminProject from '@/components/admin/Project';
 
 Vue.use(Router);
->>>>>>> changshuai
 
 const router = new Router({
   mode: 'history', //去掉 #
@@ -362,12 +340,6 @@ const router = new Router({
       component: resetPwd
     },
     {
-<<<<<<< HEAD
-      path:'/search',
-      name:'search',
-      component:Search
-    },
-=======
       path: '/set-new-Pwd',
       name: 'setNewPwd',
       // meta: {
@@ -458,7 +430,6 @@ const router = new Router({
           component: AdminProject
         }]
     }
->>>>>>> changshuai
   ]
 });
 

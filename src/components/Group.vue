@@ -21,13 +21,9 @@
               </div>
 
               <div class="author-meta">
-<<<<<<< HEAD
-                <router-link :to="{ name: 'user_article', params: { uName: group.author.userName }}"> {{ group.author.userName }}</router-link>
-=======
                 <router-link :to="{ name: 'user_article', params: { userId: group.user._id }}">
                   {{ group.user.nickname }}
                 </router-link>
->>>>>>> changshuai
                 <span class="separator">• </span>
                 <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
                 <span class="separator"> • </span>
@@ -37,16 +33,10 @@
               </div>
             </section>
             <section class="join-group">
-<<<<<<< HEAD
-              <button v-if="lovegroupid.indexOf(group._id) >= 0" @click="addlovegroup(group._id,index)">退出</button>
-              <button v-else @click="addlovegroup(group._id,index)">加入</button>
-            </section>
-=======
               <span v-if="group.user._id === userId " @click="deleteGroup(group._id,index)"></span>
               <button v-else-if="joinGroupId.indexOf(group._id) >= 0" @click="addLoveGroup(group._id,index)">退出</button>
               <button v-else @click="addLoveGroup(group._id,index)">加入</button>
               </section>
->>>>>>> changshuai
           </li>
         </ul>
         <div class="view-more-normal"

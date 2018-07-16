@@ -38,17 +38,6 @@
 
         <router-link to="/" :exact="true" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
-<<<<<<< HEAD
-        <router-link to="/share" class="LastItem">分享链接</router-link>
-        <router-link to="/search" class=""><i class="el-icon-search"></i></router-link>
-        <!-- <section class="search-area">
-          <input type="search" name="S" class="search-Input">
-          <i class="search-icon el-icon-search"></i>
-        </section> -->
-        <!-- <a href="javascript:void(0)" @click="isfocused = true">
-          <i class="el-icon-search"></i>
-        </a> -->
-=======
         <router-link to="/projectIndex" class="ListItem">项目交流</router-link>
         <router-link to="/shareProject" class="ListItem">分享项目</router-link>
         <router-link to="/share" class="ListItem">分享</router-link>
@@ -69,7 +58,6 @@
           <!-- <input id="search_submit" value="Rechercher" type="submit"> -->
           <!-- </form> -->
         </div>
->>>>>>> changshuai
 
         <!-- <a href="javascript:void(0)" @click="isfocused = true">
             <i class="el-icon-search"></i>
@@ -102,26 +90,11 @@
         <router-link to="/login" class="">登录</router-link>
       </div>
       <!-- 搜索框 -->
-<<<<<<< HEAD
-      <section class="search" v-bind:class="{focused:isfocused}" @click="closeModal">
-        <!-- 阻止事件捕获 -->
-=======
       <!-- <section class="search" v-bind:class="{focused: isfocused}" @click="closeModal">
->>>>>>> changshuai
         <form class="search-form" method="get" action="" role="search" v-on:click.stop>
           <input type="text" ref="input" class="search-input" name="s" placeholder="搜索文章..." autofocus>
         </form>
         <span class="search-close" @click="closeModal">x</span>
-<<<<<<< HEAD
-
-      </section>
-      <!-- <section class="search" v-bind:class="{focused:isfocused}" @click="closeModal">
-        <form class="search-form" method="get" action="" role="search" v-on:click.stop>
-          <input type="text" ref="input" class="search-input" name="s" placeholder="搜索文章..." autofocus>
-        </form>
-        <span class="search-close" @click="closeModal">x</span>
-=======
->>>>>>> changshuai
       </section> -->
 
       <!-- 弹出菜单 -->
@@ -328,45 +301,6 @@
   }
 
   /**********
-<<<<<<< HEAD
-  new search
-  ***********/
-  .search-area {
-    position: relative;
-  }
-  .search-Input {
-    width: 150px;
-    margin-left: 10px;
-  }
-  .search-icon {
-    position: absolute;
-    right: 5px;
-    top:50%;
-    margin-top: -8px;
-    cursor: pointer;
-  }
-
-  input[type="search"] {
-    display: block;
-    height: 32px;
-    width: 150px;
-    padding: 0;
-    /* margin-top: 20px; */
-    border: 1px solid #d8dce5;
-    border-radius: 4px;
-    outline: none;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-    font-size: 16px;
-    text-indent: 15px;
-    font-weight: 400;
-    vertical-align: bottom;
-    position: relative;
-  }
-
-   /**********
-=======
->>>>>>> changshuai
 main区
 **********/
 

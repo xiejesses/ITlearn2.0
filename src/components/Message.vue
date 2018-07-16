@@ -66,7 +66,8 @@
         <article class="message-body">
           <div class="message-content">
             <span v-if="message.newType === 4"> 审核 </span>
-            <span v-else="message.newType !== 4"> 删除 </span>
+            <!-- <span v-else="message.newType !== 4"> 删除 </span> -->
+            <span v-else> 删除 </span>
             你的
             <span v-if="message.newType === 6"> 文章 </span>
             <span v-if="message.newType === 7"> 项目 </span>
