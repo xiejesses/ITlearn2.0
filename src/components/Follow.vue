@@ -6,15 +6,15 @@
               <div class="head-bg"></div>
               <div class="user-info">
                 <div class="user-avatar">
-                    <v-gravatar v-bind:email="userInfo.userEmail" size='40' />
+                    <v-gravatar v-bind:email="userInfo.email" :size='40' />
                 </div>
                 <div class="username">
-                    <router-link :to="{ name: 'user_article', params: { uName: userInfo.userName }}">{{userInfo.userName}}</router-link>
+                    <router-link :to="{ name: 'user_article', params: { userId: userInfo._id }}">{{userInfo.nickname}}</router-link>
                     </div>
-                <div class="userIntro">{{userInfo.userIntro}}</div>
+                <div class="userIntro">{{userInfo.desc}}</div>
               </div>
           </div>
-          
+
       </section>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 // 	e.target.style.setProperty('--x', `${ x }px`)
 // 	e.target.style.setProperty('--y', `${ y }px`)
-	
+
 // }
   export default {
     name: 'follow',
@@ -39,8 +39,8 @@
       }
     },
     mounted() {
-      this.userName = this.$route.params.uName;
-      console.log(this.$route.name)
+      this.userId = this.$route.params.userId;
+      console.log(this.$route.name);
       this.fetchFollowUser()
     },
     computed: {
@@ -50,24 +50,28 @@
     },
     methods: {
       fetchFollowUser() {
-        let param = {
-          userName: this.$route.params.uName,
-          followRel: this.$route.name
-        };
-        this.$http.get('/users/getfollowUser', {
-          params: param
-        }).then(response => {
-          let res = response.data;
-          if (res.status == "1") {
-            this.userInfos = res.result;
-            console.log(this.userInfo.userEmail)
-          } else {
-            return false
-          }
-        })
+        let params = {};
+        if (this.$route.name === "following"){
+          params["user"] = parseInt(this.$route.params.userId);
+        } else {
+          params["follower"] = parseInt(this.$route.params.userId);
+        }
 
-
-
+        this.$http.get(this.$config.relation.url, {params: params})
+          .then(response => {
+            let res = response.data;
+            if (res.status === 0) {
+              for (let i = 0; i < res.data.length; i++) {
+                let relation = res.data[i];
+                this.userInfos.push(this.$route.name === "following" ? relation.follower : relation.user);
+              }
+            } else {
+              return false
+            }
+          })
+          .catch(err => {
+              this.$message.error(err.response.data.message);
+          });
       },
     }
   }
@@ -89,7 +93,7 @@ a {
     white-space: wrap
 }
 .user-profile {
-    
+
     height: 160px;
     overflow: hidden;
     background: white;
@@ -136,6 +140,6 @@ a {
     padding: 10px;
 
     text-align: center;
-    
+
 }
 </style>

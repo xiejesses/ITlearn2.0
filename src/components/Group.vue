@@ -3,29 +3,50 @@
     <main>
       <section class="groups">
         <ul class="groups-list">
-          <li v-for="(group,index) in groups" v-bind:key="group._id">
+          <li v-for="(group, index) in groups" :key="group._id">
             <section class="user-avatar">
-              <v-gravatar v-bind:email="group.author.userEmail" size='40' :alt="group.author.userName"/>
+              <v-gravatar :email="group.user.email" :size='40' :alt="group.user.nickname" ></v-gravatar>
             </section>
             <section class="groups-meta">
+
               <div class="groups-name">
-                  <h2><router-link :to="{ name: 'groupdetail', params: { g_id: group._id }}">{{group.groupName}}</router-link></h2>
-                  </div>
-              <div class="groups-intro">
-                  {{ group.groupIntro }}
+                <h2>
+                  <router-link :to="{ name: 'group_detail', params: { g_id: group._id }}">{{group.name }}</router-link>
+                  <el-tag type="danger" size="small" v-if="!group.isPass">审核未通过</el-tag>
+                </h2>
               </div>
+
+              <div class="groups-intro">
+                  {{ group.desc }}
+              </div>
+
               <div class="author-meta">
+<<<<<<< HEAD
                 <router-link :to="{ name: 'user_article', params: { uName: group.author.userName }}"> {{ group.author.userName }}</router-link>
+=======
+                <router-link :to="{ name: 'user_article', params: { userId: group.user._id }}">
+                  {{ group.user.nickname }}
+                </router-link>
+>>>>>>> changshuai
                 <span class="separator">• </span>
-                <abbr class="timeago" :title="new Date(group.createTime)"> {{ moment(new Date(group.createTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
-                <span class="separator"> • </span><i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i><span class="users-number">{{group.member.length}}</span>
-                
+                <abbr class="timeago" :title="new Date(group.createDateTime)"> {{ moment(new Date(group.createDateTime), "YYYYMMDDHHmmss").fromNow() }}</abbr>
+                <span class="separator"> • </span>
+                <i class="users el-icon-fa el-icon-fa-users" aria-hidden="true" title="成员人数"></i>
+                <span class="users-number">{{ group.users.length }}</span>
+
               </div>
             </section>
             <section class="join-group">
+<<<<<<< HEAD
               <button v-if="lovegroupid.indexOf(group._id) >= 0" @click="addlovegroup(group._id,index)">退出</button>
               <button v-else @click="addlovegroup(group._id,index)">加入</button>
             </section>
+=======
+              <span v-if="group.user._id === userId " @click="deleteGroup(group._id,index)"></span>
+              <button v-else-if="joinGroupId.indexOf(group._id) >= 0" @click="addLoveGroup(group._id,index)">退出</button>
+              <button v-else @click="addLoveGroup(group._id,index)">加入</button>
+              </section>
+>>>>>>> changshuai
           </li>
         </ul>
         <div class="view-more-normal"
@@ -38,7 +59,6 @@
   </div>
 </template>
 <script>
- import axios from 'axios'
   export default {
     name: 'group',
     data() {
@@ -47,96 +67,125 @@
         busy:true,
         page:1,
         pageSize:5,
-        lovegroupid: [],
-        member:''
+        joinGroupId: [],
+        member:'',
+        userId: Number(localStorage.getItem('userId'))
       }
     },
     mounted() {
        this.fetchGroup();
        this.fetchLovegroup()
     },
-    methods:{
-      fetchGroup (flag) {
-        let param = {
-          page:this.page,
-          pageSize:this.pageSize,
-          userName:this.$route.params.uName
-        };
-        axios.get("/group/fetchgroup",
-          {params:param}
-        ).then( (response) => {
+    methods: {
 
-
-          var res = response.data;
-                if(res.status=="1"){
-                  // 不是第一次，需要拼接数据
-                  if(flag){
-                      this.groups = this.groups.concat(res.result.list);
-                        //如果没有数据，停止滚动加载
-                      if(res.result.count==0){
-                          this.busy = true;
-                      }else{
-                          this.busy = false;
-                      }
-                  }else{
-                      this.groups = res.result.list;
-                      this.busy = false;
-                  }
-                }else{
-                  this.groups = [];
-                }
-
-        }).catch(function (error) {
-          console.log(error)
-        })
+      // 删除小组
+      deleteGroup(_id) {
+        this.$http.delete({});
       },
 
-      addlovegroup(group_id, index) {
+      //
+      fetchGroup(flag) {
+        let params = {
+          page: this.page,
+          page_size: this.pageSize,
+          isPass: true
+        };
+
+        if(this.$route.name === "my_group") {
+          params.user = Number(localStorage.getItem("userId"));
+          delete params.isPass;
+        }
+
+        if(this.$route.name === "join_group") {
+          params.users = Number(localStorage.getItem("userId"));
+        }
+
+        if (this.$route.name === "search_group") {
+          params.$ = JSON.stringify({name: {$regex: this.$route.query.query}, isPass: true});
+        }
+
+        this.$http.get(this.$config.group.url, {params: params})
+          .then((response) => {
+          let res = response.data;
+          if (res.status === this.$status.success) {
+
+            // 不是第一次，需要拼接数据
+            if (flag) {
+              this.groups = this.groups.concat(res.data);
+              //如果没有数据，停止滚动加载
+              this.busy = res.data.length === 0;
+            } else {
+              this.groups = res.data;
+              this.busy = false;
+            }
+          } else {
+              this.groups = [];
+            }
+          }).catch(error =>
+            this.$message.error(error.response.data.message)
+          );
+      },
+
+      // 添加喜爱的小组
+      addLoveGroup(group_id, index) {
         if (!localStorage.getItem('userName')) {
           this.$message.error(`请先登录！`);
           return false;
-        } else {
-          this.$http.post('/group/joingroup', {
-            _id: group_id,
-            userName: localStorage.getItem('userName')
-          }).then(response => {
-            let res = response.data
-            if (res.status == "1") {
-              this.lovegroupid = res.lovegroup;
-              this.$message.success('加入成功');
-            } else if (res.status == "2") {
-              this.lovegroupid = res.lovegroup;
-              this.$message.success('退出成功');
+        }
+        let params = {
+          user: localStorage.getItem('userId'),
+          group: group_id
+        };
+        this.$http.get(this.$config.group.join.url, {params: params})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              if (res.exit === 0) {
+                this.$units.remove(this.joinGroupId, group_id);
+                this.$message.success('退出成功');
+              } else {
+                this.joinGroupId.push(group_id);
+                this.$message.success('加入成功');
+              }
             } else {
               this.$message.error('发生错误');
             }
           })
-        }
+          .catch(
+            err => this.$message.error(err.response.data.message)
+          );
       },
+
+      // 收集
       fetchLovegroup() {
         if (localStorage.getItem('userName')) {
           let param = {
-            userName: localStorage.getItem('userName')
-          }
-          this.$http.get('/users/getlovegroup', {
-              params: param
-            })
+            users: localStorage.getItem('userId')
+          };
+          this.$http.get(this.$config.group.url, {params: param})
             .then(response => {
               let res = response.data;
-              if (res.status == '1') {
-                this.lovegroupid = res.doc.lovegroup;
+              if (res.status === this.$status.success) {
+                this.joinGroupId = [];
+                for (let group of res.data) {
+                  this.joinGroupId.push(group._id);
+                }
               } else {
+                // todo 获取当前用户喜爱小组失败
               }
             })
+            .catch(err =>
+              this.$message.error(err.response.data.message)
+            );
         }
       },
 
-      loadMore(){
-          this.busy = true;
-          setTimeout(() => {
-            this.page++;
-            this.fetchGroup(true);
-          }, 500);
+      loadMore() {
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.fetchGroup(true);
+        }, 500);
       },
     }
   }
@@ -228,7 +277,7 @@ a {
   .users-number {
       margin-left: 3px;
   }
- 
+
     .join-group button {
         background: none;
         border: 1px solid #8f8f8f;

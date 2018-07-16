@@ -7,13 +7,14 @@
           <form name="buildform" :v-model="formGroup" id="buildform" action="#" method="post">
             <h4 class="errMessage"></h4>
             <p>
-              <el-input  class="inputstyle" v-model="formGroup.groupName" placeholder="小组名"></el-input>
+              <el-input v-validate="'required'" name="groupname"  class="inputstyle" v-model="formGroup.groupName" placeholder="小组名"></el-input>
+              <!-- <p v-show="errors.has('groupname')"  >{{ errors.first('groupname') }}</p> -->
             </p>
             <p>
-              <el-input class="inputstyle" v-model="formGroup.groupIntro" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" >
+              <el-input v-validate="'required'" class="inputstyle" v-model="formGroup.groupIntro" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="小组简介" >
               </el-input>
             </p>
-           
+
             <div class="actions">
               <div class="buttons">
                 <a href="javascript:;" class="user-submit" @click="createGroup">创建</a>
@@ -44,31 +45,53 @@
           groupIntro:''
         },
         isbuilding:false,
-        msg: '学习小组'
+        buildGroupUser:'',
+        gid:'',
       }
     },
     methods:{
       createGroup() {
-        
-        this.$http.post('/group/creategroup',{
-          groupName:this.formGroup.groupName,
-          groupIntro:this.formGroup.groupIntro,
-          userName:localStorage.getItem('userName')
-        }).then(response => {
+
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.$http.post(this.$config.group.url, {
+            name: this.formGroup.groupName,
+            desc: this.formGroup.groupIntro,
+            user: Number(localStorage.getItem('userId'))
+          }).then(response => {
           let res = response.data;
-          if(res.status == "1") {
-            this.$router.push('/groupindex')
+          if (res.status === this.$status.success) {
+            this.buildGroupUser = res.data.user;
+            this.gid = res.data._id;
+            this.joinOwn();
             this.$message.success('创建成功');
+            this.$router.push({name: 'group_detail', params:{g_id: this.gid}});
             this.isbuilding = false;
             this.formGroup.groupName = '';
             this.formGroup.groupIntro = '';
           } else {
             this.$message.error('创建失败！请重试');
-            
           }
-        }).catch(err => {
-              this.$message.error(`请先登录！`);
+        }).catch((err) => {
+          this.$message.error(`系统异常！`);
+              console.log(err.stack);
+        });
+          } else {
+              this.$message.error(`请填写完整信息！`);
+              return false;
+          }
+        });
+      },
+
+      joinOwn() {
+        let params = {group: this.gid, user: this.buildGroupUser};
+        this.$http.get(this.$config.group.join.url, {params: params})
+            .then(response => {
+
             })
+            .catch(err => {
+              this.$message.error(err.response.data.message);
+            });
       },
 
       cancel() {
@@ -161,7 +184,7 @@
   width:250px;
 }
 
- 
+
   @media screen and (min-width:960px) {
     .inputstyle {
     width:300px;

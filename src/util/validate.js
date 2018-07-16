@@ -46,3 +46,5 @@ Validator.extend('userName', {
     // return /^[a-zA-Z0-9_-]{4,16}$/.test(value)
     }
 });
+//自定义验证url
+

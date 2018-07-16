@@ -1,14 +1,14 @@
 <template>
   <div id="tag">
     <div class="container">
-      <section class="tag-header" v-bind:style="styleObject">
-        <div class="tag-content">
+      <section class="tag-header" :style="{background:color}">
+        <div class="tag-content" >
           <h1>{{tag}}</h1>
-          <div class="tag-action-button">
+          <!-- <div class="tag-action-button">
             <span>
-              <button v-bind:style="{color:styleObject.background,background:styleObject.color}">关注</button>
+              <button :style="{color:styleObject.background,background:styleObject.color}">关注</button>
             </span>
-          </div>
+          </div> -->
         </div>
       </section>
       <main>
@@ -26,11 +26,12 @@
     data() {
       return {
         tag: '',
-        styleObject: '',
+        color:'',
+        // styleObject: '',
       }
     },
     mounted() {
-      this.tag = this.$route.params.tName;
+      this.tag = "";
       this.fetchTag()
     },
     computed: {
@@ -40,15 +41,16 @@
     },
     methods: {
       fetchTag() {
-        let param = {
-          tag: this.$route.params.tName
+        let params = {
+          _id: this.$route.params.tagId
         };
-        this.$http.get('/tags', {
-          params: param
+        this.$http.get(this.$config.tag.url, {
+          params: params
         }).then(response => {
           let res = response.data;
-          if (res.status == "1") {
-            this.styleObject = res.result.styleObject;
+          if (res.status === this.$status.success) {
+            this.tag = res.data[0].name;
+            this.color = res.data[0].color;
           } else {
             return false
           }
@@ -71,6 +73,7 @@
     overflow: hidden;
     width: 100%;
     height: 200px;
+    background-color: #54595f;
   }
 
   .tag-content {
@@ -80,6 +83,7 @@
   }
 
   .tag-content h1 {
+    color: #fff;
     font-size: calc(3vw + 23px);
     margin-top: 3vw;
     margin-bottom: 10px;
@@ -111,7 +115,7 @@
 
   @media screen and (min-width:760px) {
     .tag-header {
-      height: 300px;
+      height: 250px;
     }
   }
 

@@ -1,21 +1,27 @@
 <template>
   <div id="editor">
     <main>
-      <form name="markdownform" :v-model="formMarkdown"  action="#" method="post">
+      <form name="markdownform" :v-model="formMarkdown" action="#" method="post">
         <div class="title-input">
           <p>
-            <input type="text" v-model="formMarkdown.topicTitle" name="shareTitle" class="input" placeholder="请输入标题" value="">
+            <input type="text" v-model="formMarkdown.title" name="shareTitle" class="input" placeholder="请输入标题"
+                   value="">
           </p>
         </div>
         <div class="mavon-editor">
-          <mavon-editor v-model="formMarkdown.topicContent" v-on:save="getContent" v-on:change="getContent" style="height: 100%" placeholder="markdown editor"  v-bind:toolbars="Toolbars"></mavon-editor>
+          <mavon-editor v-model="formMarkdown.render" @save="getContent" @change="getContent"
+                        style="height: 400px" placeholder="markdown editor" :toolbars="Toolbars"></mavon-editor>
         </div>
 
         <div class="actions">
           <div class="buttons">
-            <p class="submit">
+            <p class="submit" v-if="topic === undefined">
               <a href="javascript:;" class="user-submit" @click="cretetopic">发布</a>
-            <a href="javascript:;" class="cancel" @click="cancel">取消</a>
+              <a href="javascript:;" class="cancel" @click="cancel">取消</a>
+            </p>
+            <p class="submit" v-else>
+              <a href="javascript:;" class="user-submit" @click="patchTopic">修改</a>
+              <a href="javascript:;" class="cancel" @click="cancel">取消</a>
             </p>
           </div>
         </div>
@@ -25,9 +31,7 @@
   </div>
 </template>
 <script>
-  import {
-    mavonEditor
-  } from 'mavon-editor'
+  import {mavonEditor} from 'mavon-editor'
   import 'mavon-editor/dist/css/index.css'
   import 'mavon-editor/src/lib/font/css/fontello.css'
   import '../../static/css/markdown.css'
@@ -37,21 +41,19 @@
     components: {
       mavonEditor
     },
-    data: {
-
-    },
-
     data() {
       return {
         Name:'test',
         gid:'',
         isjoin:'',
         formMarkdown:{
-          topicTitle:'',
-          topicContent:'',
+          title:'',
+          render:'',
         },
         value:'',
         isclick:false,
+        topic: -1,
+
         Toolbars: {
           bold: true, // 粗体
           italic: true, // 斜体
@@ -90,47 +92,88 @@
       }
     },
     beforeRouteEnter (to, from, next) {
-     
-      if(to.query.isjoin >= 0) {
+      if(to.query.isjoin >= 0 || to.params.topicId) {
         next()
       } else {
-        from.$message.success('请先加入')
+        from.$message.success('请先加入');
         next(false)
       }
     },
     methods: {
       getContent(val, render) {
-        this.formMarkdown.topicContent = render;
+        this.formMarkdown.content = render;
+        this.formMarkdown.render = val;
       },
+
       cretetopic() {
-        this.$http.post('/topic/createtopic',{
-          _id:this.gid,
-          topicTitle:this.formMarkdown.topicTitle,
-          topicContent:this.formMarkdown.topicContent,
-          userName:localStorage.getItem('userName')
+        this.$http.post(this.$config.topic.url,{
+          group: this.gid,
+          title: this.formMarkdown.title,
+          content: this.formMarkdown.content,
+          render: this.formMarkdown.render,
+          user: localStorage.getItem('userId')
         }).then(response => {
           let res = response.data;
-          if(res.status == "1") {
+          if(res.status === this.$status.success) {
             //成功返回上一级
-            window.history.go(-1)
+            window.history.go(-1);
             this.$message.success('发表成功');
           }else {
             this.$message.error('发生错误，请重试！');
           }
         }).catch(err => {
-          console.log(err)
-        })
+          this.$message.error(err.response.data.message);
+          // todo state权限显示message
+        });
       },
+
+      patchTopic() {
+        this.$http.patch(this.$config.topic.url + "?_id=" + this.topic , {
+          title: this.formMarkdown.title,
+          content: this.formMarkdown.content,
+          render: this.formMarkdown.render,
+        }).then(response => {
+          let res = response.data;
+          if(res.status === this.$status.success) {
+            //成功返回上一级
+//            window.history.go(-1);
+            this.$message.success('修改成功');
+          }else {
+            this.$message.error('发生错误，请重试！');
+          }
+        }).catch(err => {
+          this.$message.error(err.response.data.message);
+          // todo state权限显示message
+        });
+      },
+
+
       cancel() {
-        this.formMarkdown.topicContent = '';
-        this.formMarkdown.topicTitle = '';
+        this.formMarkdown.content = '';
+        this.formMarkdown.title = '';
       }
     },
     mounted() {
-     this.gid = this.$route.query.g_id;
-     this.isjoin = this.$route.query.isjoin
-     console.log( this.$route.query.g_id)
-     console.log( this.$route.query.isjoin)
+      this.gid = this.$route.query.g_id;
+      this.isjoin = this.$route.query.isjoin;
+      this.topic = this.$route.params.topicId;
+      if (this.topic)
+        this.$http.get(this.$config.topic.url, {params:{_id: this.topic}})
+          .then(response => {
+            let res = response.data;
+            let data = res.data[0];
+            if(res.status === this.$status.success) {
+              this.formMarkdown.title = data.title;
+              this.formMarkdown.render = data.render;
+            }else {
+              this.$message.error('发生错误，请重试！');
+            }
+          }).catch(err => {
+            this.$message.error(err.response.data.message);
+            // todo state权限显示message
+          });
+      console.log(this.$route.query.g_id);
+      console.log(this.$route.query.isjoin);
     }
   }
 
@@ -139,7 +182,7 @@
   a {
     text-decoration: none;
   }
-  
+
   main {
     width: 100%;
     margin: 5px auto;

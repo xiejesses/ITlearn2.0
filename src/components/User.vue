@@ -5,7 +5,7 @@
         <div class="user-data">
           <div class="user-meta">
             <div class="user-avatar">
-              <v-gravatar :email="userInfo.userEmail" size='40' />
+               <v-gravatar :email='userEmail' ::size='40' />
             </div>
             <div class="user-introduce">
               <span v-if="isSave" class="save">
@@ -13,50 +13,68 @@
                 <i @click="cancleEdit" class="el-icon-close" title="取消"></i>
               </span>
               <span v-else v-show="userName == currentUser" class="edit">
-                <i @click="edit" class="el-icon-edit" title="设置"></i>
+                <i @click="edit" class="el-icon-edit" title="填写个人简介"></i>
               </span>
-              <h2>{{userInfo.userName}}</h2>
-              <textarea v-if="isEdit" v-model="userInfo.userIntro" name="" id="" cols="30" rows="2"></textarea>
+              <h2>{{userInfo.nickname}}</h2>
+              <textarea v-if="isEdit" v-model="userInfo.desc" name="" id="" cols="30" rows="2"></textarea>
               <pre v-else class="description">
-              <p >{{userInfo.userIntro}}</p>
+              <p >{{userInfo.desc}}</p>
               </pre>
             </div>
           </div>
           <div class="profile-content">
             <ul>
               <li>
-                <router-link :to="{ name: 'following' ,params: { uName: userName }}">
-                  <div class="digits">{{userInfo.following.length}}</div>
+                <router-link :to="{ name: 'following' ,params: { userId: userInfo._id }}">
+                  <div class="digits">{{following}}</div>
                 正在关注
                 </router-link>
-                
+
               </li>
               <li>
-                 <router-link :to="{ name: 'follower', params: { uName: userName }}">
-                <div class="digits">{{userInfo.follower.length}}</div>
+                 <router-link :to="{ name: 'follower', params: { userId: userInfo._id }}">
+                <div class="digits">{{follower}}</div>
                 关注者
                  </router-link>
               </li>
-              <li>
-                <div class="digits">{{userInfo.lovelink.length}}</div>
+              <!-- <li>
+                <div class="digits">{{loveLink}}</div>
                 喜欢
               </li>
+              <li>
+                <div class="digits">{{loveLink}}</div>
+                我的小组
+              </li> -->
             </ul>
           </div>
           <div class="follow">
-            <button v-show="userName !== currentUser" @click="follow">{{followmsg}}</button>
+            <button v-show="userName != currentUser" @click="follow">
+              <span v-if="isFollow">取消关注</span>
+              <span v-else>关注</span>
+            </button>
           </div>
         </div>
       </section>
       <section >
         <div class="tab">
-          <router-link :to="{ name: 'user_article'}" exact="true" class="ListItem">收藏({{userInfo.lovelink.length}})</router-link>
+          <router-link :to="{ name: 'user_article'}" :exact="true" class="ListItem">分享 {{shareLink}}</router-link>
           <span class="separator"> / </span>
-          <router-link :to="{ name: 'group'}" class="ListItem">小组({{userInfo.lovegroup.length}})</router-link>
+
+          <router-link :to="{ name: 'user_collection'}" class="ListItem">喜欢 {{loveLink}}</router-link>
+          <span class="separator"> / </span>
+
+          <router-link :to="{ name: 'join_group'}" class="ListItem">加入的小组 {{joinGroup}}</router-link>
+          <span class="separator"> / </span>
+
+          <router-link :to="{ name: 'my_group'}" class="ListItem">创建的小组 {{createGroup}}</router-link>
+
+          <router-link :to="{ name: 'changePwd'}" style="float:right" class="ListItem">修改密码</router-link>
+          <!-- <a href="javascript:;" style="float:right" @click="isSettintgPwd=ture">修改密码</a> -->
         </div>
+
         <router-view></router-view>
       </section>
-      
+
     </main>
   </div>
 </template>
@@ -67,37 +85,55 @@
     data() {
       return {
         userName: '',
-        currentUser:'',
-        userInfo:[],
-        followmsg:'关注',
-        follower:'',
+        userEmail:'',
+        currentUser: '',
+        currentUserId:'',
+        userId:'',
+        userInfo: '',
+        followmsg: '关注',
+        follower:0,
+        following:0,
+
+        loveLink: 0,
+        shareLink: 0,
+
+        joinGroup: 0,
+        createGroup: 0,
+
+        isFollow: false,
         isEdit: false,
         isSave: false,
-        msg: 'Design & front end development. Also a back end engineer'
-      }
+        isSettintgPwd:false,
+        formSetting: {
+          oldPwd: '',
+          newPwd: '',
+          ensureNewPwd: '',
+        },
+      };
     },
     mounted() {
-      this.fetchUserInfo();
       this.currentUser = localStorage.getItem('userName');
-      this.userName = this.$route.params.uName;
-
+      this.currentUserId = Number(localStorage.getItem('userId'));
+      this.userId = Number(this.$route.params.userId);
+      this.fetchUserInfo();
     },
     methods: {
+
       saveEdit() {
         this.isEdit = false;
         this.isSave = false;
-        this.$http.post('/users/updateintro',{
-           userName:this.$route.params.uName,
-          userIntro:this.userInfo.userIntro
-        })
-        .then(response => {
-          let res = response.data;
-          if(res.status == "1") {
-            this.$message.success(`更新成功`);
-          } else {
-            this.$message.success(`出现错误，请重试`)
-          }
-        })
+        let data = {desc: this.userInfo.desc};
+
+        let params = "?_id=" + localStorage.getItem('userId');
+        this.$http.patch(this.$config.user.url + params, data)
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              this.$message.success(`更新成功`);
+            } else {
+              this.$message.success(`出现错误，请重试`);
+            }
+          });
       },
       cancleEdit() {
         this.isEdit = false;
@@ -108,44 +144,138 @@
         this.isEdit = true;
       },
 
+      // 获取用户信息
       fetchUserInfo() {
-        this.$http.post('/users/getuserinfo',{
-          userName:this.$route.params.uName,
-          currentUser:localStorage.getItem('userName')
-        })
+        // 请求获取用户信息
+        this.$http.get(this.$config.user.url, {params: {_id: this.userId}})
           .then(response => {
             let res = response.data;
-            if(res.status == '1') {
-              this.userInfo = res.doc;
-              this.follower = res.doc.follower.length;
-              if(res.currentuser.following.indexOf(res.doc._id) === -1) {
-                this.followmsg = "关注"
-              } else {
-                this.followmsg = "取消关注"
-              }
+            if(res.status === this.$status.success){
+              this.userInfo = res.data[0];
+              this.userName = this.userInfo.nickname;
+              this.userEmail = this.userInfo.email;
             } else {
+              this.$message.error(res.message);
             }
           })
+          .catch(err => {
+              this.$message.error(err.response.data.message);
+          });
+
+        // 请求获取用户的 正在关注用户数
+        this.$http.get(this.$config.relation.count.url, {params: {user: this.userId}})
+          .then((response) => {
+            let res = response.data;
+            if(res.status === this.$status.success){
+              this.following = res.count;
+            } else {
+              this.$message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        // 获取被关注数
+        this.$http.get(this.$config.relation.count.url, {params: {follower: this.userId}})
+          .then((response) => {
+            let res = response.data;
+            if(res.status === this.$status.success){
+              this.follower = res.count;
+            } else {
+              this.$message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        if(this.userId !== this.currentUserId)
+          this.$http.get(this.$config.relation.url, {params: {user: this.currentUserId, follower: this.userId}})
+            .then(response => {
+              let data = response.data;
+              if (data.status === this.$status.success) {
+                this.isFollow = data.data.length !== 0;
+              } else {
+                this.$message.error(data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              console.log(err.stack);
+              if (err.response) {
+                this.$message.error(err.response.data.message);
+              }
+            });
+
+
+        this.$http.get(this.$config.collection.count.url, {params: {user: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success ) {
+              this.loveLink = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        this.$http.get(this.$config.group.count.url, {params: {users: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success ) {
+              this.joinGroup = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        this.$http.get(this.$config.group.count.url, {params: {user: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success ) {
+              this.createGroup = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
+
+        this.$http.get(this.$config.recommend.count.url, {params: {user: this.userId}})
+          .then(response => {
+            let res = response.data;
+            if (res.status === this.$status.success) {
+              this.shareLink = res.count;
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.response.data.message);
+          });
       },
       follow() {
-        this.$http.post('/users/following',{
-           userName:this.$route.params.uName,
-          currentUser:this.currentUser
-        })
-        .then(response => {
-          let res = response.data;
-          if(res.status == "1") {
-            this.followmsg = "取消关注";
-            this.follower++;
-            this.$message.success(`关注成功`);
-          } else if(res.status == "0") {
-            this.followmsg = "关注";
-            this.follower--;
-            this.$message.success(`${res.message}`)
-          } else {
-            this.$message.success(`出现错误`)
-          }
-        })
+        let params = {
+          user: localStorage.getItem("userId"),
+          follower: Number(this.$route.params.userId)
+        };
+
+        this.$http.get(this.$config.relation.follow.url, {params: params})
+          .then(response => {
+            let res = response.data;
+
+            //todo 此处的响应结果需要重新定制
+            if (res.message === "关注成功") {
+              this.isFollow = true;
+              this.follower++;
+              this.$message.success(res.message);
+            } else if (res.message === "取消关注成功") {
+              this.isFollow = false;
+              this.follower--;
+              this.$message.success(`${res.message}`)
+            } else {
+              this.$message.success(`出现错误`)
+            }
+          });
       }
     },
 
@@ -200,6 +330,7 @@ pre {
   .user-introduce span {
     display: block;
     margin-top: 5px;
+    color:#fff;
   }
 
   .user-introduce i {
@@ -289,6 +420,9 @@ pre {
     font-size: 16px;
     color: #54595f;
     text-decoration: none;
+  }
+  .tab a:hover {
+    color: #71b899;
   }
   .separator {
     margin: 0 5px;

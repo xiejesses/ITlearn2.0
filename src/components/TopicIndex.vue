@@ -1,112 +1,58 @@
 <template>
-  <div class="detail">
-    <main>
-      <section class="group-header">
-        <div class="mini-header">
-          <div class="follow">
-            <p v-if="detail.user._id !== userId" @click="addLoveGroup"> {{ joinmsg }}</p>
+  <section class="articles">
+    <ul class="articles-list">
+      <li v-for="topic in topics" :key="topic._id">
+        <div class="user-avatar">
+          <v-gravatar :email="topic.user.email" :size='40' :alt="topic.user.nickname" />
+        </div>
+        <div class="article-title">
+          <h2>
+            <router-link :to="{ name:'topicdetail', params:{t_id: topic._id}}" class="article-link">
+              {{topic.title}}
+            </router-link>
+            <el-tag type="danger" size="small" v-if="!topic.isPass">审核未通过</el-tag>
+          </h2>
+          <div class="meta">
+            <router-link :to="{ name: 'user_article', params: { userId: topic.user._id }}">{{topic.user.nickname}}</router-link>
+            <span class="separator"> • </span>
+            <abbr class="timeago" :title="new Date(topic.createDateTime)">{{moment(new Date(topic.createDateTime), "YYYYMMDDHHmmss").fromNow()}}</abbr>
           </div>
         </div>
-        <div class="header-body">
-          <h2 class="group-name">{{ detail.name }}</h2>
-          <p class="author">by. {{ detail.user.nickname }}</p>
-          <p class="description">{{ detail.desc }}</p>
-          <p class="">成员：{{ detail.users.length }} </p>
+        <div class="comment-num" >
+          <!--<span class="number">{{topic.comments.length}}</span>-->
+          <!--<i class="comment el-icon-fa el-icon-fa-comments-o" aria-hidden="true"></i>-->
         </div>
-      </section>
-      <section class="user-action">
-        <!--<div>-->
-          <!--<el-dropdown>-->
-            <!--<span class="el-dropdown-link">-->
-              <!--选项-->
-              <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-            <!--</span>-->
-            <!--<el-dropdown-menu slot="dropdown">-->
-              <!--<el-dropdown-item>全部</el-dropdown-item>-->
-              <!--<el-dropdown-item>我的话题</el-dropdown-item>-->
-            <!--</el-dropdown-menu>-->
-          <!--</el-dropdown>-->
-        <!--</div>-->
-        <div class="publish-topic">
-          <div>
-            <router-link :to="{name: 'markdowneditor', query:{g_id: this.gid, isjoin: this.isJoin}}" class="LastItem">发表话题</router-link>
-          </div>
-        </div>
-        <div>
-          <!--<el-dropdown>-->
-            <!--<span class="el-dropdown-link">-->
-              <!--排序-->
-              <!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-            <!--</span>-->
-            <!--<el-dropdown-menu slot="dropdown">-->
-              <!--<el-dropdown-item>最新</el-dropdown-item>-->
-              <!--<el-dropdown-item>最热</el-dropdown-item>-->
-            <!--</el-dropdown-menu>-->
-          <!--</el-dropdown>-->
-        </div>
-      </section>
-      <topic-index :group="gid"></topic-index>
-
-    </main>
-  </div>
+      </li>
+    </ul>
+    <div class="view-more-normal" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20"></div>
+  </section>
 </template>
 
 <script>
-  import topicIndex from './TopicIndex.vue';
-
   export default {
-    name: 'detail',
-    components: {
-      topicIndex
-    },
+    name: 'topicIndex',
     data() {
       return {
         //   gName:'',
-        gid: Number(this.$route.params.g_id),
+        loadMore: true,
+        gid:'',
         userId:'',
-        detail: {user: '', users: ''},
-        joinmsg:'',
-        isJoin:'',
         topics:[],
         busy:true,
         page:1,
         pageSize:5,
-
-        creatTime: '2017-11-2 16:30:20',
-        topicName:'Release Notes for Safari Technology Preview 43'
       }
     },
+    props:{
+      group: Number
+    },
     mounted() {
-      this.gid = Number(this.$route.params.g_id);
-      console.log("gid", this.gid);
+      console.log("group id 为", this.group);
+      this.gid = Number(this.group) || this.$route.params.groupId;
       this.userId = Number(localStorage.getItem('userId'));
-      this.fetchGroupDetail();
       this.fetchTopic();
     },
-    methods:{
-      fetchGroupDetail() {
-        let params = {
-          _id: this.gid,
-        };
-        this.$http.get(this.$config.group.url, {params: params}).then((response) => {
-          let res = response.data;
-          if (res.status === this.$status.success) {
-            this.detail = res.data[0];
-            //this.userId保存的是字符串类型，进行indexOf时，需要先转化为整型
-            this.isJoin = this.detail.users.indexOf(parseInt(this.userId));
-            console.log(`isJoin=${this.isJoin}`);
-            console.log(this.userId);
-            if (this.isJoin >= 0) {
-              this.joinmsg = '退出小组';
-            } else {
-              this.joinmsg = '加入小组';
-            }
-          }
-        }).catch(error => {
-          console.log(error)
-        });
-      },
-
+    methods: {
       fetchTopic (flag) {
         let params = {
           page: this.page,
@@ -114,6 +60,18 @@
           group: this.gid,
           isPass: true
         };
+
+        // 添加查询规则
+        if (this.$route.name === "search_topic") {
+          params.$ = JSON.stringify({
+            title: {
+              $regex: this.$route.query.query
+            },
+            group: this.gid,
+            isPass: true
+          });
+        }
+
         this.$http.get(this.$config.topic.url, {params: params})
           .then(response => {
             let res = response.data;
@@ -131,46 +89,21 @@
               this.topics = [];
             }
           }).catch(err =>
-            this.$message.error(err.response.data.message)
-          );
+          this.$message.error(err.response.data.message)
+        );
       },
 
-      addLoveGroup() {
-        if (!localStorage.getItem('userName')) {
-          this.$message.error(`请先登录！`);
-          return false;
-        } else {
-
-          let params = {group: this.gid, user: localStorage.getItem("userId")};
-          this.$http.get(this.$config.group.join.url, {params: params})
-            .then(response => {
-              let res = response.data;
-              if (res.exit === 1) {
-                this.joinmsg = '退出小组';
-                this.isJoin = 0;
-                this.$message.success(res.message);
-              } else if (res.exit === 0) {
-                this.joinmsg = "加入小组";
-                this.isJoin = -1;
-                this.$message.success(res.message);
-
-              } else {
-                this.$message.error('发生错误');
-              }
-            })
-            .catch(err => {
-              this.$message.error(err.response.data.message);
-            });
-        }
-      },
-
-
+      loadMore(){
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.fetchGroup(true);
+        }, 500);
+      }
     }
   }
-
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   a {
     text-decoration: none;
@@ -243,12 +176,11 @@
 
   .user-action {
     display: flex;
-    /* -webkit-box-pack: justify; */
-    /* justify-content: space-between; */
-    justify-content: center;
-    /* -webkit-box-align: center; */
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
     align-items: center;
-    /* align-self: flex-start; */
+    align-self: flex-start;
     height: 45px;
     margin-top: 10px;
     box-shadow: 0 0px 5px #9ba09f;
@@ -257,17 +189,15 @@
     display: flex;
     height: 45px;
     align-items: center;
-    justify-content: center;
     padding: 0px 10px;
     background:#2DBF80;
-    text-align: center;
   }
   .publish-topic a {
     color:#fff;
   }
 
 
-   /**********
+  /**********
 文章列表li
 **********/
   .articles ul {
@@ -305,7 +235,7 @@
     }
   }
 
-    /**********
+  /**********
 用户头像
 ***********/
 
@@ -334,7 +264,7 @@
     }
   }
 
-    /**********
+  /**********
 文章标题
 **********/
 
@@ -388,8 +318,8 @@ meta信息
     border-bottom: 2px solid #f3f3f3;
   }
   .meta a:last-child {
-      border: 0 !important;
-    }
+    border: 0 !important;
+  }
 
   abbr {
     font-size: 11px;
@@ -431,8 +361,8 @@ meta信息
 
   @media screen and (min-width:960px) {
     .comment-num {
-    margin:0;
-  }
+      margin:0;
+    }
   }
 
 </style>

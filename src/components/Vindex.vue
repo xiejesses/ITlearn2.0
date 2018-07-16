@@ -36,8 +36,9 @@
       </section>
       <nav class="navigation">
 
-        <router-link to="/" exact="true" class="ListItem">首页</router-link>
+        <router-link to="/" :exact="true" class="ListItem">首页</router-link>
         <router-link to="/groupindex" class="ListItem">学习小组</router-link>
+<<<<<<< HEAD
         <router-link to="/share" class="LastItem">分享链接</router-link>
         <router-link to="/search" class=""><i class="el-icon-search"></i></router-link>
         <!-- <section class="search-area">
@@ -47,22 +48,50 @@
         <!-- <a href="javascript:void(0)" @click="isfocused = true">
           <i class="el-icon-search"></i>
         </a> -->
+=======
+        <router-link to="/projectIndex" class="ListItem">项目交流</router-link>
+        <router-link to="/shareProject" class="ListItem">分享项目</router-link>
+        <router-link to="/share" class="ListItem">分享</router-link>
+        <router-link to="/notification" class="LastItem">
+          <el-badge :is-dot="isNew" class="item">
+            <i class="el-icon-fa el-icon-fa-bell" aria-hidden="true"></i>
+          </el-badge>
+        </router-link>
 
+        <div id="wrap">
+          <!-- <form action="" autocomplete="on"> -->
+          <input id="search" v-validate="'required'" v-model="search_condition" name="search" type="text" placeholder="搜索...">
+          <router-link :to="{ name: search_name ,query: { query: search_condition}}">
+            <a href="javascript:void(0)">
+              <i class="el-icon-search"></i>
+            </a>
+          </router-link>
+          <!-- <input id="search_submit" value="Rechercher" type="submit"> -->
+          <!-- </form> -->
+        </div>
+>>>>>>> changshuai
+
+        <!-- <a href="javascript:void(0)" @click="isfocused = true">
+            <i class="el-icon-search"></i>
+          </a> -->
       </nav>
       <!-- 用户控制中心下拉菜单 -->
       <div class="user-action" v-if="userEmail">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <v-gravatar :email="userEmail" size='40' :alt="userName"/>
+            <v-gravatar :email="userEmail" :size='40' :alt="userName" />
           </span>
           <el-dropdown-menu slot="dropdown">
-            <router-link :to="{ name: 'user_article', params: { uName: userName }}">
+            <router-link :to="{ name: 'user_article', params: { userId: userId }}">
               <el-dropdown-item>我的主页</el-dropdown-item>
             </router-link>
-            <router-link to="/">
+            <!-- <router-link to="/">
               <el-dropdown-item>我的小组</el-dropdown-item>
+            </router-link> -->
+            <router-link :to="{name: 'admin_home'}" v-if="isManager === 'true'">
+              <el-dropdown-item>管理员系统</el-dropdown-item>
             </router-link>
-            <router-link to="/">
+            <router-link to="/about">
               <el-dropdown-item divided>关于</el-dropdown-item>
             </router-link>
             <el-dropdown-item divided @click.native="loginOut">退出</el-dropdown-item>
@@ -73,12 +102,17 @@
         <router-link to="/login" class="">登录</router-link>
       </div>
       <!-- 搜索框 -->
+<<<<<<< HEAD
       <section class="search" v-bind:class="{focused:isfocused}" @click="closeModal">
         <!-- 阻止事件捕获 -->
+=======
+      <!-- <section class="search" v-bind:class="{focused: isfocused}" @click="closeModal">
+>>>>>>> changshuai
         <form class="search-form" method="get" action="" role="search" v-on:click.stop>
           <input type="text" ref="input" class="search-input" name="s" placeholder="搜索文章..." autofocus>
         </form>
         <span class="search-close" @click="closeModal">x</span>
+<<<<<<< HEAD
 
       </section>
       <!-- <section class="search" v-bind:class="{focused:isfocused}" @click="closeModal">
@@ -86,13 +120,15 @@
           <input type="text" ref="input" class="search-input" name="s" placeholder="搜索文章..." autofocus>
         </form>
         <span class="search-close" @click="closeModal">x</span>
+=======
+>>>>>>> changshuai
       </section> -->
 
       <!-- 弹出菜单 -->
       <div class="hamburger" @click="isvisible=true" v-if="!userName"></div>
-      <section class="menu" v-bind:class="{visible:isvisible}" @click="isvisible=false">
+      <section class="menu" :class="{visible:isvisible}" @click="isvisible=false">
         <div class="menu-wrapper">
-          <ul v-on:click.stop @click="isvisible=false">
+          <ul @click.stop @click="isvisible=false">
             <li>
               <a href="#" class="search-link" @click="isfocused = true">搜索</a>
             </li>
@@ -103,6 +139,9 @@
               <router-link to="/share" class="">分享链接</router-link>
             </li>
             <li>
+              <router-link to="/shareProject" class="">分享项目</router-link>
+            </li>
+            <li>
               <router-link to="/group" class="">项目交流</router-link>
             </li>
           </ul>
@@ -110,12 +149,24 @@
         <span class="menu-close" @click="isvisible=false">x</span>
       </section>
     </header>
-
+    <div class="backTotop" @click="toTop">
+      <i class="el-icon-fa-arrow-up"></i>
+    </div>
+    <!-- <transition name="fade"> -->
     <router-view :key="key"></router-view>
+    <!-- </transition> -->
+
   </div>
 </template>
 
 <script>
+  window.onscroll = function () {
+    if (document.documentElement.scrollTop + document.body.scrollTop > 200) {
+      document.querySelector(".backTotop").style.display = "block";
+    } else {
+      document.querySelector(".backTotop").style.display = "none";
+    }
+  }
   import {
     mapGetters
   } from 'vuex'
@@ -126,11 +177,16 @@
     name: 'vindex',
     data() {
       return {
+        True: true,
         userName: '',
         userEmail: '',
+        userId: '',
         isvisible: false,
         isfocused: false,
-        msg: 'Welcome to Your Vue.js App'
+        search_condition: '',
+        search_name: 'search_article',
+        isNew: false,
+        // showBackToTop:false
       }
     },
     methods: {
@@ -142,14 +198,21 @@
 
           this.userName = '';
           this.userEmail = '';
+          this.userId = '';
           this.$router.push({
             path: '/'
-          }) //不带刷新
+          }); //不带刷新
           this.$message.success('登出成功');
         } else {
           this.$message.success('登出失败');
         }
 
+      },
+      search() {
+        // router.push({ name: 'Search', query: { plan: 'private' }})
+      },
+      blur() {
+        this.search_condition = '';
       },
       closeModal() {
         this.isvisible = false;
@@ -158,8 +221,71 @@
       userInfo() {
         this.userName = localStorage.getItem('userName');
         this.userEmail = localStorage.getItem('userEmail');
-      }
+        this.userId = localStorage.getItem('userId');
+      },
 
+      getNew() {
+        if (localStorage.getItem("userId"))
+          this.$http.get(this.$config.new.count.url, {
+            params: {
+              isSee: false,
+              receiver: Number(localStorage.getItem("userId"))
+            }
+          })
+          .then(response => {
+            let data = response.data;
+            if (data.status === this.$status.success) {
+              this.isNew = data.count !== 0;
+            } else {
+              this.$message.error(data.message);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.stack);
+            if (err.response) {
+              this.$message.error(err.response.data.message);
+            }
+          });
+      },
+      toTop() {
+
+        let distance =
+          document.documentElement.scrollTop ||
+          document.body.scrollTop;
+        //获得当前高度
+
+        let step =
+          distance / 50;
+        //每步的距离
+
+        (function jump() {
+
+          if (distance >
+            0) {
+
+            distance -= step;
+
+            // document.documentElement.scrollTop = distance;
+
+            // document.body.scrollTop = distance;
+
+            window.scrollTo(0, distance);
+
+            setTimeout(jump, 10)
+
+          }
+
+        })();
+
+      },
+      showBackToTop() {
+        if (document.documentElement.scrollTop + document.body.scrollTop > 200) {
+          document.querySelector(".backTotop").style.display = "block";
+        } else {
+          document.querySelector(".backTotop").style.display = "none";
+        }
+      }
 
     },
     watch: {
@@ -168,11 +294,16 @@
     mounted() {
       this.userName = localStorage.getItem('userName');
       this.userEmail = localStorage.getItem('userEmail');
+      this.userId = localStorage.getItem('userId');
+      this.isManager = localStorage.getItem('isManager');
+      this.search_name = this.$route.name === 'search_group' ? 'search_group' : 'search_article';
+      this.getNew();
+      this.showBackToTop();
     },
 
     computed: {
       key() {
-          return this.$route.name !== undefined? this.$route.name + +new Date(): this.$route + +new Date()
+        return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
       }
     }
   }
@@ -197,6 +328,7 @@
   }
 
   /**********
+<<<<<<< HEAD
   new search
   ***********/
   .search-area {
@@ -233,6 +365,8 @@
   }
 
    /**********
+=======
+>>>>>>> changshuai
 main区
 **********/
 
@@ -256,6 +390,7 @@ main区
       height: auto;
     }
   }
+
   @media screen and (min-width:1600px) {
     .vindex {
       width: 65%;
@@ -403,7 +538,7 @@ main区
     color: white;
   }
 
-  .navigation a:nth-child(4) {
+  .navigation a:nth-child(6) {
     color: #2DBF80;
   }
 
@@ -535,6 +670,30 @@ main区
       搜索框
 **************/
 
+  #wrap a {
+    text-decoration: none;
+    background: none;
+  }
+
+  input[type="text"] {
+    height: 30px;
+    font-size: 17px;
+    width: 150px;
+    border: none;
+    border-bottom: 1px solid #BBB;
+    margin-left: 15px;
+    margin-right: -20px;
+    /* font-family: "Lato"; */
+    font-weight: 100;
+    outline: none;
+    color: #555;
+    background: none;
+    cursor: pointer;
+  }
+
+
+
+
   .search {
     opacity: 0;
     height: 0;
@@ -650,5 +809,25 @@ main区
       transform: scale(1);
     }
   }
+
+  /* 回到顶部 */
+
+  .backTotop {
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+  }
+  .backTotop i:hover{
+    color:#2DBF80;
+  }
+.el-icon-fa-arrow-up:before {
+    font-size: 30px;
+  }
+  .backTotop i {
+    color: #34e79a;
+    cursor: pointer;
+  }
+
+
 
 </style>
